@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:id="@+id/paint_choose"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@color/colorAccent"
+        android:clickable="true"
+        android:gravity="center_vertical"
+        android:orientation="horizontal"
+        android:visibility="invisible">
+
+        <Button
+            android:id="@+id/pen"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="@string/pen" />
+
+        <Button
+            android:id="@+id/pencil"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="铅笔" />
+
+        <Button
+            android:id="@+id/oli_black_pen"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="油性黑笔" />
+
+        <Button
+            android:id="@+id/maker_pen"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="马克笔" />
+
+        <Button
+            android:id="@+id/eraser"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="橡皮" />
+
+        <Button
+            android:id="@+id/color"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="颜色" />
+
+        <SeekBar
+            android:id="@+id/pen_size_pg"
+            android:layout_width="100dp"
+            android:layout_height="30dp" />
+
+        <ImageView
+            android:id="@+id/pen_size"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/pensize_bg" />
+
+        <SeekBar
+            android:id="@+id/pen_alpha_pg"
+            android:layout_width="100dp"
+            android:layout_height="30dp" />
+
+        <RelativeLayout
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/alpha_bg">
+
+            <ImageView
+                android:id="@+id/pen_alpha"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerInParent="true"
+                android:background="@drawable/pensize_bg"
+                android:scaleType="fitXY" />
+        </RelativeLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/opt_layout"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:background="@android:color/holo_green_light"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/book_package"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="10dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="书包" />
+
+        <Button
+            android:id="@+id/gesture"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="手势" />
+
+        <Button
+            android:id="@+id/paint_draw"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="画笔" />
+
+        <Button
+            android:id="@+id/draw_pic"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="绘图" />
+
+        <Button
+            android:id="@+id/label"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="便签" />
+
+        <Button
+            android:id="@+id/image"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="图片" />
+
+        <Button
+            android:id="@+id/screenshot"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="截图" />
+
+        <Button
+            android:id="@+id/send"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="发送" />
+
+        <Button
+            android:id="@+id/undo"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="@string/undo_text" />
+
+        <Button
+            android:id="@+id/redo"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="@string/redo_text" />
+
+        <LinearLayout
+            android:id="@+id/book_need_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/bookmark"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/btn_bg_selector"
+                android:text="@string/bookmark" />
+
+            <Button
+                android:id="@+id/directory"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/btn_bg_selector"
+                android:text="@string/directory" />
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/textbook"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="课本" />
+
+        <Button
+            android:id="@+id/notebook"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="笔记" />
+
+        <Button
+            android:id="@+id/exercise_book"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:background="@drawable/btn_bg_selector"
+            android:text="作业" />
+
+    </LinearLayout>
+</FrameLayout>
