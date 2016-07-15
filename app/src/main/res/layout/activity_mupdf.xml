@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_parment"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
+
+    <RelativeLayout
+        android:id="@+id/rl_pdf"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_hand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="20dp"
+        android:text="手"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/btn_pen"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@+id/btn_hand"
+        android:padding="20dp"
+        android:text="笔"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/btn_directory"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="20dp"
+        android:text="目录"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/btn_bookmarks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/btn_directory"
+        android:padding="20dp"
+        android:text="书签"
+        android:textColor="@android:color/black" />
+
+
+    <Button
+        android:id="@+id/btn_main"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/btn_bookmarks"
+        android:padding="20dp"
+        android:text="Main_Ui"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/btn_more_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/btn_main"
+        android:padding="20dp"
+        android:text="多屏"
+        android:textColor="@android:color/black" />
+
+
+    <RelativeLayout
+        android:id="@+id/rl_directory"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="#7f000000"
+        android:clickable="true"
+        android:visibility="gone">
+
+        <RelativeLayout
+
+            android:id="@+id/rl_show_directory"
+            android:layout_width="250dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="@android:color/white">
+
+            <LinearLayout
+                android:id="@+id/ll_check_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/black"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/btn_item_directory"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/white"
+                    android:padding="20dp"
+                    android:text="目录" />
+
+                <Button
+                    android:id="@+id/btn_item_bookmarks"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginRight="1dp"
+                    android:layout_weight="1"
+                    android:background="@android:color/white"
+                    android:padding="20dp"
+                    android:text="书签" />
+
+                <Button
+                    android:id="@+id/btn_item_notes"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="@android:color/white"
+                    android:padding="20dp"
+                    android:text="笔记" />
+
+            </LinearLayout>
+
+
+            <View
+                android:id="@+id/view_line"
+                android:layout_width="fill_parent"
+                android:layout_height="1dp"
+                android:layout_below="@id/ll_check_button"
+                android:background="@android:color/black" />
+
+            <ListView
+                android:id="@+id/lv_item_book_directory"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/view_line"
+                android:background="@android:color/white"
+                android:listSelector="@android:color/transparent" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        >
+
+        <TextView
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp"
+            android:text="aaaaaaaaa"
+            android:id="@+id/tv_page_number"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/page_num"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:layout_below="@id/tv_page_number"
+            android:id="@+id/btn_back_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:text="返回"
+            android:textColor="@android:color/black" />
+
+        <SeekBar
+            android:padding="10dp"
+            android:layout_below="@id/tv_page_number"
+            android:id="@+id/seekbar_page"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/btn_back_page"
+            android:background="@color/toolbar"
+            android:indeterminate="false"
+            android:progressDrawable="@drawable/seek_progress"
+            android:thumb="@drawable/seek_thumb" />
+    </RelativeLayout>
+
+
+</RelativeLayout>

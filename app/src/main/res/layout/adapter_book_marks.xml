@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white">
+
+        <TextView
+            android:id="@+id/tv_creat_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="15dp"
+            android:text="2015"
+            android:textColor="@android:color/black" />
+
+
+        <TextView
+            android:id="@+id/tv_mark_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:padding="15dp"
+            android:text="100页"
+            android:textColor="@android:color/black" />
+
+
+        <TextView
+            android:id="@+id/tv_mark_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_mark_page"
+            android:padding="15dp"
+            android:text="书签100"
+            android:textColor="@android:color/black" />
+
+
+        <View
+            android:background="@color/red"
+            android:layout_below="@id/tv_mark_name"
+            android:layout_width="match_parent"
+            android:layout_height="2px"
+            android:padding="15dp"/>
+
+    </RelativeLayout>
+</RelativeLayout>

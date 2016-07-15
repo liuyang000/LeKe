@@ -4,6 +4,12 @@ android {
     compileSdkVersion 24
     buildToolsVersion "24.0.0"
 
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
     defaultConfig {
         applicationId "com.rongjie.leke"
         minSdkVersion 15
