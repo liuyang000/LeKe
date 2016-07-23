@@ -25,23 +25,16 @@
 
 
 
-    <application android:theme="@android:style/Theme.Black.NoTitleBar">
+    <application android:theme="@android:style/Theme.NoTitleBar.Fullscreen">
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
-        android:label="@string/app_name"
+        android:label="乐课"
         android:supportsRtl="true"
         >
 
 
-        <!-- <activity
-             android:windowSoftInputMode="adjustUnspecified|stateHidden"
-             android:name="ActivityMainUI"
-             android:launchMode="singleTask"
-             android:screenOrientation="portrait"/>-->
-
         <activity
-            android:theme="@android:style/Theme.Black.NoTitleBar"
             android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:name="com.rongjie.pdf.ActivityMainUI"
             android:launchMode="singleTask"
@@ -108,63 +101,6 @@
                 <data android:host="*" />
             </intent-filter>
         </activity>
-
-
-        <activity
-            android:name="com.rongjie.pdf.TestTwoPDF"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/vnd.ms-xpsdocument" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/pdf" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:mimeType="application/x-cbz" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="file" />
-                <data android:mimeType="*/*" />
-                <data android:pathPattern=".*\\.xps" />
-                <data android:host="*" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="file" />
-                <data android:mimeType="*/*" />
-                <data android:pathPattern=".*\\.pdf" />
-                <data android:host="*" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:scheme="file" />
-                <data android:mimeType="*/*" />
-                <data android:pathPattern=".*\\.cbz" />
-                <data android:host="*" />
-            </intent-filter>
-        </activity>
-
-
     </application>
 
 </manifest>
