@@ -11,11 +11,11 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
 import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 
 import com.artifex.mupdfdemo.MuPDFCore;
+import com.rongjie.leke.OptionConlection;
 import com.rongjie.leke.R;
+import com.rongjie.leke.view.MyFrameLayout;
 import com.rongjie.pdf.View.MuPDFPageView;
 
 
@@ -45,40 +45,39 @@ public class MuPDFPageAdapter extends BaseAdapter {
         return 0;
     }
 
+    private OptionConlection option;
+
+    public void setOptionConlection(OptionConlection option) {
+        this.option = option;
+    }
+
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
         final ImageButton imageView;
         final ViewGroup viewGroup;
         final MuPDFPageView pageView;
-        final RelativeLayout relativeLayout;
+        final MyFrameLayout frameLayout;
         if (convertView == null) {
             viewGroup = (ViewGroup) View.inflate(mContext, R.layout.holder_pdf_view, null);
-            pageView = new MuPDFPageView(mContext, mCore, new Point(parent.getWidth(), parent.getHeight()));
-            viewGroup.addView(pageView, 0);
-            relativeLayout = new RelativeLayout(mContext);
             FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT
                     , FrameLayout.LayoutParams.MATCH_PARENT);
+            pageView = new MuPDFPageView(mContext, mCore, new Point(parent.getWidth(), parent.getHeight()));
+            pageView.setLayoutParams(params);
+            viewGroup.addView(pageView, 0);
 
-            relativeLayout.setLayoutParams(params);
-            relativeLayout.setBackgroundColor(mContext.getResources().getColor(R.color.busy_indicator));
-            imageView = new ImageButton(mContext);
-
-            RelativeLayout.LayoutParams paramsTv = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.MATCH_PARENT);
-
-            imageView.setLayoutParams(paramsTv);
-            imageView.setScaleType(ImageView.ScaleType.FIT_XY);
-            relativeLayout.addView(imageView);
-            viewGroup.addView(relativeLayout, 1);
+            frameLayout = (MyFrameLayout) View.inflate(mContext, R.layout.content_layout, null);
+            frameLayout.setLayoutParams(params);
+            viewGroup.addView(frameLayout, 1);
         } else {
             viewGroup = (ViewGroup) convertView;
             pageView = (MuPDFPageView) viewGroup.getChildAt(0);
-            relativeLayout = (RelativeLayout) viewGroup.getChildAt(1);
-            imageView = (ImageButton) relativeLayout.getChildAt(0);
+            frameLayout = (MyFrameLayout) viewGroup.getChildAt(1);
         }
 
-        imageView.setImageResource(R.mipmap.yuanye);
-        imageView.setVisibility(View.INVISIBLE);
-        relativeLayout.setVisibility(View.INVISIBLE);
+        if (null != option) {
+            option.setRootView(frameLayout);
+            option.initNoteView();
+        }
 
         PointF pageSize = mPageSizes.get(position);
         if (pageSize != null) {

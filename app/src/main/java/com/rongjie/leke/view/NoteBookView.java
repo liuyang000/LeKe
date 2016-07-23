@@ -10,6 +10,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
 import android.os.Environment;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -118,8 +120,22 @@ public class NoteBookView extends View {
     }
 
     @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        Log.e(TAG,"onDetachedFromWindow............" + this);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        Log.e(TAG,"onAttachedToWindow..............." + this);
+        setPen();
+    }
+
+    @Override
     public void onDraw(Canvas canvas) {
-        canvas.drawColor(0xFFAAAAAA);
+//        canvas.drawColor(0xFFAAAAAA);
+        canvas.drawColor(0x00000000);
         // 将前面已经画过得显示出来
         canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
         if (mPath != null) {
@@ -148,6 +164,7 @@ public class NoteBookView extends View {
     private void touch_up() {
         mPath.lineTo(mX, mY);
         mCanvas.drawPath(mPath, mPaint);
+            mCanvas.drawPath(mPath, mPaint);
         enableUndoView();
         disenableRedoView();
         //保存路径
@@ -231,7 +248,10 @@ public class NoteBookView extends View {
             e.printStackTrace();
         }
     }
-
+    private float preX;
+    private float preY;
+    private float currentX;
+    private float currentY;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!isEnabled()) {
@@ -256,12 +276,18 @@ public class NoteBookView extends View {
                 dp = new DrawPath();
                 dp.path = mPath;
                 dp.paint = new Paint(mPaint);
+                preX = x;
+                preY = y;
                 touch_start(x, y);
                 invalidate();
                 Log.e(TAG,"action_down..............(x,y) is " + x +"," + y);
                 break;
             case MotionEvent.ACTION_MOVE:
                 touch_move(x, y);
+                currentX = x;
+                currentY = y;
+                preX = currentX;
+                preY = currentY;
                 invalidate();
                 Log.e(TAG,"action_move..............(x,y) is " + x +"," + y);
                 break;
@@ -274,30 +300,6 @@ public class NoteBookView extends View {
         return true;
     }
 
-    public void setColorBlack() {
-        mPaint.setColor(Color.BLACK);
-        setColorPenAlpha();
-    }
-
-    public void setColorRed() {
-        mPaint.setColor(Color.RED);
-        setColorPenAlpha();
-    }
-
-    public void setColorBlue() {
-        mPaint.setColor(Color.BLUE);
-        setColorPenAlpha();
-    }
-
-    public void setColorGreen() {
-        mPaint.setColor(Color.GREEN);
-        setColorPenAlpha();
-    }
-
-    public void setColorWhite() {
-        mPaint.setColor(Color.WHITE);
-        setColorPenAlpha();
-    }
     public void setPaintSize(float width){
         mPaint.setStrokeWidth(width);
     }
@@ -309,18 +311,21 @@ public class NoteBookView extends View {
         setColorPenAlpha();
     }
     public void setPen() {
+        mPaint.setXfermode(null);
         isColorPen = false;
         mPaint.setStrokeWidth(2.0f);
         mPaint.setColor(Color.BLACK);
     }
 
     public void setOilBlackPen() {
+        mPaint.setXfermode(null);
         isColorPen = false;
         mPaint.setStrokeWidth(5.0f);
         mPaint.setColor(Color.BLACK);
     }
 
     private void setColorPenAlpha() {
+        mPaint.setXfermode(null);
         if (isColorPen) {
             mPaint.setAlpha(100);
         }
@@ -330,14 +335,21 @@ public class NoteBookView extends View {
 
     public void setMakerPen() {
         isColorPen = true;
+        mPaint.setXfermode(null);
         mPaint.setStrokeWidth(15.0f);
         mPaint.setColor(Color.GREEN);
         mPaint.setAlpha(100);
     }
-
     public void useEraser() {
-        isColorPen = false;
-        mPaint.setColor(0xFFAAAAAA);
-        mPaint.setStrokeWidth(25.0f);
+//        isColorPen = false;
+//        mPaint.setColor(0xFFAAAAAA);
+//        mPaint.setStrokeWidth(25.0f);
+//        mPaint.reset();
+        mPaint.setColor(Color.TRANSPARENT);
+        mPaint.setAntiAlias(true);
+        mPaint.setStyle(Paint.Style.STROKE);
+        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
+        mPaint.setStrokeWidth(16);
+        mPaint.setAlpha(0);
     }
 }

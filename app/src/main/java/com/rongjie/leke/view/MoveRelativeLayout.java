@@ -39,7 +39,7 @@ public class MoveRelativeLayout extends RelativeLayout {
             case MotionEvent.ACTION_MOVE:
                 mRawX = event.getRawX();
                 mRawY = event.getRawY();
-                if ((int)tempX != (int) mRawX && (int)tempY != (int) mRawY) {
+                if ((int) tempX != (int) mRawX && (int) tempY != (int) mRawY) {
                     updateWindowPosition();
                 }
                 break;
@@ -54,7 +54,8 @@ public class MoveRelativeLayout extends RelativeLayout {
         viewGroup = (FrameLayout) getParent();
         params = (FrameLayout.LayoutParams) getLayoutParams();
         params.leftMargin = (int) (mRawX - mStartX);
-        params.topMargin = (int) (mRawY - mStartY - 2 * getStatusBarHeight());
+//        params.topMargin = (int) (mRawY - mStartY - 2 * getStatusBarHeight());
+        params.topMargin = (int) (mRawY - mStartY);
         viewGroup.updateViewLayout(this, params);
     }
 

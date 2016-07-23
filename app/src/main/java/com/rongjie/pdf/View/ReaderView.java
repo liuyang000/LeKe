@@ -428,7 +428,7 @@ public class ReaderView extends AdapterView<Adapter> implements GestureDetector.
                     | (int) (v.getMeasuredHeight() * scale * mScale));
         } else {
             //VIEW的大小
-         v.measure(MeasureSpec.EXACTLY | (int) (v.getMeasuredWidth()), MeasureSpec.EXACTLY | (int) (v.getMeasuredHeight()));
+         v.measure(MeasureSpec.EXACTLY | (int) (v.getMeasuredWidth()), MeasureSpec.EXACTLY | (int) (getMeasuredHeight()));
         }
     }
 
@@ -1129,5 +1129,24 @@ public class ReaderView extends AdapterView<Adapter> implements GestureDetector.
         addViewInLayout(v, 0, params, true);
         mChildViews.append(i, (ViewGroup) v); // Record the view against it's adapter index
         measureView(v);
+    }
+
+    /**
+     * 返回当前在adapter中显示的View 图层
+     */
+    public ViewGroup getCurrentItem() {
+
+        if (mChildViews != null && mChildViews.size() > 0) {
+            ViewGroup v = mChildViews.get(mCurrent);
+            System.out.println("v.getChildCount() == " + v.getChildCount());
+
+            if (v.getChildCount() == 2) {
+                return (ViewGroup) v.getChildAt(v.getChildCount()-1);
+            } else {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 }

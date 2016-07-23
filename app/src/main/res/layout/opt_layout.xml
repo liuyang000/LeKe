@@ -94,79 +94,91 @@
         android:id="@+id/opt_layout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="@android:color/holo_green_light"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
-        <Button
+        <ImageView
             android:id="@+id/book_package"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="50dp"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/btn_bg_selector"
+            android:src="@drawable/shubao_img_btn"
+            android:background="@null"
             android:text="书包" />
 
-        <Button
+        <ImageView
             android:id="@+id/gesture"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/btn_bg_selector"
+            android:layout_marginLeft="10dp"
+            android:src="@drawable/xuanze_img_btn"
+            android:background="@null"
             android:text="手势" />
 
-        <Button
+        <ImageView
             android:id="@+id/paint_draw"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/btn_bg_selector"
-            android:text="画笔" />
+            android:scaleType="fitCenter"
+            android:layout_marginLeft="30dp"
+            android:src="@drawable/bi_img_btn"
+            android:background="@null"
+            />
 
-        <Button
+        <ImageView
             android:id="@+id/draw_pic"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/btn_bg_selector"
+            android:src="@drawable/huihua_img_btn"
+            android:background="@null"
             android:text="绘图" />
 
-        <Button
+        <ImageView
             android:id="@+id/label"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/btn_bg_selector"
+            android:src="@drawable/shuqian_img_btn"
+            android:background="@null"
             android:text="便签" />
 
-        <Button
+        <ImageView
             android:id="@+id/image"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/btn_bg_selector"
+            android:src="@drawable/tupian_img_btn"
+            android:background="@null"
             android:text="图片" />
 
-        <Button
+        <ImageView
             android:id="@+id/screenshot"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/btn_bg_selector"
+            android:src="@drawable/jietu_img_btn"
+            android:background="@null"
             android:text="截图" />
 
-        <Button
+        <ImageView
             android:id="@+id/send"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/btn_bg_selector"
+            android:src="@drawable/fasong_img_btn"
+            android:background="@null"
             android:text="发送" />
 
-        <Button
+        <ImageView
             android:id="@+id/undo"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/btn_bg_selector"
+            android:src="@drawable/chexiao_img_btn"
+            android:background="@null"
             android:text="@string/undo_text" />
 
-        <Button
+        <ImageView
             android:id="@+id/redo"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/btn_bg_selector"
+            android:src="@drawable/fanhui_img_btn"
+            android:background="@null"
             android:text="@string/redo_text" />
 
         <LinearLayout
@@ -175,40 +187,45 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
-            <Button
+            <ImageView
                 android:id="@+id/bookmark"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/btn_bg_selector"
+                android:src="@drawable/shuqian_img_btn"
+                android:background="@null"
                 android:text="@string/bookmark" />
 
-            <Button
+            <ImageView
                 android:id="@+id/directory"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
-                android:background="@drawable/btn_bg_selector"
+                android:src="@drawable/mulu_img_btn"
+                android:background="@null"
                 android:text="@string/directory" />
         </LinearLayout>
 
-        <Button
+        <ImageView
             android:id="@+id/textbook"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/btn_bg_selector"
+            android:src="@drawable/shu_img_btn"
+            android:background="@null"
             android:text="课本" />
 
-        <Button
+        <ImageView
             android:id="@+id/notebook"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/btn_bg_selector"
+            android:src="@drawable/biji_img_btn"
+            android:background="@null"
             android:text="笔记" />
 
-        <Button
+        <ImageView
             android:id="@+id/exercise_book"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/btn_bg_selector"
+            android:src="@drawable/zuoye_img_btn"
+            android:background="@null"
             android:text="作业" />
 
     </LinearLayout>

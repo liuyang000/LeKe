@@ -2,6 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="horizontal" android:layout_width="match_parent"
     android:background="@android:color/holo_blue_light"
+    android:gravity="center_vertical"
     android:layout_height="match_parent">
     <Button
         android:id="@+id/cancel_cut"
