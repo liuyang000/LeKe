@@ -5,9 +5,12 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.rongjie.leke.MyApplication;
 import com.rongjie.leke.R;
 import com.rongjie.pdf.fragment.CoachBookFragment;
 import com.rongjie.pdf.fragment.FolderFragment;
@@ -16,6 +19,8 @@ import com.rongjie.pdf.fragment.NotesFragment;
 import com.rongjie.pdf.fragment.ReferenceBooksFragment;
 import com.rongjie.pdf.fragment.TextBookFragment;
 
+import org.w3c.dom.Text;
+
 /**
  * Created by Administrator on 2016/7/12.
  */
@@ -23,27 +28,27 @@ public class ActivityMainUI extends Activity implements View.OnClickListener {
     /**
      * 文件夹
      */
-    private RelativeLayout mRlFolder;
+    private ViewGroup mRlFolder;
     /**
      * 作业
      */
-    private RelativeLayout mRHomework;
+    private ViewGroup mRHomework;
     /**
      * 笔记
      */
-    private RelativeLayout mRlNotes;
+    private ViewGroup mRlNotes;
     /**
      * 课外书
      */
-    private RelativeLayout mRlReferenceBooks;
+    private ViewGroup mRlReferenceBooks;
     /**
      * 辅导书
      */
-    private RelativeLayout mRlCoachBook;
+    private ViewGroup mRlCoachBook;
     /**
      * 课本
      */
-    private RelativeLayout mRlTextBook;
+    private ViewGroup mRlTextBook;
     /**
      * 切换fragment
      */
@@ -54,6 +59,18 @@ public class ActivityMainUI extends Activity implements View.OnClickListener {
     private NotesFragment mNotesFragment;
     private ReferenceBooksFragment mReferenceBooksFragment;
     private TextBookFragment mTextBookFragment;
+    private TextView mTvFolder;
+    private View mViewFolder;
+    private TextView mTvHomework;
+    private View mViewHomework;
+    private TextView mTvNotes;
+    private View mViewNotes;
+    private TextView mTvReferenceBooks;
+    private View mViewReferenceBooks;
+    private TextView mTvCoachBook;
+    private View mViewCoachBook;
+    private TextView mTvTextBook;
+    private View mViewTextBook;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,23 +78,41 @@ public class ActivityMainUI extends Activity implements View.OnClickListener {
         setContentView(R.layout.activity_main_ui);
         mFlContentLayout = (FrameLayout) findViewById(R.id.fl_content_layout);
 
-        mRlFolder = (RelativeLayout) findViewById(R.id.rl_folder);
+        mRlFolder = (ViewGroup) findViewById(R.id.rl_folder);
         mRlFolder.setOnClickListener(this);
+        mTvFolder = (TextView) findViewById(R.id.tv_folder);
+        mViewFolder = (View) findViewById(R.id.view_folder);
 
-        mRHomework = (RelativeLayout) findViewById(R.id.rl_homework);
+
+        mRHomework = (ViewGroup) findViewById(R.id.rl_homework);
         mRHomework.setOnClickListener(this);
+        mTvHomework = (TextView) findViewById(R.id.tv_homework);
+        mViewHomework = (View) findViewById(R.id.view_homework);
 
-        mRlNotes = (RelativeLayout) findViewById(R.id.rl_notes);
+
+        mRlNotes = (ViewGroup) findViewById(R.id.rl_notes);
         mRlNotes.setOnClickListener(this);
+        mTvNotes = (TextView) findViewById(R.id.tv_notes);
+        mViewNotes = (View) findViewById(R.id.view_notes);
 
-        mRlReferenceBooks = (RelativeLayout) findViewById(R.id.rl_reference_books);
+
+        mRlReferenceBooks = (ViewGroup) findViewById(R.id.rl_reference_books);
         mRlReferenceBooks.setOnClickListener(this);
+        mTvReferenceBooks = (TextView) findViewById(R.id.tv_reference_books);
+        mViewReferenceBooks = (View) findViewById(R.id.view_reference_books);
 
-        mRlCoachBook = (RelativeLayout) findViewById(R.id.rl_coach_book);
+
+        mRlCoachBook = (ViewGroup) findViewById(R.id.rl_coach_book);
         mRlCoachBook.setOnClickListener(this);
+        mTvCoachBook = (TextView) findViewById(R.id.tv_coach_book);
+        mViewCoachBook = (View) findViewById(R.id.view_coach_book);
 
-        mRlTextBook = (RelativeLayout) findViewById(R.id.rl_text_book);
+
+        mRlTextBook = (ViewGroup) findViewById(R.id.rl_text_book);
         mRlTextBook.setOnClickListener(this);
+        mTvTextBook = (TextView) findViewById(R.id.tv_text_book);
+        mViewTextBook = (View) findViewById(R.id.view_text_book);
+
 
         initFragment();
         //默认书为首页
@@ -129,61 +164,59 @@ public class ActivityMainUI extends Activity implements View.OnClickListener {
         Fragment whichToBack5 = null;
 
 
-
-
         switch (fragmentDisplayOption) {
             case TEXT_BOOK_FRAGMENT:
                 whichToFront = mTextBookFragment;
-                whichToBack1 =mCoachBookFragment;
-                whichToBack2 =mReferenceBooksFragment;
-                whichToBack3 =mNotesFragment;
+                whichToBack1 = mCoachBookFragment;
+                whichToBack2 = mReferenceBooksFragment;
+                whichToBack3 = mNotesFragment;
                 whichToBack4 = mHomeworkFragment;
-                whichToBack5 =mFolderFragment;
+                whichToBack5 = mFolderFragment;
                 break;
 
             case COACH_BOOK_FRAGMENT:
-                whichToFront =mCoachBookFragment;
-                whichToBack1 =mTextBookFragment;
-                whichToBack2 =mReferenceBooksFragment;
-                whichToBack3 =mNotesFragment;
+                whichToFront = mCoachBookFragment;
+                whichToBack1 = mTextBookFragment;
+                whichToBack2 = mReferenceBooksFragment;
+                whichToBack3 = mNotesFragment;
                 whichToBack4 = mHomeworkFragment;
-                whichToBack5 =mFolderFragment;
+                whichToBack5 = mFolderFragment;
                 break;
 
             case REFERENCE_BOOKS_FRAGMENT:
-                whichToFront =mReferenceBooksFragment;
-                whichToBack1 =mTextBookFragment;
-                whichToBack2 =mCoachBookFragment;
-                whichToBack3 =mNotesFragment;
+                whichToFront = mReferenceBooksFragment;
+                whichToBack1 = mTextBookFragment;
+                whichToBack2 = mCoachBookFragment;
+                whichToBack3 = mNotesFragment;
                 whichToBack4 = mHomeworkFragment;
-                whichToBack5 =mFolderFragment;
+                whichToBack5 = mFolderFragment;
                 break;
 
             case NOTES_FRAGMENT:
-                whichToFront =mNotesFragment;
-                whichToBack1 =mTextBookFragment;
-                whichToBack2 =mCoachBookFragment;
-                whichToBack3 =mReferenceBooksFragment;
+                whichToFront = mNotesFragment;
+                whichToBack1 = mTextBookFragment;
+                whichToBack2 = mCoachBookFragment;
+                whichToBack3 = mReferenceBooksFragment;
                 whichToBack4 = mHomeworkFragment;
-                whichToBack5 =mFolderFragment;
+                whichToBack5 = mFolderFragment;
                 break;
 
             case HOMEWORK_FRAGMENT:
-                whichToFront =mHomeworkFragment;
-                whichToBack1 =mTextBookFragment;
-                whichToBack2 =mCoachBookFragment;
-                whichToBack3 =mReferenceBooksFragment;
+                whichToFront = mHomeworkFragment;
+                whichToBack1 = mTextBookFragment;
+                whichToBack2 = mCoachBookFragment;
+                whichToBack3 = mReferenceBooksFragment;
                 whichToBack4 = mNotesFragment;
-                whichToBack5 =mFolderFragment;
+                whichToBack5 = mFolderFragment;
                 break;
 
             case FOLDER_FRAGMENT:
-                whichToFront =mFolderFragment;
-                whichToBack1 =mTextBookFragment;
-                whichToBack2 =mCoachBookFragment;
-                whichToBack3 =mReferenceBooksFragment;
+                whichToFront = mFolderFragment;
+                whichToBack1 = mTextBookFragment;
+                whichToBack2 = mCoachBookFragment;
+                whichToBack3 = mReferenceBooksFragment;
                 whichToBack4 = mNotesFragment;
-                whichToBack5 =mHomeworkFragment;
+                whichToBack5 = mHomeworkFragment;
                 break;
 
             default:
@@ -200,7 +233,7 @@ public class ActivityMainUI extends Activity implements View.OnClickListener {
                 .hide(whichToBack5)
                 .commitAllowingStateLoss();
 
-}
+    }
 
     /**
      * 初始化 6个fragment
@@ -236,7 +269,7 @@ public class ActivityMainUI extends Activity implements View.OnClickListener {
      * 设置按钮状态
      */
     private void refreshTabBtnState(int clickedViewId) {
-        mRlTextBook = (RelativeLayout) findViewById(R.id.rl_text_book);
+        mRlTextBook = (ViewGroup) findViewById(R.id.rl_text_book);
         mRlTextBook.setOnClickListener(this);
 
         boolean isCoachBookFragment = clickedViewId == R.id.rl_coach_book;
@@ -246,29 +279,78 @@ public class ActivityMainUI extends Activity implements View.OnClickListener {
         boolean isReferenceBooksFragment = clickedViewId == R.id.rl_reference_books;
         boolean isTextBookFragment = clickedViewId == R.id.rl_text_book;
 
+        int blackColor = MyApplication.getInstance().getResources().getColor(R.color.black);
+        int blueColor = MyApplication.getInstance().getResources().getColor(R.color.blue);
+        int hideView =  View.INVISIBLE;
+        int showView =  View.VISIBLE;
+        //isCoachBookFragment
+        if (isCoachBookFragment){
+            mTvCoachBook.setTextColor(blueColor);
+            mViewCoachBook.setVisibility(showView);
+        }else {
+            mTvCoachBook.setTextColor(blackColor);
+            mViewCoachBook.setVisibility(hideView);
+        }
 
-        mRlFolder.setSelected(isFolderFragment);
-        mRHomework.setSelected(isHomeworkFragment);
-        mRlNotes.setSelected(isNotesFragment);
-        mRlReferenceBooks.setSelected(isReferenceBooksFragment);
-        mRlCoachBook.setSelected(isCoachBookFragment);
-        mRlTextBook.setSelected(isTextBookFragment);
+        //isFolderFragment
+        if (isFolderFragment){
+            mTvFolder.setTextColor(blueColor);
+            mViewFolder.setVisibility(showView);
+        }else {
+            mTvFolder.setTextColor(blackColor);
+            mViewFolder.setVisibility(hideView);
+        }
 
-    }   
+        //isHomeworkFragment
+        if (isHomeworkFragment){
+            mTvHomework.setTextColor(blueColor);
+            mViewHomework.setVisibility(showView);
+        }else {
+            mTvHomework.setTextColor(blackColor);
+            mViewHomework.setVisibility(hideView);
+        }
+
+        //isNotesFragment
+        if (isNotesFragment){
+            mTvNotes.setTextColor(blueColor);
+            mViewNotes.setVisibility(showView);
+        }else {
+            mTvNotes.setTextColor(blackColor);
+            mViewNotes.setVisibility(hideView);
+        }
+
+        //isReferenceBooksFragment
+        if (isReferenceBooksFragment){
+            mTvReferenceBooks.setTextColor(blueColor);
+            mViewReferenceBooks.setVisibility(showView);
+        }else {
+            mTvReferenceBooks.setTextColor(blackColor);
+            mViewReferenceBooks.setVisibility(hideView);
+        }
+        //isTextBookFragment
+        if (isTextBookFragment){
+            mTvTextBook.setTextColor(blueColor);
+            mViewTextBook.setVisibility(showView);
+        }else {
+            mTvTextBook.setTextColor(blackColor);
+            mViewTextBook.setVisibility(hideView);
+        }
+
+    }
 
 
-private enum FragmentDisplayOption {
+    private enum FragmentDisplayOption {
 
-    COACH_BOOK_FRAGMENT,
+        COACH_BOOK_FRAGMENT,
 
-    HOMEWORK_FRAGMENT,
+        HOMEWORK_FRAGMENT,
 
-    FOLDER_FRAGMENT,
+        FOLDER_FRAGMENT,
 
-    NOTES_FRAGMENT,
+        NOTES_FRAGMENT,
 
-    REFERENCE_BOOKS_FRAGMENT,
+        REFERENCE_BOOKS_FRAGMENT,
 
-    TEXT_BOOK_FRAGMENT
-}
+        TEXT_BOOK_FRAGMENT
+    }
 }

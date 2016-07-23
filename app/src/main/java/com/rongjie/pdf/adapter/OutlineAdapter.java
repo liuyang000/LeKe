@@ -22,6 +22,10 @@ public class OutlineAdapter extends BaseAdapter {
     }
 
     public int getCount() {
+        // 当获取目录 不存在
+        if (mItems==null || mItems.length == 0){
+            return  0;
+        }
         return mItems.length;
     }
 

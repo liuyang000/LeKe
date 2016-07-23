@@ -1,37 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-   android:paddingTop="10dp"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@android:color/white"
+    android:paddingTop="30dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <RelativeLayout
         android:id="@+id/rl_item_book"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="150dp"
+        android:layout_height="220dp"
         android:layout_gravity="center"
-        android:background="@drawable/rectangle"
-        android:padding="5dp">
+        android:background="@drawable/img_book_item_backgroud"
+        >
 
         <ImageView
+            android:paddingBottom="2dp"
             android:scaleType="fitXY"
             android:id="@+id/img_book_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="150dp"
+            android:layout_height="220dp"
             android:background="@null"
             android:src="@mipmap/yuanye" />
 
         <TextView
+            android:layout_marginBottom="3dp"
+            android:layout_alignParentBottom="true"
             android:id="@+id/tv_book_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/img_book_icon"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="5dp"
             android:text="数据NAME"
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/white"
             android:textSize="16dp" />
 
 
     </RelativeLayout>
 
-</LinearLayout>
+</FrameLayout>

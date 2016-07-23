@@ -6,8 +6,6 @@
     <uses-permission android:name="android.permission.INTERNET" />
 
 
-
-
     <!-- 读写SDkard -->
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
@@ -23,15 +21,14 @@
         android:smallScreens="true" />
 
 
-
-
-    <application android:theme="@android:style/Theme.Black.NoTitleBar">
+    <application
+        android:name=".MyApplication"
         android:allowBackup="true"
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        >
+        android:theme="@android:style/Theme.Black.NoTitleBar">
 
 
         <!-- <activity
@@ -41,12 +38,11 @@
              android:screenOrientation="portrait"/>-->
 
         <activity
-            android:theme="@android:style/Theme.Black.NoTitleBar"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:name="com.rongjie.pdf.ActivityMainUI"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
-            >
+            android:theme="@android:style/Theme.Black.NoTitleBar"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -55,10 +51,10 @@
         </activity>
 
         <activity
-            android:windowSoftInputMode="adjustUnspecified|stateHidden"
             android:name="com.rongjie.pdf.MuPDFActivity"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustUnspecified|stateHidden">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

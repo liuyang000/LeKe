@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 
+import com.rongjie.leke.MyApplication;
 import com.rongjie.leke.R;
 import com.rongjie.pdf.PdfInterface.TextProcessor;
 import com.rongjie.pdf.bean.Annotation;
@@ -24,10 +25,16 @@ import com.rongjie.pdf.bean.LinkInfo;
 import com.rongjie.pdf.bean.PatchInfo;
 import com.rongjie.pdf.bean.TextSelector;
 import com.rongjie.pdf.bean.TextWord;
+import com.rongjie.pdf.global.PdfParams;
+import com.rongjie.pdf.manager.ThreadManager;
 import com.rongjie.pdf.task.AsyncTask;
+import com.rongjie.pdf.utils.FileUtils;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.concurrent.ConcurrentHashMap;
 
 
 /**
@@ -81,7 +88,9 @@ public abstract class PageView extends ViewGroup {
 
     private ProgressBar mBusyIndicator;
     private final Handler mHandler = new Handler();
-
+    //下载图片
+    private ThreadManager.ThreadPoolProxy mThreadPool;
+    private ConcurrentHashMap<String, Runnable> mMapRuunable = new ConcurrentHashMap<String, Runnable>();
 
     //////////////////////////////构造函数///////////////////////////////////////
     public PageView(Context c, Point parentSize) {
@@ -91,6 +100,7 @@ public abstract class PageView extends ViewGroup {
         setBackgroundColor(BACKGROUND_COLOR);
         mEntireBmh = new BitmapHolder();
         mPatchBmh = new BitmapHolder();
+        mThreadPool = ThreadManager.getSinglePool("image");
     }
 
     //////////////////////////////View函数///////////////////////////////////////
@@ -270,7 +280,10 @@ public abstract class PageView extends ViewGroup {
      * @param page
      * @param size
      */
-    public void setPage(int page, PointF size) {
+    public void setPage(final int page, PointF size) {
+
+
+//        System.out.println("setPage =="+page);
 
 // Cancel pending render task
         if (mDrawEntire != null) {
@@ -337,9 +350,23 @@ public abstract class PageView extends ViewGroup {
                 }
             }
 
-            protected void onPostExecute(Bitmap bm) {
+            protected void onPostExecute(final Bitmap bm) {
                 removeView(mBusyIndicator);
                 mBusyIndicator = null;
+                //TODO: 获取PDF 封面
+                if (page == 0){
+                    final Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            mMapRuunable.remove(PdfParams.CURRENT_PDF_FILE_NAME);
+                            saveBookCover(bm);
+                        }
+                    };
+
+                    cancelRun(PdfParams.CURRENT_PDF_FILE_NAME);
+                    mMapRuunable.put(PdfParams.CURRENT_PDF_FILE_NAME, runnable);
+                    mThreadPool.execute(runnable);
+                }
                 mEntire.setImageBitmap(bm);
                 mEntireBmh.setBm(bm);
                 setBackgroundColor(Color.TRANSPARENT);
@@ -692,6 +719,48 @@ public abstract class PageView extends ViewGroup {
     }
 
 
+    //TODO:
+    /**保存书的封面 ，存储需要进行压缩   */
+    private  void  saveBookCover(Bitmap bitmap){
 
+        String fileName = PdfParams.CURRENT_PDF_FILE_NAME ;
+        String fileSavePath = FileUtils.getTextBookIconFilesDir(MyApplication.getApplication()) ;
 
+        File file = new File(fileSavePath + fileName);
+        if (file.exists()) {
+            return ;
+//            file.delete();
+        } else {
+            File parentFile = new File(file.getParent());
+            parentFile.mkdirs();
+        }
+
+        FileOutputStream fos =null;
+        try {
+            fos = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.PNG, 90, fos);
+            fos.flush();
+        } catch (Exception e) {
+            e.printStackTrace();
+            file.delete();
+
+        }finally {
+            try {
+                if (fos != null) {
+                    fos.close();
+                    fos = null;
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**取消*/
+    public void cancelRun(String url) {
+        Runnable runnable = mMapRuunable.remove(url);
+        if (runnable != null) {
+            mThreadPool.cancel(runnable);
+        }
+    }
 }

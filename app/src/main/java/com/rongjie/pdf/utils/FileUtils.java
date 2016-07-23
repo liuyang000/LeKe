@@ -13,6 +13,7 @@ public class FileUtils {
 
     public static final String APP_CACHE_DIR_NAME = "RONG_JIE_BOOK";
     public static final String TEXT_BOOK = "text_book";
+    public  static  final  String TEXT_BOOK_ICON = "text_book_icon";
 
 
 
@@ -83,6 +84,19 @@ public class FileUtils {
             return getAppFilesDirByData(context);
         }
     }
+
+
+    /**获取课本的目录*/
+    public  static String  getTextBookFilesDir(Context context) {
+        return getAppFilesDir(context)+TEXT_BOOK+"/";
+    }
+
+
+    /**获取课本图片目录*/
+    public  static String  getTextBookIconFilesDir(Context context) {
+        return getAppFilesDir(context)+TEXT_BOOK_ICON + "/";
+    }
+
 
     /** 获取文件data/data目录 */
     public static String getAppFilesDirByData(Context context) {

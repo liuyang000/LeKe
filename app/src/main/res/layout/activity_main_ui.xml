@@ -8,27 +8,37 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="40dp"
-
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginRight="20dp"
-        android:layout_marginTop="25dp"
-        android:background="@drawable/rectangle"
-        android:orientation="horizontal">
+        android:layout_height="70dp"
+        android:background="@drawable/img_main_title_backgroud"
+        android:orientation="horizontal"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp">
 
         <RelativeLayout
             android:id="@+id/rl_text_book"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_weight="1">
+            android:layout_weight="1"
+            android:orientation="vertical">
 
             <TextView
+                android:id="@+id/tv_text_book"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="课本"
-                android:textColor="@android:color/black" />
+                android:textColor="@color/black"
+                android:textSize="20dp" />
+
+            <View
+
+                android:id="@+id/view_text_book"
+                android:layout_width="80dp"
+                android:layout_height="3dp"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@color/blue"
+                android:visibility="visible" />
 
         </RelativeLayout>
 
@@ -39,16 +49,23 @@
             android:layout_weight="1">
 
             <TextView
+                android:textSize="20dp"
+                android:id="@+id/tv_coach_book"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="辅导书"
-                android:textColor="@android:color/black" />
+                android:textColor="@color/black" />
 
             <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="#797979" />
+                android:layout_centerHorizontal="true"
+                android:layout_width="80dp"
+                android:layout_height="3dp"
+                android:id="@+id/view_coach_book"
+                android:layout_alignParentBottom="true"
+                android:background="@color/blue"
+                android:visibility="invisible" />
+
         </RelativeLayout>
 
 
@@ -59,16 +76,22 @@
             android:layout_weight="1">
 
             <TextView
+                android:textSize="20dp"
+                android:id="@+id/tv_reference_books"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="课外书"
-                android:textColor="@android:color/black" />
+                android:textColor="@color/black" />
 
             <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="#797979" />
+                android:layout_centerHorizontal="true"
+                android:layout_width="80dp"
+                android:layout_height="3dp"
+                android:id="@+id/view_reference_books"
+                android:layout_alignParentBottom="true"
+                android:background="@color/blue"
+                android:visibility="invisible" />
         </RelativeLayout>
 
 
@@ -79,16 +102,22 @@
             android:layout_weight="1">
 
             <TextView
+                android:textSize="20dp"
+                android:id="@+id/tv_notes"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="笔记"
-                android:textColor="@android:color/black" />
+                android:textColor="@color/black" />
 
             <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="#797979" />
+                android:layout_centerHorizontal="true"
+                android:layout_width="80dp"
+                android:layout_height="3dp"
+                android:id="@+id/view_notes"
+                android:layout_alignParentBottom="true"
+                android:background="@color/blue"
+                android:visibility="invisible" />
         </RelativeLayout>
 
 
@@ -99,16 +128,22 @@
             android:layout_weight="1">
 
             <TextView
+                android:textSize="20dp"
+                android:id="@+id/tv_homework"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="作业"
-                android:textColor="@android:color/black" />
+                android:textColor="@color/black" />
 
             <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="#797979" />
+                android:layout_centerHorizontal="true"
+                android:layout_width="80dp"
+                android:layout_height="3dp"
+                android:id="@+id/view_homework"
+                android:layout_alignParentBottom="true"
+                android:background="@color/blue"
+                android:visibility="invisible" />
         </RelativeLayout>
 
 
@@ -119,28 +154,32 @@
             android:layout_weight="1">
 
             <TextView
+                android:textSize="20dp"
+                android:id="@+id/tv_folder"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:text="文件夹"
-                android:textColor="@android:color/black" />
+                android:textColor="@color/black" />
 
             <View
-                android:layout_width="1dp"
-                android:layout_height="match_parent"
-                android:background="#797979" />
+                android:layout_centerHorizontal="true"
+                android:layout_width="80dp"
+                android:layout_height="3dp"
+                android:id="@+id/view_folder"
+                android:layout_alignParentBottom="true"
+                android:background="@color/blue"
+                android:visibility="invisible" />
         </RelativeLayout>
     </LinearLayout>
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="#797979" />
-
+        android:layout_height="2dp"
+        android:background="@drawable/img_main_view_backgroud" />
     <FrameLayout
         android:id="@+id/fl_content_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="2dp"
-        android:background="@color/red" />
+        android:background="@color/blue" />
 </LinearLayout>
