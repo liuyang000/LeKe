@@ -30,6 +30,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -168,7 +169,7 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
     }
 
     public void initNoteView() {
-        screenShotImg = (ImageView) context.findViewById(R.id.screenshot_img);
+        screenShotImg = (ImageView) root.findViewById(R.id.screenshot_img);
         booknote = (NoteBookView) root.findViewById(R.id.booknote);
         Log.e("NoteBookView", "view is : " + booknote);
         frameLayout = (MyFrameLayout) root.findViewById(R.id.note_parent);
@@ -223,6 +224,10 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
         pdfReaderView.setInterceptTouch(true);
         initNoteView();
         frameLayout.setInterceptable(false);
+
+        if (paintChoose.getVisibility() == View.VISIBLE) {
+            outAnimator();
+        }
         switch (v.getId()) {
             case R.id.pen:
                 view = pen;
@@ -246,6 +251,7 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
                 break;
             case R.id.eraser:
                 view = eraser;
+                updatePaintColor(0x00000000);
                 booknote.useEraser();
                 break;
             case R.id.color:
@@ -255,6 +261,7 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
             case R.id.book_package:
                 //TODO：返回书包界面
                 view = bookPackage;
+                context.finish();
                 break;
             case R.id.gesture:
                 //TODO:切换为手势控制
@@ -266,11 +273,7 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
                 view = paintDraw;
                 chooserHeight = paintChoose.getHeight();
                 pdfReaderView.setInterceptTouch(true);
-                if (paintChoose.getVisibility() == View.VISIBLE) {
-                    outAnimator();
-                } else {
-                    inAnimatior();
-                }
+                inAnimatior();
                 break;
             case R.id.draw_pic:
                 //TODO:使用绘图工具
@@ -577,7 +580,6 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        int optLayoutHeight = optionLayout.getHeight();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 x = 0;
@@ -586,7 +588,6 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
                 height = 0;
                 x = (int) event.getX();
                 //纵坐标应减去顶部操作栏的高度
-//                y = (int) event.getY() - optLayoutHeight;
                 y = (int) event.getY();
                 if (screenShotView.getParent() != null) {
                     ((ViewGroup) screenShotView.getParent()).removeView(screenShotView);
@@ -598,23 +599,18 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
                 break;
             case MotionEvent.ACTION_MOVE:
                 right = (int) event.getX();
-//                bottom = (int) event.getY() - optLayoutHeight;
                 bottom = (int) event.getY();
                 screenShotView.setSeat(x, y, right, bottom);
                 screenShotView.postInvalidate();
                 break;
             case MotionEvent.ACTION_UP:
-                if (event.getX() > x) {
-                    width = (int) event.getX() - x;
-                } else {
-                    width = (int) (x - event.getX());
+                width = (int) Math.abs(x - event.getX());
+                height = (int) Math.abs(y - event.getY());
+                if (event.getX() <= x) {
                     x = (int) event.getX();
                 }
-                if (event.getY() > y) {
-                    height = (int) event.getY() - optLayoutHeight - y;
-                } else {
-                    height = (int) (y - event.getY() + optLayoutHeight);
-                    y = (int) event.getY() - optLayoutHeight;
+                if (event.getY() <= y) {
+                    y = (int) event.getY();
                 }
                 bitmap = getBitmap();
                 showScreenCutOptWindow();
@@ -654,7 +650,7 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
         //设置菜单显示的位置
         int[] locations = new int[2];
         screenShotView.getLocationInWindow(locations);
-        cutPopWindow.showAtLocation(screenShotView, Gravity.NO_GRAVITY, screenShotView.getLeftValue(), screenShotView.getTopValue() - 41);
+        cutPopWindow.showAtLocation(screenShotView, Gravity.NO_GRAVITY, screenShotView.getLeftValue() + 5, screenShotView.getTopValue() - 21);
         //监听触屏事件
         cutPopWindow.setTouchInterceptor(new View.OnTouchListener() {
             public boolean onTouch(View view, MotionEvent event) {
@@ -723,6 +719,7 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
         Uri uri = clipData.getItemAt(0).getUri();
         Bitmap bitmap = BitmapFactory.decodeFile(uri.getPath());
         screenShotImg.setImageBitmap(bitmap);
+        ToastUtil.showToast(context, "aaaaaaaaaaaaaaaaaaaaaa");
     }
 
     /**
@@ -760,14 +757,15 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
      * 获取截取区域内的图片
      */
     private Bitmap getBitmap() {
-        View view = frameLayout;
+        //获取程序根View
+        View view = context.getWindow().findViewById(Window.ID_ANDROID_CONTENT);
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
         Bitmap bitmap = view.getDrawingCache();
         Rect frame = new Rect();
         view.getWindowVisibleDisplayFrame(frame);
         Bitmap bmp = null;
-        if (width > 0 && height > 0 && x + width <= bitmap.getWidth() && y > 0 && (y <= bitmap.getHeight()) && (width - 1) > 0 && (height - 1) > 0) {
+        if (width > 1 && height > 1 && x + width <= bitmap.getWidth() && y > 0 && (y <= bitmap.getHeight())) {
             bmp = Bitmap.createBitmap(bitmap, x + 1, y + 1, width - 1, height - 1);
         }
         view.setDrawingCacheEnabled(false);

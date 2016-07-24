@@ -6,7 +6,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 
 import com.rongjie.leke.R;
 
@@ -15,8 +15,8 @@ import com.rongjie.leke.R;
  */
 public class TextBookFragment extends com.rongjie.leke.fragment.BaseFragment {
 
-    private Button bookMark;
-    private Button directory;
+    private ImageView bookMark;
+    private ImageView directory;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -28,8 +28,8 @@ public class TextBookFragment extends com.rongjie.leke.fragment.BaseFragment {
     @Override
     protected void initOtherView() {
         super.initOtherView();
-        bookMark = (Button) root.findViewById(R.id.bookmark);
-        directory = (Button) root.findViewById(R.id.directory);
+        bookMark = (ImageView) root.findViewById(R.id.bookmark);
+        directory = (ImageView) root.findViewById(R.id.directory);
     }
 
     @Override
