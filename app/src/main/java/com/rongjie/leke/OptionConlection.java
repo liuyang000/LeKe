@@ -48,6 +48,7 @@ import com.rongjie.leke.view.MoveImageView;
 import com.rongjie.leke.view.MyFrameLayout;
 import com.rongjie.leke.view.NoteBookView;
 import com.rongjie.leke.view.ScreenShotView;
+import com.rongjie.pdf.MuPDFActivity;
 import com.rongjie.pdf.View.MuPDFReaderView;
 
 import java.io.File;
@@ -61,7 +62,7 @@ import java.util.Map;
  */
 public class OptionConlection implements View.OnClickListener, NoteBookView.OnDoOptListener, NoteBookView.OnUndoOptListener, View.OnTouchListener, SeekBar.OnSeekBarChangeListener, MoveImageView.UpdateImageViewMapListener, ShortNoteFragment.DeleteLabelListener, ShortNoteFragment.AddLabelListener {
 
-    public OptionConlection(Activity context) {
+    public OptionConlection(MuPDFActivity context) {
         this.context = context;
     }
 
@@ -97,7 +98,7 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
     private LinearLayout optionLayout;
     private ScreenShotView screenShotView;
     private MyFrameLayout frameLayout;
-    private Activity context;
+    private MuPDFActivity context;
     private View root;
     private int x;//绘画开始的横坐标
     private int y;//绘画开始的纵坐标
@@ -159,7 +160,7 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
         bookNeedLayout = (LinearLayout) context.findViewById(R.id.book_need_layout);
         optionLayout = (LinearLayout) context.findViewById(R.id.opt_layout);
         screenShotView = new ScreenShotView(context);
-//        bookNeedLayout.setVisibility(View.INVISIBLE);
+        bookNeedLayout.setVisibility(View.VISIBLE);
         undo.setEnabled(false);
         redo.setEnabled(false);
 
@@ -308,9 +309,11 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
                 break;
             case R.id.bookmark:
                 view = bookMarker;
+                context.showMarkDialog();
                 break;
             case R.id.directory:
                 view = directory;
+                context.onClickDirectory();
                 break;
             case R.id.textbook:
                 toTextBookFragment();
@@ -817,6 +820,11 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
         void switch2NoteBookFragment();
 
         void switch2ExerciseFragment();
+    }
+/////////////////////////////////////////////////////////////////////
+
+      public   ImageView getViewBookMarker(){
+         return bookMarker ;
     }
 
 }

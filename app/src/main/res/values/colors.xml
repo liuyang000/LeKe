@@ -27,5 +27,5 @@
     <color name="blue">#319DDC</color>
     <!-- 浅灰色-->
     <color name="LightGrey">#E6E6E6</color>
-    Light grey
+    <color name="transparent">#00ffffff</color>
 </resources>

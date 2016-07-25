@@ -18,6 +18,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import com.rongjie.pdf.utils.Uiutils;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -45,6 +47,7 @@ public class NoteBookView extends View {
     private OnDoOptListener redoOptListener;
     //该标志用于判断是否需要移除索引后面的操作
     private boolean flag;
+    private Context mContext;
 
     private class DrawPath {
         public Path path;// 路径
@@ -53,11 +56,13 @@ public class NoteBookView extends View {
 
     public NoteBookView(Context context) {
         super(context);
+        mContext = context ;
         init();
     }
 
     public NoteBookView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        mContext = context ;
         init();
     }
 
@@ -106,6 +111,8 @@ public class NoteBookView extends View {
     }
 
     private void init() {
+        screenWidth= Uiutils.getScreenWidth(mContext) ;
+        screenHeight=Uiutils.getScreenHeight(mContext);
         mBitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888);
         // 保存一次一次绘制出来的图形
         mCanvas = new Canvas(mBitmap);
