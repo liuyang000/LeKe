@@ -32,6 +32,7 @@ import com.rongjie.pdf.adapter.MuPDFPageAdapter;
 import com.rongjie.pdf.adapter.OutlineAdapter;
 import com.rongjie.pdf.bean.BookMarkInfo;
 import com.rongjie.pdf.bean.OutlineActivityData;
+import com.rongjie.pdf.global.PdfParams;
 import com.rongjie.pdf.utils.DateUtils;
 
 import java.util.ArrayList;
@@ -299,8 +300,10 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
         MuPDFCore core = null;
 
         int lastSlashPos = path.lastIndexOf('/');
-        mFileName = new String(lastSlashPos == -1 ? path : path.substring(lastSlashPos + 1));
+        mFileName = lastSlashPos == -1 ? path : path.substring(lastSlashPos + 1);
         System.out.println("Trying to open " + path);
+        PdfParams.CURRENT_PDF_FILE_NAME = mFileName.substring(0, mFileName.length() - 4);
+
 
         try {
             // 解析PDF 核心类

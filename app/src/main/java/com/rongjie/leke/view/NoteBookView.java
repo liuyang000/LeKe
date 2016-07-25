@@ -110,13 +110,18 @@ public class NoteBookView extends View {
         // 保存一次一次绘制出来的图形
         mCanvas = new Canvas(mBitmap);
         mBitmapPaint = new Paint(Paint.DITHER_FLAG);
+//        mBitmapPaint.setAntiAlias(true);
+//        mBitmapPaint.setFilterBitmap(true);
+
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
+//        mPaint.setFilterBitmap(true);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);// 设置外边缘
         mPaint.setStrokeCap(Paint.Cap.SQUARE);// 形状
         mPaint.setStrokeWidth(5);// 画笔宽度
         savePath = new ArrayList<>();
+
     }
 
     @Override
@@ -140,7 +145,11 @@ public class NoteBookView extends View {
         canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
         if (mPath != null) {
             // 实时的显示
-            canvas.drawPath(mPath, mPaint);
+            if (flagOfErase){
+                mCanvas.drawPath(mPath,mPaint);
+            }else {
+                canvas.drawPath(mPath, mPaint);
+            }
         }
     }
 
@@ -159,12 +168,12 @@ public class NoteBookView extends View {
             mX = x;
             mY = y;
         }
+//        mCanvas.drawPath(mPath, mPaint);
     }
 
     private void touch_up() {
         mPath.lineTo(mX, mY);
         mCanvas.drawPath(mPath, mPaint);
-            mCanvas.drawPath(mPath, mPaint);
         enableUndoView();
         disenableRedoView();
         //保存路径
@@ -335,21 +344,16 @@ public class NoteBookView extends View {
 
     public void setMakerPen() {
         isColorPen = true;
+        flagOfErase = false;
         mPaint.setXfermode(null);
         mPaint.setStrokeWidth(15.0f);
         mPaint.setColor(Color.GREEN);
         mPaint.setAlpha(100);
     }
+    private boolean flagOfErase;
     public void useEraser() {
-//        isColorPen = false;
-//        mPaint.setColor(0xFFAAAAAA);
-//        mPaint.setStrokeWidth(25.0f);
-//        mPaint.reset();
-        mPaint.setColor(Color.TRANSPARENT);
-        mPaint.setAntiAlias(true);
-        mPaint.setStyle(Paint.Style.STROKE);
-        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.DST_IN));
-        mPaint.setStrokeWidth(16);
-        mPaint.setAlpha(0);
+        flagOfErase = true;
+        mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
+        mPaint.setStrokeWidth(20);
     }
 }

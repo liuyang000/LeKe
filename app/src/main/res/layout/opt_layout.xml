@@ -94,6 +94,7 @@
         android:id="@+id/opt_layout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
+        android:background="#FFAAAAAA"
         android:gravity="center_vertical"
         android:orientation="horizontal">
 
