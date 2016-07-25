@@ -341,8 +341,6 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
     }
 
 
-
-
     private MuPDFCore openFile(String path) {
         MuPDFCore core = null;
 
@@ -367,7 +365,7 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
     @Override
     public void onClick(View view) {
 
-       switch (view.getId()) {
+        switch (view.getId()) {
 //            case R.id.gesture:
 //                mDocView.setInterceptTouch(false);
 //                mBtnDirectory.setEnabled(true);
@@ -420,27 +418,27 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
                 break;
 //
             case R.id.btn_item_bookmarks:
-           System.out.println("btn_item_bookmarks");
-           //刷新数据
-           mInfos.clear();
-           if (mBookMarks.size() > 0) {
-               mInfos.addAll(new ArrayList<BookMarkInfo>(mBookMarks.values()));
-           }
-           if (mBookMarkAdapter == null) {
-               mBookMarkAdapter = new BookMarkAdapter(mInfos, MuPDFActivity.this);
-           }
-           mLvBookDirectory.setAdapter(mBookMarkAdapter);
-           mBookMarkAdapter.notifyDataSetChanged();
-           break;
+                System.out.println("btn_item_bookmarks");
+                //刷新数据
+                mInfos.clear();
+                if (mBookMarks.size() > 0) {
+                    mInfos.addAll(new ArrayList<BookMarkInfo>(mBookMarks.values()));
+                }
+                if (mBookMarkAdapter == null) {
+                    mBookMarkAdapter = new BookMarkAdapter(mInfos, MuPDFActivity.this);
+                }
+                mLvBookDirectory.setAdapter(mBookMarkAdapter);
+                mBookMarkAdapter.notifyDataSetChanged();
+                break;
 //
 //            case R.id.btn_item_notes:
 //                break;
 //
             case R.id.rl_directory:
-              mRlDirectory.setVisibility(View.GONE);
-               break;
+                mRlDirectory.setVisibility(View.GONE);
+                break;
 //
-         //  case R.id.btn_bookmarks:
+            //  case R.id.btn_bookmarks:
 
 //            case R.id.book_package:
 //                /*Intent intent = new Intent(this, ActivityMainUI.class);
@@ -596,18 +594,22 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
     }
 
 
-    /**设置对话框 添加和修改标签*/
-    public  void showMarkDialog(){
-      if (mBookMarks.containsKey(mbookMarksPage)) {
-           showBookMarksDialog("btn_bookmarks", BookMarksDialog.DialogMode.CHANGE_OR_DELETE, mBookMarks.get(mbookMarksPage).getMarkName());
-             } else {
-          showBookMarksDialog("btn_bookmarks", BookMarksDialog.DialogMode.ADD, "添加标签" + mbookMarksPage);
-      }
+    /**
+     * 设置对话框 添加和修改标签
+     */
+    public void showMarkDialog() {
+        if (mBookMarks.containsKey(mbookMarksPage)) {
+            showBookMarksDialog("btn_bookmarks", BookMarksDialog.DialogMode.CHANGE_OR_DELETE, mBookMarks.get(mbookMarksPage).getMarkName());
+        } else {
+            showBookMarksDialog("btn_bookmarks", BookMarksDialog.DialogMode.ADD, "添加标签" + mbookMarksPage);
+        }
     }
 
 
-    /***点击目录*/
-    public  void  onClickDirectory(){
+    /***
+     * 点击目录
+     */
+    public void onClickDirectory() {
         // 第一次进来 先获取 目录 ，以后就不需执行
         if (mOutlineItems == null || mOutlineItems.length == 0) {
             // 获取书的目录
@@ -630,10 +632,17 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
         }
 
         mRlDirectory.setVisibility(View.VISIBLE);
+
+        if (mRlPageVisible) {
+            mRlPageVisible = false;
+            //隐藏
+            hideSeekbarLayout();
+        }
     }
 
     //TODO:增加 seeker 动画
     private void hideSeekbarLayout() {
+
         mRl_page.clearAnimation();
         TranslateAnimation anim = new TranslateAnimation(0, 0, 0, mRl_page.getHeight());
         anim.setDuration(200);
@@ -655,11 +664,13 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
 
     //TODO:增加 seeker 动画
     private void showSeekbarLayout() {
+
+
         mRl_page.clearAnimation();
         TranslateAnimation anim = new TranslateAnimation(0, 0, mRl_page.getHeight(), 0);
         anim.setDuration(200);
         anim.setFillAfter(true);
-        anim.setAnimationListener(new Animation.AnimationListener() {
+         anim.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation animation) {
 
             }
