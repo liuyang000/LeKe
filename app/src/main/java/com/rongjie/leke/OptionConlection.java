@@ -159,7 +159,7 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
         bookNeedLayout = (LinearLayout) context.findViewById(R.id.book_need_layout);
         optionLayout = (LinearLayout) context.findViewById(R.id.opt_layout);
         screenShotView = new ScreenShotView(context);
-        bookNeedLayout.setVisibility(View.INVISIBLE);
+//        bookNeedLayout.setVisibility(View.INVISIBLE);
         undo.setEnabled(false);
         redo.setEnabled(false);
 

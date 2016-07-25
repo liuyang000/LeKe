@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.FrameLayout;
-import android.widget.ImageButton;
 
 import com.artifex.mupdfdemo.MuPDFCore;
 import com.rongjie.leke.OptionConlection;
@@ -51,15 +50,8 @@ public class MuPDFPageAdapter extends BaseAdapter {
         this.option = option;
     }
 
-    private View footView;
-
-    public View getFootView(){
-        return footView;
-    }
-
     @Override
     public View getView(final int position, View convertView, ViewGroup parent) {
-        final ImageButton imageView;
         final ViewGroup viewGroup;
         final MuPDFPageView pageView;
         final MyFrameLayout frameLayout;
@@ -79,7 +71,6 @@ public class MuPDFPageAdapter extends BaseAdapter {
             pageView = (MuPDFPageView) viewGroup.getChildAt(0);
             frameLayout = (MyFrameLayout) viewGroup.getChildAt(1);
         }
-        this.footView = viewGroup;
         if (null != option) {
             option.setRootView(frameLayout);
             option.initNoteView();
