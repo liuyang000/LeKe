@@ -1,93 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/rl_parment"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@android:color/white">
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/rl_parment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/white">
+
+        <FrameLayout
+            android:id="@+id/translucent_layout"
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:background="#00000000"
+            android:visibility="invisible" />
+
+        <FrameLayout
+            android:id="@+id/rl_pdf"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/translucent_layout"
+            android:background="@android:color/white" />
+
+        <RelativeLayout
+            android:id="@+id/rl_directory"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#7f000000"
+            android:clickable="true"
+            android:visibility="gone">
+
+            <RelativeLayout
+                android:id="@+id/rl_show_directory"
+                android:layout_width="400dp"
+                android:layout_height="match_parent"
+                android:layout_alignParentRight="true"
+                android:background="@android:color/white">
+
+                <LinearLayout
+                    android:id="@+id/ll_check_button"
+                    android:layout_width="match_parent"
+                    android:layout_height="60dp"
+                    android:background="@android:color/white"
+                    android:orientation="horizontal">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/white">
+
+                        <Button
+                            android:id="@+id/btn_item_directory"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/white"
+                            android:gravity="center"
+                            android:text="目录"
+                            android:textSize="24dp" />
+
+                        <View
+                            android:id="@+id/view_item_directory"
+                            android:layout_width="80dp"
+                            android:layout_height="2dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:background="@color/blue" />
+                    </RelativeLayout>
+
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:background="@android:color/white">
+
+                        <Button
+                            android:id="@+id/btn_item_bookmarks"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@android:color/white"
+                            android:gravity="center"
+                            android:text="书签"
+                            android:textSize="24dp" />
+
+                        <View
+                            android:id="@+id/view_item_bookmarks"
+                            android:layout_width="80dp"
+                            android:layout_height="2dp"
+                            android:layout_alignParentBottom="true"
+                            android:layout_centerHorizontal="true"
+                            android:background="@color/blue" />
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+                <View
+                    android:id="@+id/view_line1"
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp"
+                    android:layout_below="@id/ll_check_button"
+                    android:background="#e6e6e6" />
+
+                <View
+                    android:id="@+id/view_line2"
+                    android:layout_width="fill_parent"
+                    android:layout_height="2dp"
+                    android:layout_below="@id/ll_check_button"
+                    android:background="#e3e3e3" />
+
+                <ListView
+                    android:id="@+id/lv_item_book_directory"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/view_line2"
+                    android:background="@android:color/white"
+                    android:listSelector="@android:color/transparent" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <include
+            layout="@layout/seek_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true" />
+    </RelativeLayout>
 
     <include
         android:id="@+id/opt_container"
         layout="@layout/opt_layout"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
-        />
-    <FrameLayout
-        android:id="@+id/rl_pdf"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/opt_container"
-        android:background="@android:color/white">
-        />
-
-    </FrameLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_directory"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#7f000000"
-        android:clickable="true"
-        android:visibility="gone">
-
-        <RelativeLayout
-            android:id="@+id/rl_show_directory"
-            android:layout_width="250dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
-            android:background="@android:color/white">
-            <View
-                android:id="@+id/view_line"
-                android:layout_width="fill_parent"
-                android:layout_height="1dp"
-                android:background="@android:color/black" />
-            <ListView
-                android:id="@+id/lv_item_book_directory"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@+id/view_line"
-                android:background="@android:color/white"
-                android:listSelector="@android:color/transparent" />
-        </RelativeLayout>
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_page"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        >
-
-        <TextView
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="15dp"
-            android:text="aaaaaaaaa"
-            android:id="@+id/tv_page_number"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@drawable/page_num"
-            android:textColor="@android:color/black" />
-
-        <Button
-            android:layout_below="@id/tv_page_number"
-            android:id="@+id/btn_back_page"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="返回"
-            android:textColor="@android:color/black" />
-
-        <SeekBar
-            android:padding="10dp"
-            android:layout_below="@id/tv_page_number"
-            android:id="@+id/seekbar_page"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_toLeftOf="@id/btn_back_page"
-            android:background="@color/toolbar"
-            android:indeterminate="false"
-            android:progressDrawable="@drawable/seek_progress"
-            android:thumb="@drawable/seek_thumb" />
-    </RelativeLayout>
-
-
-</RelativeLayout>
+        android:layout_height="120dp" />
+</FrameLayout>

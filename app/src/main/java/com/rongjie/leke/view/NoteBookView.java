@@ -360,6 +360,7 @@ public class NoteBookView extends View {
     private boolean flagOfErase;
     public void useEraser() {
         flagOfErase = true;
+        mPaint.setAntiAlias(true);
         mPaint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.CLEAR));
         mPaint.setStrokeWidth(20);
     }

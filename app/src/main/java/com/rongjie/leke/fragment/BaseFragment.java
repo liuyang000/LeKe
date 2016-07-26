@@ -14,7 +14,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
@@ -37,7 +36,9 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
+import android.widget.TextView;
 
 import com.rongjie.leke.Position;
 import com.rongjie.leke.R;
@@ -94,6 +95,11 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
     protected MyFrameLayout frameLayout;
     protected View root;
     protected Context context;
+
+    protected RelativeLayout mRl_page;
+    protected SeekBar mSeekbarPage;
+    protected TextView mTvPageNumber;
+    protected Button backBtn;
 
     protected int x;//绘画开始的横坐标
     protected int y;//绘画开始的纵坐标
@@ -157,12 +163,19 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         notebook = (ImageView) root.findViewById(R.id.notebook);
         exerciseBook = (ImageView) root.findViewById(R.id.exercise_book);
         screenShotImg = (ImageView) root.findViewById(R.id.screenshot_img);
-        booknote = (NoteBookView) root.findViewById(R.id.booknote);
+
         bookNeedLayout = (LinearLayout) root.findViewById(R.id.book_need_layout);
         frameLayout = (MyFrameLayout) root.findViewById(R.id.note_parent);
         optionLayout = (LinearLayout) root.findViewById(R.id.opt_layout);
         screenShotView = new ScreenShotView(context);
 
+        //Seek部分
+        mRl_page = (RelativeLayout) root.findViewById(R.id.rl_page);
+        mSeekbarPage = (SeekBar) root.findViewById(R.id.seekbar_page);
+        mTvPageNumber = (TextView) root.findViewById(R.id.tv_page_number);
+        backBtn = (Button) root.findViewById(R.id.btn_back_page);
+        backBtn.setOnClickListener(this);
+        backBtn.setEnabled(false);
 
         bookNeedLayout.setVisibility(View.INVISIBLE);
         undo.setEnabled(false);
@@ -170,10 +183,25 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
 
         penSizePg.setProgress(100);
         penAlphaPg.setProgress(100);
-        updatePaintColor(Color.BLACK);
+
     }
 
     protected void initOtherView() {
+    }
+
+    protected View parent;
+
+    public void setParentOfNoteView(View parent) {
+        this.parent = parent;
+    }
+
+    public void initNoteView() {
+        booknote = (NoteBookView) parent.findViewById(R.id.booknote);
+        booknote.setReDoOptListener(this);
+        booknote.setUndoOptListener(this);
+        updatePaintColor(Color.BLACK);
+        frameLayout = (MyFrameLayout) parent.findViewById(R.id.note_parent);
+        parent.setOnTouchListener(this);
     }
 
     protected void addListener() {
@@ -198,8 +226,6 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         textbook.setOnClickListener(this);
         notebook.setOnClickListener(this);
         exerciseBook.setOnClickListener(this);
-        booknote.setReDoOptListener(this);
-        booknote.setUndoOptListener(this);
         root.setOnTouchListener(this);
         penSizePg.setOnSeekBarChangeListener(this);
         penAlphaPg.setOnSeekBarChangeListener(this);
@@ -207,7 +233,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
 
     private int chooserHeight;
     private boolean flag = false;//用来标识便签显示是以便签按钮为入口的
-    private View view;
+    protected View view;
 
     @Override
     public void onClick(View v) {
@@ -230,7 +256,6 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
                 view = pencil;
                 break;
             case R.id.oli_black_pen:
-                //TODO:设置画笔为油性黑笔
                 view = oliBlackPen;
                 updateStatus(Color.BLACK, 5, 255);
                 booknote.setOilBlackPen();
@@ -251,6 +276,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
             case R.id.book_package:
                 //TODO：返回书包界面
                 view = bookPackage;
+                getActivity().finish();
                 break;
             case R.id.gesture:
                 //TODO:切换为手势控制
@@ -288,19 +314,13 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
             case R.id.send:
                 //TODO:发送至服务器
                 view = send;
-                showCopyCut();
+                send();
                 break;
             case R.id.undo:
                 booknote.undo();
                 break;
             case R.id.redo:
                 booknote.redo();
-                break;
-            case R.id.bookmark:
-                view = bookMarker;
-                break;
-            case R.id.directory:
-                view = directory;
                 break;
             case R.id.textbook:
                 toTextBookFragment();
@@ -323,6 +343,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
             case R.id.save_cut:
                 saveCutOpt();
                 break;
+
         }
         if (null != view && view != undo && view != redo) {
             view.setSelected(true);
@@ -559,7 +580,6 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        int optLayoutHeight = optionLayout.getHeight();
         switch (event.getAction()) {
             case MotionEvent.ACTION_DOWN:
                 x = 0;
@@ -568,29 +588,29 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
                 height = 0;
                 x = (int) event.getX();
                 //纵坐标应减去顶部操作栏的高度
-                y = (int) event.getY() - optLayoutHeight;
+                y = (int) event.getY();
+                if (screenShotView.getParent() != null) {
+                    ((ViewGroup) screenShotView.getParent()).removeView(screenShotView);
+                }
+
                 if (screenShotView.getParent() == null) {
                     frameLayout.addView(screenShotView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
                 right = (int) event.getX();
-                bottom = (int) event.getY() - optLayoutHeight;
+                bottom = (int) event.getY();
                 screenShotView.setSeat(x, y, right, bottom);
                 screenShotView.postInvalidate();
                 break;
             case MotionEvent.ACTION_UP:
-                if (event.getX() > x) {
-                    width = (int) event.getX() - x;
-                } else {
-                    width = (int) (x - event.getX());
+                width = (int) Math.abs(x - event.getX());
+                height = (int) Math.abs(y - event.getY());
+                if (event.getX() <= x) {
                     x = (int) event.getX();
                 }
-                if (event.getY() > y) {
-                    height = (int) event.getY() - optLayoutHeight - y;
-                } else {
-                    height = (int) (y - event.getY() + optLayoutHeight);
-                    y = (int) event.getY() - optLayoutHeight;
+                if (event.getY() <= y) {
+                    y = (int) event.getY();
                 }
                 bitmap = getBitmap();
                 showScreenCutOptWindow();
@@ -693,12 +713,13 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         cutCommenOpt();
     }
 
-    private void showCopyCut() {
-        screenShotImg.setImageBitmap(null);
-        clipData = clipboardManager.getPrimaryClip();
-        Uri uri = clipData.getItemAt(0).getUri();
-        Bitmap bitmap = BitmapFactory.decodeFile(uri.getPath());
-        screenShotImg.setImageBitmap(bitmap);
+    private void send() {
+
+//        screenShotImg.setImageBitmap(null);
+//        clipData = clipboardManager.getPrimaryClip();
+//        Uri uri = clipData.getItemAt(0).getUri();
+//        Bitmap bitmap = BitmapFactory.decodeFile(uri.getPath());
+//        screenShotImg.setImageBitmap(bitmap);
     }
 
     /**
@@ -743,7 +764,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         Rect frame = new Rect();
         view.getWindowVisibleDisplayFrame(frame);
         Bitmap bmp = null;
-        Log.e(TAG,"width is : " + width + ",height is : " + height + ",x is : " + x + ",y is : " + y + ",bitmap's width is : " + bitmap.getWidth() + ",bitmap's height is : " + bitmap.getHeight());
+        Log.e(TAG, "width is : " + width + ",height is : " + height + ",x is : " + x + ",y is : " + y + ",bitmap's width is : " + bitmap.getWidth() + ",bitmap's height is : " + bitmap.getHeight());
         if (width > 0 && height > 0 && x + width <= bitmap.getWidth() && y > 0 && (y <= bitmap.getHeight())) {
             bmp = Bitmap.createBitmap(bitmap, x + 1, y + 1, width - 1, height - 1);
         }
