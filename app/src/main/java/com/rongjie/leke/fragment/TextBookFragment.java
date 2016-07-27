@@ -72,24 +72,24 @@ public class TextBookFragment extends com.rongjie.leke.fragment.BaseFragment imp
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.activity_mupdf, container, false);
-        return root;
+        mRoot = inflater.inflate(R.layout.fragment_base_layout, container, false);
+        return mRoot;
     }
 
     @Override
     protected void initOtherView() {
         super.initOtherView();
-        bookMark = (ImageView) root.findViewById(R.id.bookmark);
-        directory = (ImageView) root.findViewById(R.id.directory);
-        bookNeedLayout = (LinearLayout) root.findViewById(R.id.book_need_layout);
+        bookMark = (ImageView) mRoot.findViewById(R.id.bookmark);
+        directory = (ImageView) mRoot.findViewById(R.id.directory);
+        bookNeedLayout = (LinearLayout) mRoot.findViewById(R.id.book_need_layout);
         bookNeedLayout.setVisibility(View.VISIBLE);
-        mRlDirectory = (ViewGroup) root.findViewById(R.id.rl_directory);
+        mRlDirectory = (ViewGroup) mRoot.findViewById(R.id.rl_directory);
 
-        mLvBookDirectory = (ListView) root.findViewById(R.id.lv_item_book_directory);
+        mLvBookDirectory = (ListView) mRoot.findViewById(R.id.lv_item_book_directory);
         mLvBookDirectory.setDividerHeight(0);
         mLvBookDirectory.setOnItemClickListener(this);
 
-        bookMarkBtn = (Button) root.findViewById(R.id.btn_item_bookmarks);
+        bookMarkBtn = (Button) mRoot.findViewById(R.id.btn_item_bookmarks);
         initPageNumber();
         initDocView();
     }
@@ -105,7 +105,7 @@ public class TextBookFragment extends com.rongjie.leke.fragment.BaseFragment imp
                 //设置进度
                 mProgresInfos.put(END, seekBar.getProgress());
                 //设置按钮可以点击
-                backBtn.setEnabled(true);
+                mBackBtn.setEnabled(true);
                 isBackPage = true;
                 mDocView.setDisplayedViewIndex((seekBar.getProgress() + mPageSliderRes / 2) / mPageSliderRes);
             }
@@ -127,7 +127,7 @@ public class TextBookFragment extends com.rongjie.leke.fragment.BaseFragment imp
                 back();
                 break;
             case R.id.bookmark:
-                view = bookMarker;
+                view = mBookMarkerIv;
                 break;
             case R.id.directory:
                 view = directory;
@@ -137,7 +137,7 @@ public class TextBookFragment extends com.rongjie.leke.fragment.BaseFragment imp
     }
 
     private void initDocView() {
-        mDocView = new MuPDFReaderView((Activity) context) {
+        mDocView = new MuPDFReaderView((Activity) mContext) {
             @Override
             protected void onMoveToChild(int i) {
                 if (mCore != null && mTvPageNumber != null) {
@@ -149,9 +149,9 @@ public class TextBookFragment extends com.rongjie.leke.fragment.BaseFragment imp
                     //更新书签 ,设置按钮颜色
                     mbookMarksPage = i + 1;
                     if (mBookMarks.containsKey(mbookMarksPage)) {
-                        bookMarkBtn.setBackgroundColor(context.getResources().getColor(R.color.red));
+                        bookMarkBtn.setBackgroundColor(mContext.getResources().getColor(R.color.red));
                     } else {
-                        bookMarkBtn.setBackgroundColor(context.getResources().getColor(R.color.seek_thumb));
+                        bookMarkBtn.setBackgroundColor(mContext.getResources().getColor(R.color.seek_thumb));
                     }
                 }
             }
@@ -196,10 +196,10 @@ public class TextBookFragment extends com.rongjie.leke.fragment.BaseFragment imp
         int smax = Math.max(mCore.countPages() - 1, 1);
         mPageSliderRes = ((10 + smax - 1) / smax) * 2;
 
-        SharedPreferences prefs = ((Activity) context).getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences prefs = ((Activity) mContext).getPreferences(Context.MODE_PRIVATE);
         mbookMarksPage = prefs.getInt("page" + mFileName, 0) + 1;
 
-        Intent intent = ((Activity) context).getIntent();
+        Intent intent = ((Activity) mContext).getIntent();
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             Uri uri = intent.getData();
             mStrUrl = Uri.decode(uri.getEncodedPath());
@@ -211,12 +211,12 @@ public class TextBookFragment extends com.rongjie.leke.fragment.BaseFragment imp
             }
 
             if (null == mCore) {
-                Toast.makeText(context, "当前PDF 没有内容", Toast.LENGTH_SHORT);
+                Toast.makeText(mContext, "当前PDF 没有内容", Toast.LENGTH_SHORT);
                 return;
             }
 
             if (!mCore.fileFormat().startsWith("PDF")) { // 文件的格式
-                Toast.makeText(context, "文件格式不是PDF", Toast.LENGTH_SHORT);
+                Toast.makeText(mContext, "文件格式不是PDF", Toast.LENGTH_SHORT);
                 return;
             }
         }
@@ -231,7 +231,7 @@ public class TextBookFragment extends com.rongjie.leke.fragment.BaseFragment imp
         PdfParams.CURRENT_PDF_FILE_NAME = mFileName.substring(0, mFileName.length() - 4);
         try {
             // 解析PDF 核心类
-            core = new MuPDFCore(context, path);
+            core = new MuPDFCore(mContext, path);
             // New file: drop the old outline data
             //删除 PDF 目录 ，需要回复数据
             OutlineActivityData.set(null);
@@ -256,7 +256,7 @@ public class TextBookFragment extends com.rongjie.leke.fragment.BaseFragment imp
 
             public void onAnimationEnd(Animation animation) {
                 mSeekbarPage.setEnabled(false);
-                backBtn.setEnabled(false);
+                mBackBtn.setEnabled(false);
             }
         });
         mRl_page.startAnimation(anim);
@@ -278,7 +278,7 @@ public class TextBookFragment extends com.rongjie.leke.fragment.BaseFragment imp
             public void onAnimationEnd(Animation animation) {
                 mSeekbarPage.setEnabled(true);
                 if (isBackPage) {
-                    backBtn.setEnabled(true);
+                    mBackBtn.setEnabled(true);
                 }
             }
         });
@@ -301,7 +301,7 @@ public class TextBookFragment extends com.rongjie.leke.fragment.BaseFragment imp
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         bookNeedLayout.setVisibility(View.VISIBLE);
-        textbook.setEnabled(false);
+        mTextbookIv.setEnabled(false);
     }
 
     @Override

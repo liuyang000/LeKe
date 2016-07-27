@@ -20,12 +20,13 @@ public class MainActivity extends Activity implements BaseFragment.OnSwitcherLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        FragmentManager fm = getFragmentManager();
-        FragmentTransaction ft = fm.beginTransaction();
-        TextBookFragment1 fragment = new TextBookFragment1();
-        fragment.setOnSwitcherListener(this);
-        ft.add(R.id.container, fragment);
-        ft.commit();
+//        FragmentManager fm = getFragmentManager();
+//        FragmentTransaction ft = fm.beginTransaction();
+//        TextBookFragment1 fragment = new TextBookFragment1();
+//        fragment.setOnSwitcherListener(this);
+//        ft.add(R.id.container, fragment);
+//        ft.commit();
+        toTextBookFragment();
     }
 
     /**

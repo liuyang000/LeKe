@@ -44,12 +44,10 @@ public class DividerGridItemDecoration extends RecyclerView.ItemDecoration
         LayoutManager layoutManager = parent.getLayoutManager();
         if (layoutManager instanceof GridLayoutManager)
         {
-
             spanCount = ((GridLayoutManager) layoutManager).getSpanCount();
         } else if (layoutManager instanceof StaggeredGridLayoutManager)
         {
-            spanCount = ((StaggeredGridLayoutManager) layoutManager)
-                    .getSpanCount();
+            spanCount = ((StaggeredGridLayoutManager) layoutManager).getSpanCount();
         }
         return spanCount;
     }
@@ -63,8 +61,7 @@ public class DividerGridItemDecoration extends RecyclerView.ItemDecoration
             final RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child
                     .getLayoutParams();
             final int left = child.getLeft() - params.leftMargin;
-            final int right = child.getRight() + params.rightMargin
-                    + mDivider.getIntrinsicWidth();
+            final int right = child.getRight() + params.rightMargin + mDivider.getIntrinsicWidth()+5;
             final int top = child.getBottom() + params.bottomMargin;
             final int bottom = top + mDivider.getIntrinsicHeight();
             mDivider.setBounds(left, top, right, bottom);
@@ -165,11 +162,11 @@ public class DividerGridItemDecoration extends RecyclerView.ItemDecoration
             outRect.set(0, 0, mDivider.getIntrinsicWidth(), 0);
         } else if (isLastColum(parent, itemPosition, spanCount, childCount))// 如果是最后一列，则不需要绘制右边
         {
-            outRect.set(0, 0, 0, mDivider.getIntrinsicHeight());
+            outRect.set(0, 0, 0, mDivider.getIntrinsicHeight()+5);
         } else
         {
-            outRect.set(0, 0, mDivider.getIntrinsicWidth(),
-                    mDivider.getIntrinsicHeight());
+            outRect.set(0, 0, mDivider.getIntrinsicWidth()+5,
+                    mDivider.getIntrinsicHeight()+5);
         }
     }
 }

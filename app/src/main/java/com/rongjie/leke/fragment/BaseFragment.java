@@ -22,6 +22,7 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -30,6 +31,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
@@ -61,45 +63,45 @@ import java.util.Map;
  * Created by jiangliang on 2016/7/8.
  */
 public class BaseFragment extends Fragment implements View.OnClickListener, NoteBookView.OnUndoOptListener, NoteBookView.OnDoOptListener, ShortNoteFragment.DeleteLabelListener, ShortNoteFragment.AddLabelListener, View.OnTouchListener, MoveImageView.UpdateImageViewMapListener, SeekBar.OnSeekBarChangeListener {
-    protected Button pen;
-    protected Button pencil;
-    protected Button oliBlackPen;
-    protected Button makerPen;
-    protected Button eraser;
+    protected Button mPen;
+    protected Button mPencil;
+    protected Button mOliBlackPen;
+    protected Button mMakerPen;
+    protected Button mEraser;
     protected Button color;
-    protected SeekBar penSizePg;
-    protected ImageView penSize;
-    protected SeekBar penAlphaPg;
-    protected ImageView penAlpha;
-    protected ImageView bookPackage;
-    protected ImageView gesture;
-    protected ImageView paintDraw;
-    protected ImageView drawPic;
-    protected ImageView label;
-    protected ImageView image;
-    protected ImageView screenshot;
-    protected ImageView send;
-    protected ImageView undo;
-    protected ImageView redo;
-    protected ImageView textbook;
-    protected ImageView notebook;
-    protected ImageView exerciseBook;
-    protected ImageView bookMarker;
-    protected ImageView directory;
-    protected ImageView screenShotImg;
-    protected NoteBookView booknote;
-    protected LinearLayout paintChoose;
-    protected LinearLayout bookNeedLayout;
-    protected LinearLayout optionLayout;
-    protected ScreenShotView screenShotView;
-    protected MyFrameLayout frameLayout;
-    protected View root;
-    protected Context context;
+    protected SeekBar mPenSizePg;
+    protected ImageView mPenSizeIv;
+    protected SeekBar mPenAlphaPg;
+    protected ImageView mPenAlphaIv;
+    protected ImageView mBookPackageIv;
+    protected ImageView mGestureIv;
+    protected ImageView mPaintDrawIv;
+    protected ImageView mDrawPicIv;
+    protected ImageView mLabelIv;
+    protected ImageView mImageIv;
+    protected ImageView mScreenshotIv;
+    protected ImageView mSendIv;
+    protected ImageView mUndoIv;
+    protected ImageView mRedoIv;
+    protected ImageView mTextbookIv;
+    protected ImageView mNotebookIv;
+    protected ImageView mExerciseBookIv;
+    protected ImageView mBookMarkerIv;
+    protected ImageView mDirectoryIv;
+    protected NoteBookView mNoteBookView;
+    protected LinearLayout mPaintChoose;
+    protected LinearLayout mBookNeedLayout;
+    protected LinearLayout mOptionLayout;
+    protected ScreenShotView mScreenShotView;
+    protected MyFrameLayout mFrameLayout;
+    protected View mRoot;
+    protected Context mContext;
+    protected ViewStub mStub;
 
     protected RelativeLayout mRl_page;
     protected SeekBar mSeekbarPage;
     protected TextView mTvPageNumber;
-    protected Button backBtn;
+    protected Button mBackBtn;
 
     protected int x;//绘画开始的横坐标
     protected int y;//绘画开始的纵坐标
@@ -111,16 +113,25 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
     private static final String TAG = "BaseFragment";
     private Map<Position, MoveImageView> imageViews;//用来存放位置和图标的对应关系
 
+    private boolean isNeedCutScreen;
+
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.context = activity;
+        this.mContext = activity;
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         initDatas();
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        mRoot = inflater.inflate(R.layout.fragment_base_layout, container, false);
+        return mRoot;
     }
 
     protected void initDatas() {
@@ -136,57 +147,61 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
     }
 
     private void initBaseView() {
-        pen = (Button) root.findViewById(R.id.pen);
-        pencil = (Button) root.findViewById(R.id.pencil);
-        oliBlackPen = (Button) root.findViewById(R.id.oli_black_pen);
-        makerPen = (Button) root.findViewById(R.id.maker_pen);
-        eraser = (Button) root.findViewById(R.id.eraser);
-        color = (Button) root.findViewById(R.id.color);
-        penSizePg = (SeekBar) root.findViewById(R.id.pen_size_pg);
-        penSize = (ImageView) root.findViewById(R.id.pen_size);
-        penAlphaPg = (SeekBar) root.findViewById(R.id.pen_alpha_pg);
-        penAlpha = (ImageView) root.findViewById(R.id.pen_alpha);
-        paintChoose = (LinearLayout) root.findViewById(R.id.paint_choose);
-        bookPackage = (ImageView) root.findViewById(R.id.book_package);
-        gesture = (ImageView) root.findViewById(R.id.gesture);
-        paintDraw = (ImageView) root.findViewById(R.id.paint_draw);
-        drawPic = (ImageView) root.findViewById(R.id.draw_pic);
-        label = (ImageView) root.findViewById(R.id.label);
-        image = (ImageView) root.findViewById(R.id.image);
-        screenshot = (ImageView) root.findViewById(R.id.screenshot);
-        send = (ImageView) root.findViewById(R.id.send);
-        undo = (ImageView) root.findViewById(R.id.undo);
-        redo = (ImageView) root.findViewById(R.id.redo);
-        bookMarker = (ImageView) root.findViewById(R.id.bookmark);
-        directory = (ImageView) root.findViewById(R.id.directory);
-        textbook = (ImageView) root.findViewById(R.id.textbook);
-        notebook = (ImageView) root.findViewById(R.id.notebook);
-        exerciseBook = (ImageView) root.findViewById(R.id.exercise_book);
-        screenShotImg = (ImageView) root.findViewById(R.id.screenshot_img);
+        mPen = (Button) mRoot.findViewById(R.id.pen);
+        mPencil = (Button) mRoot.findViewById(R.id.pencil);
+        mOliBlackPen = (Button) mRoot.findViewById(R.id.oli_black_pen);
+        mMakerPen = (Button) mRoot.findViewById(R.id.maker_pen);
+        mEraser = (Button) mRoot.findViewById(R.id.eraser);
+        color = (Button) mRoot.findViewById(R.id.color);
+        mPenSizePg = (SeekBar) mRoot.findViewById(R.id.pen_size_pg);
+        mPenSizeIv = (ImageView) mRoot.findViewById(R.id.pen_size);
+        mPenAlphaPg = (SeekBar) mRoot.findViewById(R.id.pen_alpha_pg);
+        mPenAlphaIv = (ImageView) mRoot.findViewById(R.id.pen_alpha);
+        mPaintChoose = (LinearLayout) mRoot.findViewById(R.id.paint_choose);
+        mBookPackageIv = (ImageView) mRoot.findViewById(R.id.book_package);
+        mGestureIv = (ImageView) mRoot.findViewById(R.id.gesture);
+        mPaintDrawIv = (ImageView) mRoot.findViewById(R.id.paint_draw);
+        mDrawPicIv = (ImageView) mRoot.findViewById(R.id.draw_pic);
+        mLabelIv = (ImageView) mRoot.findViewById(R.id.label);
+        mImageIv = (ImageView) mRoot.findViewById(R.id.image);
+        mScreenshotIv = (ImageView) mRoot.findViewById(R.id.screenshot);
+        mSendIv = (ImageView) mRoot.findViewById(R.id.send);
+        mUndoIv = (ImageView) mRoot.findViewById(R.id.undo);
+        mRedoIv = (ImageView) mRoot.findViewById(R.id.redo);
+        mBookMarkerIv = (ImageView) mRoot.findViewById(R.id.bookmark);
+        mDirectoryIv = (ImageView) mRoot.findViewById(R.id.directory);
+        mTextbookIv = (ImageView) mRoot.findViewById(R.id.textbook);
+        mNotebookIv = (ImageView) mRoot.findViewById(R.id.notebook);
+        mExerciseBookIv = (ImageView) mRoot.findViewById(R.id.exercise_book);
 
-        bookNeedLayout = (LinearLayout) root.findViewById(R.id.book_need_layout);
-        frameLayout = (MyFrameLayout) root.findViewById(R.id.note_parent);
-        optionLayout = (LinearLayout) root.findViewById(R.id.opt_layout);
-        screenShotView = new ScreenShotView(context);
+        mBookNeedLayout = (LinearLayout) mRoot.findViewById(R.id.book_need_layout);
+        mFrameLayout = (MyFrameLayout) mRoot.findViewById(R.id.note_parent);
+        mOptionLayout = (LinearLayout) mRoot.findViewById(R.id.opt_layout);
+        mScreenShotView = new ScreenShotView(mContext);
 
         //Seek部分
-        mRl_page = (RelativeLayout) root.findViewById(R.id.rl_page);
-        mSeekbarPage = (SeekBar) root.findViewById(R.id.seekbar_page);
-        mTvPageNumber = (TextView) root.findViewById(R.id.tv_page_number);
-        backBtn = (Button) root.findViewById(R.id.btn_back_page);
-        backBtn.setOnClickListener(this);
-        backBtn.setEnabled(false);
+        mRl_page = (RelativeLayout) mRoot.findViewById(R.id.rl_page);
+        mSeekbarPage = (SeekBar) mRoot.findViewById(R.id.seekbar_page);
+        mTvPageNumber = (TextView) mRoot.findViewById(R.id.tv_page_number);
+        mBackBtn = (Button) mRoot.findViewById(R.id.btn_back_page);
 
-        bookNeedLayout.setVisibility(View.INVISIBLE);
-        undo.setEnabled(false);
-        redo.setEnabled(false);
+        mStub = (ViewStub) mRoot.findViewById(R.id.view_stub);
 
-        penSizePg.setProgress(100);
-        penAlphaPg.setProgress(100);
 
+        mBackBtn.setOnClickListener(this);
+        mBackBtn.setEnabled(false);
+
+        mBookNeedLayout.setVisibility(View.INVISIBLE);
+        mUndoIv.setEnabled(false);
+        mRedoIv.setEnabled(false);
+
+        mPenSizePg.setProgress(100);
+        mPenAlphaPg.setProgress(100);
+        mGestureIv.setSelected(true);
     }
 
     protected void initOtherView() {
+
     }
 
     protected View parent;
@@ -196,39 +211,39 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
     }
 
     public void initNoteView() {
-        booknote = (NoteBookView) parent.findViewById(R.id.booknote);
-        booknote.setReDoOptListener(this);
-        booknote.setUndoOptListener(this);
+        mNoteBookView = (NoteBookView) parent.findViewById(R.id.booknote);
+        mNoteBookView.setReDoOptListener(this);
+        mNoteBookView.setUndoOptListener(this);
         updatePaintColor(Color.BLACK);
-        frameLayout = (MyFrameLayout) parent.findViewById(R.id.note_parent);
+        mFrameLayout = (MyFrameLayout) parent.findViewById(R.id.note_parent);
         parent.setOnTouchListener(this);
     }
 
     protected void addListener() {
-        pen.setOnClickListener(this);
-        pencil.setOnClickListener(this);
-        oliBlackPen.setOnClickListener(this);
-        makerPen.setOnClickListener(this);
-        eraser.setOnClickListener(this);
+        mPen.setOnClickListener(this);
+        mPencil.setOnClickListener(this);
+        mOliBlackPen.setOnClickListener(this);
+        mMakerPen.setOnClickListener(this);
+        mEraser.setOnClickListener(this);
         color.setOnClickListener(this);
-        bookPackage.setOnClickListener(this);
-        gesture.setOnClickListener(this);
-        paintDraw.setOnClickListener(this);
-        drawPic.setOnClickListener(this);
-        label.setOnClickListener(this);
-        image.setOnClickListener(this);
-        screenshot.setOnClickListener(this);
-        send.setOnClickListener(this);
-        undo.setOnClickListener(this);
-        redo.setOnClickListener(this);
-        bookMarker.setOnClickListener(this);
-        directory.setOnClickListener(this);
-        textbook.setOnClickListener(this);
-        notebook.setOnClickListener(this);
-        exerciseBook.setOnClickListener(this);
-        root.setOnTouchListener(this);
-        penSizePg.setOnSeekBarChangeListener(this);
-        penAlphaPg.setOnSeekBarChangeListener(this);
+        mBookPackageIv.setOnClickListener(this);
+        mGestureIv.setOnClickListener(this);
+        mPaintDrawIv.setOnClickListener(this);
+        mDrawPicIv.setOnClickListener(this);
+        mLabelIv.setOnClickListener(this);
+        mImageIv.setOnClickListener(this);
+        mScreenshotIv.setOnClickListener(this);
+        mSendIv.setOnClickListener(this);
+        mUndoIv.setOnClickListener(this);
+        mRedoIv.setOnClickListener(this);
+        mBookMarkerIv.setOnClickListener(this);
+        mDirectoryIv.setOnClickListener(this);
+        mTextbookIv.setOnClickListener(this);
+        mNotebookIv.setOnClickListener(this);
+        mExerciseBookIv.setOnClickListener(this);
+        mRoot.setOnTouchListener(this);
+        mPenSizePg.setOnSeekBarChangeListener(this);
+        mPenAlphaPg.setOnSeekBarChangeListener(this);
     }
 
     private int chooserHeight;
@@ -237,37 +252,40 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
 
     @Override
     public void onClick(View v) {
-        if (null != screenShotView && screenShotView.isSign()) {
-            screenShotView.setSign(false);
+        if (null != mScreenShotView && mScreenShotView.isSign()) {
+            mScreenShotView.setSign(false);
             resetScreenView();
         }
-        frameLayout.setInterceptable(false);
+        mFrameLayout.setInterceptable(false);
         if (null != view) {
             view.setSelected(false);
+        } else {
+            mGestureIv.setSelected(false);
         }
+        isNeedCutScreen = false;
         switch (v.getId()) {
             case R.id.pen:
-                view = pen;
+                view = mPen;
                 updateStatus(Color.BLACK, 2, 255);
-                booknote.setPen();
+                mNoteBookView.setPen();
                 break;
             case R.id.pencil:
                 //TODO:设置画笔为铅笔
-                view = pencil;
+                view = mPencil;
                 break;
             case R.id.oli_black_pen:
-                view = oliBlackPen;
+                view = mOliBlackPen;
                 updateStatus(Color.BLACK, 5, 255);
-                booknote.setOilBlackPen();
+                mNoteBookView.setOilBlackPen();
                 break;
             case R.id.maker_pen:
-                view = makerPen;
+                view = mMakerPen;
                 updateStatus(Color.GREEN, 15, 100);
-                booknote.setMakerPen();
+                mNoteBookView.setMakerPen();
                 break;
             case R.id.eraser:
-                view = eraser;
-                booknote.useEraser();
+                view = mEraser;
+                mNoteBookView.useEraser();
                 break;
             case R.id.color:
                 view = color;
@@ -275,18 +293,18 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
                 break;
             case R.id.book_package:
                 //TODO：返回书包界面
-                view = bookPackage;
+                view = mBookPackageIv;
                 getActivity().finish();
                 break;
             case R.id.gesture:
                 //TODO:切换为手势控制
-                view = gesture;
+                view = mGestureIv;
                 break;
             case R.id.paint_draw:
                 //TODO：切换为绘制输入
-                view = paintDraw;
-                chooserHeight = paintChoose.getHeight();
-                if (paintChoose.getVisibility() == View.VISIBLE) {
+                view = mPaintDrawIv;
+                chooserHeight = mPaintChoose.getHeight();
+                if (mPaintChoose.getVisibility() == View.VISIBLE) {
                     outAnimator();
                 } else {
                     inAnimatior();
@@ -294,33 +312,34 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
                 break;
             case R.id.draw_pic:
                 //TODO:使用绘图工具
-                view = drawPic;
+                view = mDrawPicIv;
                 break;
             case R.id.label:
-                view = label;
+                view = mLabelIv;
                 flag = true;
                 useNote();
                 break;
             case R.id.image:
-                view = image;
+                view = mImageIv;
                 useLocalPhoto();
                 break;
             case R.id.screenshot:
-                view = screenshot;
-                screenShotView.setSign(true);
-                frameLayout.setInterceptable(true);
-                screenShotView.postInvalidate();
+                view = mScreenshotIv;
+                mScreenShotView.setSign(true);
+                mFrameLayout.setInterceptable(true);
+                mScreenShotView.postInvalidate();
+                isNeedCutScreen = true;
                 break;
             case R.id.send:
                 //TODO:发送至服务器
-                view = send;
+                view = mSendIv;
                 send();
                 break;
             case R.id.undo:
-                booknote.undo();
+                mNoteBookView.undo();
                 break;
             case R.id.redo:
-                booknote.redo();
+                mNoteBookView.redo();
                 break;
             case R.id.textbook:
                 toTextBookFragment();
@@ -345,7 +364,10 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
                 break;
 
         }
-        if (null != view && view != undo && view != redo) {
+        if (null != view && view != mPaintDrawIv && mPaintChoose.getVisibility() == View.VISIBLE) {
+            outAnimator();
+        }
+        if (null != view && view != mUndoIv && view != mRedoIv) {
             view.setSelected(true);
         }
     }
@@ -369,12 +391,12 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
     }
 
     private void updateStatus(int color, int progress, int alpha) {
-        GradientDrawable drawable = (GradientDrawable) penSize.getBackground();
+        GradientDrawable drawable = (GradientDrawable) mPenSizeIv.getBackground();
         drawable.setColor(color);
-        GradientDrawable alphaDrawable = (GradientDrawable) penAlpha.getBackground();
+        GradientDrawable alphaDrawable = (GradientDrawable) mPenAlphaIv.getBackground();
         alphaDrawable.setColor(color);
-        penSizePg.setProgress(progress);
-        penAlphaPg.setProgress(alpha);
+        mPenSizePg.setProgress(progress);
+        mPenAlphaPg.setProgress(alpha);
     }
 
     /**
@@ -384,12 +406,12 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
 
     private void showColorSelector() {
         if (popWindow == null) {
-            LayoutInflater layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            LayoutInflater layoutInflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             View view = layoutInflater.inflate(R.layout.color_layout, null);
             popWindow = new PopupWindow(view, LinearLayout.LayoutParams.WRAP_CONTENT, LinearLayout.LayoutParams.WRAP_CONTENT, true);
             RecyclerView recyclerView = (RecyclerView) view.findViewById(R.id.color_selector);
             final int[] colors = getResources().getIntArray(R.array.colors);
-            ColorAdapter adapter = new ColorAdapter(colors, context);
+            ColorAdapter adapter = new ColorAdapter(colors, mContext);
             adapter.setOnItemClickListener(new ColorAdapter.OnItemClickListener() {
                 @Override
                 public void onItemClick(int position) {
@@ -397,8 +419,8 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
                     updatePaintColor(colors[position]);
                 }
             });
-            recyclerView.setLayoutManager(new GridLayoutManager(context, 6));
-            recyclerView.addItemDecoration(new DividerGridItemDecoration(context));
+            recyclerView.setLayoutManager(new GridLayoutManager(mContext, 6));
+            recyclerView.addItemDecoration(new DividerGridItemDecoration(mContext));
             recyclerView.setAdapter(adapter);
         }
         // 使其能获得焦点 ，要想监听菜单里控件的事件就必须要调用此方法
@@ -410,7 +432,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         //软键盘不会挡着popupwindow
         popWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         //设置菜单显示的位置
-        popWindow.showAtLocation(paintChoose, Gravity.TOP, 0, 2 * paintChoose.getHeight());
+        popWindow.showAtLocation(mPaintChoose, Gravity.TOP, 0, 2 * mPaintChoose.getHeight());
         //监听触屏事件
         popWindow.setTouchInterceptor(new View.OnTouchListener() {
             public boolean onTouch(View view, MotionEvent event) {
@@ -423,11 +445,11 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
      * 改变画笔颜色
      */
     private void updatePaintColor(int color) {
-        GradientDrawable drawable = (GradientDrawable) penSize.getBackground();
+        GradientDrawable drawable = (GradientDrawable) mPenSizeIv.getBackground();
         drawable.setColor(color);
-        GradientDrawable alphaDrawable = (GradientDrawable) penAlpha.getBackground();
+        GradientDrawable alphaDrawable = (GradientDrawable) mPenAlphaIv.getBackground();
         alphaDrawable.setColor(color);
-        booknote.setPaintColor(color);
+        mNoteBookView.setPaintColor(color);
     }
 
 
@@ -435,11 +457,11 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
      * 画笔选择界面进入动画
      */
     private void inAnimatior() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(paintChoose, PROPERTY_NAME, 0, chooserHeight);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(mPaintChoose, PROPERTY_NAME, 0, chooserHeight);
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
-                paintChoose.setVisibility(View.VISIBLE);
+                mPaintChoose.setVisibility(View.VISIBLE);
             }
         });
         animator.setDuration(500);
@@ -450,11 +472,11 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
      * 画笔选择界面退出动画
      */
     private void outAnimator() {
-        ObjectAnimator animator = ObjectAnimator.ofFloat(paintChoose, PROPERTY_NAME, chooserHeight, 0);
+        ObjectAnimator animator = ObjectAnimator.ofFloat(mPaintChoose, PROPERTY_NAME, chooserHeight, 0);
         animator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animation) {
-                paintChoose.setVisibility(View.INVISIBLE);
+                mPaintChoose.setVisibility(View.INVISIBLE);
             }
         });
         animator.setDuration(500);
@@ -473,22 +495,22 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
 
     @Override
     public void disenableReDoView() {
-        redo.setEnabled(false);
+        mRedoIv.setEnabled(false);
     }
 
     @Override
     public void enableReDoView() {
-        redo.setEnabled(true);
+        mRedoIv.setEnabled(true);
     }
 
     @Override
     public void disenableUndoView() {
-        undo.setEnabled(false);
+        mUndoIv.setEnabled(false);
     }
 
     @Override
     public void enableUndoView() {
-        undo.setEnabled(true);
+        mUndoIv.setEnabled(true);
     }
 
     /**
@@ -525,7 +547,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
                     String path = "";
                     if (requestCode == 1) {
                         String[] filePathColumn = {MediaStore.Images.Media.DATA};
-                        Cursor cursor = context.getContentResolver().query(data.getData(), filePathColumn, null, null, null);
+                        Cursor cursor = mContext.getContentResolver().query(data.getData(), filePathColumn, null, null, null);
                         if (null != cursor) {
                             cursor.moveToFirst();
                             int columnIndex = cursor.getColumnIndex(filePathColumn[0]);
@@ -538,7 +560,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
 
                 @Override
                 protected void onPostExecute(Bitmap bitmap) {
-                    View view = View.inflate(context, R.layout.insert_pic_layout, null);
+                    View view = View.inflate(mContext, R.layout.insert_pic_layout, null);
                     Button deleteBtn = (Button) view.findViewById(R.id.delete_pic);
                     ImageView imagebtn = (ImageView) view.findViewById(R.id.insert_pic);
                     FrameLayout.LayoutParams params = createLayoutParams();
@@ -548,10 +570,10 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
                     deleteBtn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            frameLayout.removeView((View) v.getParent());
+                            mFrameLayout.removeView((View) v.getParent());
                         }
                     });
-                    frameLayout.addView(view, params);
+                    mFrameLayout.addView(view, params);
                     deleteBtn.setVisibility(View.VISIBLE);
                 }
             }.execute();
@@ -568,7 +590,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
 
     @Override
     public void deleteLabel() {
-        frameLayout.removeView(imageViews.remove(curImgViewPosition));
+        mFrameLayout.removeView(imageViews.remove(curImgViewPosition));
     }
 
     @Override
@@ -589,19 +611,19 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
                 x = (int) event.getX();
                 //纵坐标应减去顶部操作栏的高度
                 y = (int) event.getY();
-                if (screenShotView.getParent() != null) {
-                    ((ViewGroup) screenShotView.getParent()).removeView(screenShotView);
+                if (mScreenShotView.getParent() != null) {
+                    ((ViewGroup) mScreenShotView.getParent()).removeView(mScreenShotView);
                 }
 
-                if (screenShotView.getParent() == null) {
-                    frameLayout.addView(screenShotView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
+                if (mScreenShotView.getParent() == null) {
+                    mFrameLayout.addView(mScreenShotView, new ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
                 }
                 break;
             case MotionEvent.ACTION_MOVE:
                 right = (int) event.getX();
                 bottom = (int) event.getY();
-                screenShotView.setSeat(x, y, right, bottom);
-                screenShotView.postInvalidate();
+                mScreenShotView.setSeat(x, y, right, bottom);
+                mScreenShotView.postInvalidate();
                 break;
             case MotionEvent.ACTION_UP:
                 width = (int) Math.abs(x - event.getX());
@@ -626,7 +648,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
     private PopupWindow cutPopWindow;
 
     private void showScreenCutOptWindow() {
-        View view = View.inflate(context, R.layout.screencut_opt_layout, null);
+        View view = View.inflate(mContext, R.layout.screencut_opt_layout, null);
         Button cancelCut = (Button) view.findViewById(R.id.cancel_cut);
         Button copyCut = (Button) view.findViewById(R.id.copy_cut);
         Button sendCut = (Button) view.findViewById(R.id.send_cut);
@@ -636,8 +658,8 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         sendCut.setOnClickListener(this);
         saveCut.setOnClickListener(this);
 
-        Log.e(TAG, "screenview's width is : " + screenShotView.getWidth() + " : " + screenShotView.getCutWidth());
-        cutPopWindow = new PopupWindow(view, screenShotView.getCutWidth(), ViewGroup.LayoutParams.WRAP_CONTENT);
+        Log.e(TAG, "screenview's width is : " + mScreenShotView.getWidth() + " : " + mScreenShotView.getCutWidth());
+        cutPopWindow = new PopupWindow(view, mScreenShotView.getCutWidth(), ViewGroup.LayoutParams.WRAP_CONTENT);
         // 使其能获得焦点 ，要想监听菜单里控件的事件就必须要调用此方法
         cutPopWindow.setFocusable(true);
         // 设置允许在外点击消失
@@ -646,11 +668,11 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         cutPopWindow.setBackgroundDrawable(new BitmapDrawable());
         //软键盘不会挡着popupwindow
         cutPopWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
-        Log.e(TAG, "left value is : " + screenShotView.getLeftValue() + ",top value is : " + screenShotView.getTopValue());
+        Log.e(TAG, "left value is : " + mScreenShotView.getLeftValue() + ",top value is : " + mScreenShotView.getTopValue());
         //设置菜单显示的位置
         int[] locations = new int[2];
-        screenShotView.getLocationInWindow(locations);
-        cutPopWindow.showAtLocation(screenShotView, Gravity.NO_GRAVITY, screenShotView.getLeftValue(), screenShotView.getTopValue() + 10);
+        mScreenShotView.getLocationInWindow(locations);
+        cutPopWindow.showAtLocation(mScreenShotView, Gravity.NO_GRAVITY, mScreenShotView.getLeftValue(), mScreenShotView.getTopValue() + 10);
         //监听触屏事件
         cutPopWindow.setTouchInterceptor(new View.OnTouchListener() {
             public boolean onTouch(View view, MotionEvent event) {
@@ -665,7 +687,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
     private void saveCutOpt() {
         cutCommenOpt();
         saveCutPic();
-        ToastUtil.showToast(context, R.string.save_cut_success);
+        ToastUtil.showToast(mContext, R.string.save_cut_success);
     }
 
     private void saveCutPic() {
@@ -679,21 +701,21 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
 
     private void cutCommenOpt() {
         cutPopWindow.dismiss();
-        screenShotView.setSign(true);
-        frameLayout.setInterceptable(true);
+        mScreenShotView.setSign(true);
+        mFrameLayout.setInterceptable(true);
         resetScreenView();
     }
 
     private void resetScreenView() {
-        screenShotView.setSeat(0, 0, 0, 0);
-        screenShotView.postInvalidate();
+        mScreenShotView.setSeat(0, 0, 0, 0);
+        mScreenShotView.postInvalidate();
     }
 
     /**
      * 发送截图
      */
     private void sendCutOpt() {
-        ToastUtil.showToast(context, R.string.cut_pic_sent);
+        ToastUtil.showToast(mContext, R.string.cut_pic_sent);
         cutCommenOpt();
     }
 
@@ -705,12 +727,13 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
 
     private void copyCutOpt() {
         if (clipboardManager == null) {
-            clipboardManager = (ClipboardManager) context.getSystemService(Context.CLIPBOARD_SERVICE);
+            clipboardManager = (ClipboardManager) mContext.getSystemService(Context.CLIPBOARD_SERVICE);
         }
         saveCutPic();
-        clipData = ClipData.newUri(context.getContentResolver(), "uri", Uri.fromFile(new File("mnt/sdcard/img.png")));
-        clipboardManager.setPrimaryClip(clipData);
         cutCommenOpt();
+        clipData = ClipData.newUri(mContext.getContentResolver(), "uri", Uri.fromFile(new File("mnt/sdcard/img.png")));
+        clipboardManager.setPrimaryClip(clipData);
+
     }
 
     private void send() {
@@ -737,8 +760,8 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
 
     private void addLabel2UI() {
         FrameLayout.LayoutParams params = createLayoutParams();
-        final MoveImageView imageView = new MoveImageView(context);
-        imageView.setImageResource(R.drawable.ic_launcher);
+        final MoveImageView imageView = new MoveImageView(mContext);
+        imageView.setImageResource(R.drawable.bianqian_img);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -749,7 +772,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
             }
         });
         imageView.setUpdateImageViewMapListener(this);
-        frameLayout.addView(imageView, params);
+        mFrameLayout.addView(imageView, params);
         imageViews.put(new Position(params.leftMargin, params.topMargin), imageView);
     }
 
@@ -757,7 +780,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
      * 获取截取区域内的图片
      */
     private Bitmap getBitmap() {
-        View view = frameLayout;
+        View view = mFrameLayout;
         view.setDrawingCacheEnabled(true);
         view.buildDrawingCache();
         Bitmap bitmap = view.getDrawingCache();
@@ -780,20 +803,20 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         float temp = progress / 100.0f;
-        if (seekBar == penSizePg) {
+        if (seekBar == mPenSizePg) {
             if (temp < 0.1) {
                 temp = 0.1f;
             }
-            ObjectAnimator animatorX = ObjectAnimator.ofFloat(penSize, "scaleX", temp);
-            ObjectAnimator animatorY = ObjectAnimator.ofFloat(penSize, "scaleY", temp);
+            ObjectAnimator animatorX = ObjectAnimator.ofFloat(mPenSizeIv, "scaleX", temp);
+            ObjectAnimator animatorY = ObjectAnimator.ofFloat(mPenSizeIv, "scaleY", temp);
             AnimatorSet animatorSet = new AnimatorSet();
             animatorSet.playTogether(animatorX, animatorY);
             animatorSet.setDuration(100);
             animatorSet.start();
-            booknote.setPaintSize(temp * 30);
+            mNoteBookView.setPaintSize(temp * 30);
         } else {
-            penAlpha.setAlpha(temp);
-            booknote.setPaintAlpha((int) (temp * 255));
+            mPenAlphaIv.setAlpha(temp);
+            mNoteBookView.setPaintAlpha((int) (temp * 255));
         }
     }
 

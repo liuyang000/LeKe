@@ -1,10 +1,6 @@
 package com.rongjie.leke.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.util.Log;
 
 import com.rongjie.leke.R;
 
@@ -13,15 +9,16 @@ import com.rongjie.leke.R;
  */
 public class ExerciseBookFragment extends BaseFragment {
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return root = inflater.inflate(R.layout.notebook_layout,container,false);
-    }
+    private static final String TAG = "ExerciseBookFragment";
 
     @Override
     protected void initOtherView() {
-        exerciseBook.setEnabled(false);
+        Log.e(TAG,"initOtherView................");
+        mExerciseBookIv.setEnabled(false);
+        mStub.setLayoutResource(R.layout.notebook_item);
+        parent = mStub.inflate();
+        initNoteView();
+        mNoteBookView.setCanvasColor(0xFFAAAAAA);
     }
 
 

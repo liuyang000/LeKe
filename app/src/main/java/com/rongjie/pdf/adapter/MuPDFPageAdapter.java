@@ -69,7 +69,7 @@ public class MuPDFPageAdapter extends BaseAdapter {
             pageView.setLayoutParams(params);
             viewGroup.addView(pageView, 0);
 
-            frameLayout = (MyFrameLayout) View.inflate(mContext, R.layout.content_layout, null);
+            frameLayout = (MyFrameLayout) View.inflate(mContext, R.layout.notebook_item, null);
             frameLayout.setLayoutParams(params);
             viewGroup.addView(frameLayout, 1);
         } else {
@@ -77,10 +77,6 @@ public class MuPDFPageAdapter extends BaseAdapter {
             pageView = (MuPDFPageView) viewGroup.getChildAt(0);
             frameLayout = (MyFrameLayout) viewGroup.getChildAt(1);
         }
-//        if (null != option) {
-//            option.setRootView(frameLayout);
-//            option.initNoteView();
-//        }
         if (null != fragment) {
             fragment.setParentOfNoteView(frameLayout);
             fragment.initNoteView();

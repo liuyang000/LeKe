@@ -148,7 +148,7 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
      * 初始化UI
      */
     private void initLayout() {
-        setContentView(R.layout.activity_mupdf);
+        setContentView(R.layout.fragment_base_layout);
         optionInstance = new OptionConlection(this);
         optionInstance.init();
         initDocView();
@@ -212,12 +212,6 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
             optionInstance.getViewBookMarker().setBackgroundColor(MuPDFActivity.this.getResources().getColor(R.color.transparent));
         }
 
-//        if (mBookMarks.containsKey(mbookMarksPage)) {
-//            mBtn_bookmarks.setBackgroundColor(MuPDFActivity.this.getResources().getColor(R.color.red));
-//        } else {
-//            mBtn_bookmarks.setBackgroundColor(MuPDFActivity.this.getResources().getColor(R.color.seek_thumb));
-//        }
-
         btn_back_page = (Button) this.findViewById(R.id.btn_back_page);
         btn_back_page.setOnClickListener(this);
         btn_back_page.setEnabled(false);
@@ -269,11 +263,6 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
 
                     //更新书签 ,设置按钮颜色
                     mbookMarksPage = i + 1;
-//                    if (mBookMarks.containsKey(mbookMarksPage)) {
-//                        mBtn_bookmarks.setBackgroundColor(MuPDFActivity.this.getResources().getColor(R.color.red));
-//                    } else {
-//                        mBtn_bookmarks.setBackgroundColor(MuPDFActivity.this.getResources().getColor(R.color.seek_thumb));
-//                    }
                     if (mBookMarks.containsKey(mbookMarksPage)) {
                         optionInstance.getViewBookMarker().setBackgroundColor(MuPDFActivity.this.getResources().getColor(R.color.red));
                     } else {
@@ -407,11 +396,6 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
             mBookMarks.put(mbookMarksPage, bookMarkInfo);
         }
 
-//        if (mBookMarks.containsKey(mbookMarksPage)) {
-//            mBtn_bookmarks.setBackgroundColor(MuPDFActivity.this.getResources().getColor(R.color.red));
-//        } else {
-//            mBtn_bookmarks.setBackgroundColor(MuPDFActivity.this.getResources().getColor(R.color.seek_thumb));
-//        }
         if (mBookMarks.containsKey(mbookMarksPage)) {
             optionInstance.getViewBookMarker().setBackgroundColor(MuPDFActivity.this.getResources().getColor(R.color.red));
         } else {

@@ -5,16 +5,15 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
@@ -47,6 +46,7 @@ import java.util.Map;
  */
 public class TextBookFragment1 extends BaseFragment implements AdapterView.OnItemClickListener, BookMarksDialog.DialogClickFinsihListener {
 
+    private static final String TAG = "TextBookFragment";
     private MuPDFCore mCore;
     private String mFileName;
     private MuPDFReaderView mDocView;
@@ -63,6 +63,9 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
     private Button mBackPageBtn;
     private Button mBookMarkBtn;
     private Button mItemDirectory;
+    private ImageView mBookMarkImg;
+    private ImageView mDirectoryImg;
+
 
     private int mPageSliderRes;
     private BookMarkAdapter mBookMarkAdapter;
@@ -72,8 +75,6 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
     //书签页码
     private int mbookMarksPage;
     private List<BookMarkInfo> mInfos = new ArrayList<>();
-//    private int mStartProgress;
-//    private OptionConlection optionInstance;
 
     /***
      * seekbar 前进后退
@@ -90,47 +91,45 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
     private View viewItemDirectory;
     private View viewItemBookmarks;
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.activity_mupdf, container, false);
-        return root;
-    }
-
     @Override
     protected void initDatas() {
         super.initDatas();
-        Intent intent = ((Activity) context).getIntent();
+        Intent intent = ((Activity) mContext).getIntent();
         if (Intent.ACTION_VIEW.equals(intent.getAction())) {
             Uri uri = intent.getData();
             mStrUrl = Uri.decode(uri.getEncodedPath());
             mCore = openFile(mStrUrl);
 
             //PDF 没有内容
-            if (mCore == null && mCore.countPages() == 0) {
-                System.out.println("aaaaaaaaaaaaaa");
+            if (mCore == null || mCore.countPages() == 0) {
                 mCore = null;
             }
 
             if (null == mCore) {
-                System.out.println("bbbbbbbbbb");
-                Toast.makeText(context, "当前PDF 没有内容", Toast.LENGTH_SHORT);
+                Toast.makeText(mContext, "当前PDF 没有内容", Toast.LENGTH_SHORT);
                 return;
             }
 
             if (!mCore.fileFormat().startsWith("PDF")) { // 文件的格式
-                Toast.makeText(context, "文件格式不是PDF", Toast.LENGTH_SHORT);
+                Toast.makeText(mContext, "文件格式不是PDF", Toast.LENGTH_SHORT);
                 return;
             }
         }
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        Log.e(TAG,"onStart..............");
+    }
+
+    @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
+        Log.e(TAG,"hidden changed : " + hidden);
         if (hidden) {
             if (mFileName != null && mDocView != null) {
-                SharedPreferences prefs = ((Activity) context).getPreferences(Context.MODE_PRIVATE);
+                SharedPreferences prefs = ((Activity) mContext).getPreferences(Context.MODE_PRIVATE);
                 SharedPreferences.Editor edit = prefs.edit();
                 edit.putInt("page" + mFileName, mDocView.getDisplayedViewIndex());
                 edit.apply();
@@ -153,42 +152,48 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
     @Override
     protected void initOtherView() {
         super.initOtherView();
+        Log.e(TAG,"initOtherView............");
+        mStub.setLayoutResource(R.layout.pdf_layout);
+        mStub.inflate();
+        mTextbookIv.setEnabled(false);
         initDocView();
-//        optionInstance.setMuPDFReaderView(mDocView);
-        MuPDFPageAdapter adapter = new MuPDFPageAdapter(context, mCore);
+        MuPDFPageAdapter adapter = new MuPDFPageAdapter(mContext, mCore);
         mDocView.setAdapter(adapter);
         adapter.setTextBookFragment(this);
-        SharedPreferences prefs = ((Activity) context).getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences prefs = ((Activity) mContext).getPreferences(Context.MODE_PRIVATE);
         mbookMarksPage = prefs.getInt("page" + mFileName, 0) + 1;
         mDocView.setDisplayedViewIndex(prefs.getInt("page" + mFileName, 0));
         /**
          * 需要设置内容
          */
-        mRlPdf = (ViewGroup) root.findViewById(R.id.rl_pdf);
+        mRlPdf = (ViewGroup) mRoot.findViewById(R.id.rl_pdf);
         mRlPdf.addView(mDocView, 0);
 
-        bookNeedLayout = (LinearLayout) root.findViewById(R.id.book_need_layout);
+        bookNeedLayout = (LinearLayout) mRoot.findViewById(R.id.book_need_layout);
         bookNeedLayout.setVisibility(View.VISIBLE);
 
-        viewItemDirectory = root.findViewById(R.id.view_item_directory);
-        viewItemBookmarks = root.findViewById(R.id.view_item_bookmarks);
-//        adapter.setOptionConlection(optionInstance);
-        mRlDirectory = (ViewGroup) root.findViewById(R.id.rl_directory);
-        mLvBookDirectory = (ListView) root.findViewById(R.id.lv_item_book_directory);
+        viewItemDirectory = mRoot.findViewById(R.id.view_item_directory);
+        viewItemBookmarks = mRoot.findViewById(R.id.view_item_bookmarks);
+        mRlDirectory = (ViewGroup) mRoot.findViewById(R.id.rl_directory);
+        mLvBookDirectory = (ListView) mRoot.findViewById(R.id.lv_item_book_directory);
         mLvBookDirectory.setDividerHeight(0);
-        mBookMarkBtn = (Button) root.findViewById(R.id.btn_item_bookmarks);
-        mItemDirectory = (Button) root.findViewById(R.id.btn_item_directory);
+        mBookMarkBtn = (Button) mRoot.findViewById(R.id.btn_item_bookmarks);
+        mItemDirectory = (Button) mRoot.findViewById(R.id.btn_item_directory);
         //seek
-        mRl_page = (RelativeLayout) root.findViewById(R.id.rl_page);
-        mSeekbarPage = (SeekBar) root.findViewById(R.id.seekbar_page);
-        mTvPageNumber = (TextView) root.findViewById(R.id.tv_page_number);
+        mRl_page = (RelativeLayout) mRoot.findViewById(R.id.rl_page);
+        mSeekbarPage = (SeekBar) mRoot.findViewById(R.id.seekbar_page);
+        mTvPageNumber = (TextView) mRoot.findViewById(R.id.tv_page_number);
+
+        mBookMarkImg = (ImageView) mRoot.findViewById(R.id.bookmark);
+        mDirectoryImg = (ImageView) mRoot.findViewById(R.id.directory);
+
         initPageNumber();
         if (mBookMarks.containsKey(mbookMarksPage)) {
-            mBookMarkBtn.setBackgroundColor(context.getResources().getColor(R.color.red));
+            mBookMarkBtn.setBackgroundColor(mContext.getResources().getColor(R.color.red));
         } else {
-            mBookMarkBtn.setBackgroundColor(context.getResources().getColor(R.color.seek_thumb));
+            mBookMarkBtn.setBackgroundColor(mContext.getResources().getColor(R.color.seek_thumb));
         }
-        mBackPageBtn = (Button) root.findViewById(R.id.btn_back_page);
+        mBackPageBtn = (Button) mRoot.findViewById(R.id.btn_back_page);
         mBackPageBtn.setEnabled(false);
 
     }
@@ -200,6 +205,8 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
         mItemDirectory.setOnClickListener(this);
         mBackPageBtn.setOnClickListener(this);
         mRlDirectory.setOnClickListener(this);
+        mBookMarkImg.setOnClickListener(this);
+        mDirectoryImg.setOnClickListener(this);
         mLvBookDirectory.setOnItemClickListener(this);
         int smax = Math.max(mCore.countPages() - 1, 1);
         mPageSliderRes = ((10 + smax - 1) / smax) * 2;
@@ -247,7 +254,7 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
      * @return
      */
     private void initDocView() {
-        mDocView = new MuPDFReaderView((Activity) context) {
+        mDocView = new MuPDFReaderView((Activity) mContext) {
             @Override
             protected void onMoveToChild(int i) {
                 if (mCore != null && mTvPageNumber != null) {
@@ -260,9 +267,9 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
                     //更新书签 ,设置按钮颜色
                     mbookMarksPage = i + 1;
                     if (mBookMarks.containsKey(mbookMarksPage)) {
-                        mBookMarkBtn.setBackgroundColor(context.getResources().getColor(R.color.red));
+                        mBookMarkBtn.setBackgroundColor(mContext.getResources().getColor(R.color.red));
                     } else {
-                        mBookMarkBtn.setBackgroundColor(context.getResources().getColor(R.color.seek_thumb));
+                        mBookMarkBtn.setBackgroundColor(mContext.getResources().getColor(R.color.seek_thumb));
                     }
                 }
             }
@@ -289,7 +296,7 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
         PdfParams.CURRENT_PDF_FILE_NAME = mFileName.substring(0, mFileName.length() - 4);
         try {
             // 解析PDF 核心类
-            core = new MuPDFCore(context, path);
+            core = new MuPDFCore(mContext, path);
             //删除 PDF 目录 ，需要回复数据
             OutlineActivityData.set(null);
         } catch (Exception e) {
@@ -301,57 +308,75 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
     @Override
     public void onClick(View view) {
         parent = mDocView.getCurrentItem();
-        mDocView.setInterceptTouch(true);
         initNoteView();
-        frameLayout.setInterceptable(false);
+        mDocView.setInterceptTouch(false);
         switch (view.getId()) {
             case R.id.gesture:
-                mDocView.setInterceptTouch(false);
+                mDocView.setInterceptTouch(true);
                 break;
             case R.id.btn_item_directory:
-                // 增加判断 当获取目录为空
-                setMarkAndDirectoryClickTextChange(true);
-                if (mOutlineItems != null && mOutlineItems.length > 0 && mBookAdapter != null) {
-                    mLvBookDirectory.setAdapter(mBookAdapter);
-                    mBookAdapter.notifyDataSetChanged();
-                    mLvBookDirectory.setSelection(OutlineActivityData.get().position);
-                } else {
-                    mBookAdapter = new OutlineAdapter(((Activity) context).getLayoutInflater(), mOutlineItems);
-                    mLvBookDirectory.setAdapter(mBookAdapter);
-                    mBookAdapter.notifyDataSetChanged();
-                }
+                clickDirectoryBtn();
                 break;
             case R.id.btn_item_bookmarks:
-                setMarkAndDirectoryClickTextChange(false);
-                System.out.println("btn_item_bookmarks");
-                //刷新数据
-                mInfos.clear();
-                if (mBookMarks.size() > 0) {
-                    mInfos.addAll(new ArrayList<>(mBookMarks.values()));
-                }
-                if (mBookMarkAdapter == null) {
-                    mBookMarkAdapter = new BookMarkAdapter(mInfos, context);
-                }
-                mLvBookDirectory.setAdapter(mBookMarkAdapter);
-                mBookMarkAdapter.notifyDataSetChanged();
+                clickBookMarkBtn();
                 break;
             case R.id.rl_directory:
                 mRlDirectory.setVisibility(View.GONE);
                 break;
             case R.id.btn_back_page:
-                //TODO:增加前进后退的 按钮事件
-                int progress;
-                if (!isBackPage) {
-                    isBackPage = true;
-                    progress = mProgresInfos.get(END);
-                } else {
-                    isBackPage = false;
-                    progress = mProgresInfos.get(START);
-                }
-                mDocView.setDisplayedViewIndex((progress + mPageSliderRes / 2) / mPageSliderRes);
+                clickBackBtn();
+                break;
+            case R.id.bookmark:
+                view = mBookMarkerIv;
+                showMarkDialog();
+                break;
+            case R.id.directory:
+                view = mDirectoryIv;
+                showDirectory();
                 break;
         }
         super.onClick(view);
+    }
+
+    private void clickBackBtn() {
+        int progress;
+        if (!isBackPage) {
+            isBackPage = true;
+            progress = mProgresInfos.get(END);
+        } else {
+            isBackPage = false;
+            progress = mProgresInfos.get(START);
+        }
+        mDocView.setDisplayedViewIndex((progress + mPageSliderRes / 2) / mPageSliderRes);
+    }
+
+    private void clickBookMarkBtn() {
+        setMarkAndDirectoryClickTextChange(false);
+        System.out.println("btn_item_bookmarks");
+        //刷新数据
+        mInfos.clear();
+        if (mBookMarks.size() > 0) {
+            mInfos.addAll(new ArrayList<>(mBookMarks.values()));
+        }
+        if (mBookMarkAdapter == null) {
+            mBookMarkAdapter = new BookMarkAdapter(mInfos, mContext);
+        }
+        mLvBookDirectory.setAdapter(mBookMarkAdapter);
+        mBookMarkAdapter.notifyDataSetChanged();
+    }
+
+    private void clickDirectoryBtn() {
+        setMarkAndDirectoryClickTextChange(true);
+        // 增加判断 当获取目录为空
+        if (mOutlineItems != null && mOutlineItems.length > 0 && mBookAdapter != null) {
+            mLvBookDirectory.setAdapter(mBookAdapter);
+            mBookAdapter.notifyDataSetChanged();
+            mLvBookDirectory.setSelection(OutlineActivityData.get().position);
+        } else {
+            mBookAdapter = new OutlineAdapter(((Activity) mContext).getLayoutInflater(), mOutlineItems);
+            mLvBookDirectory.setAdapter(mBookAdapter);
+            mBookAdapter.notifyDataSetChanged();
+        }
     }
 
     /**
@@ -393,7 +418,7 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
     public void showBookMarksDialog(String tag, BookMarksDialog.DialogMode dialogMode, String msg) {
 
         if (null == mBookMarkDialog) {
-            mBookMarkDialog = new BookMarksDialog(context);
+            mBookMarkDialog = new BookMarksDialog(mContext);
             mBookMarkDialog.setListener(this);
         }
 
@@ -452,16 +477,10 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
         }
 
         if (mBookMarks.containsKey(mbookMarksPage)) {
-            mBookMarkBtn.setBackgroundColor(context.getResources().getColor(R.color.red));
+            mBookMarkBtn.setBackgroundColor(mContext.getResources().getColor(R.color.red));
         } else {
-            mBookMarkBtn.setBackgroundColor(context.getResources().getColor(R.color.seek_thumb));
+            mBookMarkBtn.setBackgroundColor(mContext.getResources().getColor(R.color.seek_thumb));
         }
-//        if (mBookMarks.containsKey(mbookMarksPage)) {
-//            optionInstance.getViewBookMarker().setBackgroundColor(context.getResources().getColor(R.color.red));
-//        } else {
-//            optionInstance.getViewBookMarker().setBackgroundColor(context.getResources().getColor(R.color.transparent));
-//        }
-
         dialog.dismiss();
     }
 
@@ -481,7 +500,7 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
     /***
      * 点击目录
      */
-    public void onClickDirectory() {
+    public void showDirectory() {
         // 第一次进来 先获取 目录 ，以后就不需执行
         if (mOutlineItems == null || mOutlineItems.length == 0) {
             // 获取书的目录
@@ -491,7 +510,7 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
                 OutlineActivityData.get().items = outline;
                 mOutlineItems = OutlineActivityData.get().items;
                 if (mBookAdapter == null) {
-                    mBookAdapter = new OutlineAdapter(((Activity) context).getLayoutInflater(), mOutlineItems);
+                    mBookAdapter = new OutlineAdapter(((Activity) mContext).getLayoutInflater(), mOutlineItems);
                 }
             }
         }

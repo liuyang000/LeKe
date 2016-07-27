@@ -24,7 +24,7 @@ import java.util.NoSuchElementException;
 public class ReaderView extends AdapterView<Adapter> implements GestureDetector.OnGestureListener, ScaleGestureDetector.OnScaleGestureListener, Runnable {
 
     /**判断笔和手 是否需要拦截事件*/
-    private boolean mInterceptTouch = false;
+    private boolean mInterceptTouch = true;
 
     private final String TAG = "ReaderView  for tag";
     private boolean mDeBug = true;
@@ -334,7 +334,6 @@ public class ReaderView extends AdapterView<Adapter> implements GestureDetector.
         // only confuse the user
         mXScroll = mYScroll = 0;
         // Avoid jump at end of scaling by disabling scrolling
-        // until the next start of gesture
         mScrollDisabled = true;
         return true;
     }
@@ -349,7 +348,7 @@ public class ReaderView extends AdapterView<Adapter> implements GestureDetector.
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
 
-       return   !mInterceptTouch;
+       return   mInterceptTouch;
     }
 
     ////////////////////////////////触摸 ，测量，存放位置////////////////////////////////////////

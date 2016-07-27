@@ -7,73 +7,83 @@
 
     <RelativeLayout
         android:layout_width="500dp"
-        android:layout_height="400dp"
+        android:layout_height="500dp"
         android:layout_gravity="center"
-        android:background="@android:color/holo_green_light">
-
-        <Button
-            android:id="@+id/save_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentTop="true"
-            android:gravity="center"
-            android:text="@string/save"
-            android:textSize="25sp" />
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerHorizontal="true"
-            android:orientation="horizontal">
-
-            <Button
+        android:background="@drawable/bianqian_bg">
+        <RelativeLayout
+            android:id="@+id/note_opt_layout"
+            android:layout_width="match_parent"
+            android:layout_height="50dp"
+            >
+            <ImageView
+                android:id="@+id/save_label"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="20dp"
+                android:src="@drawable/save_img_btn"
+                android:layout_centerVertical="true"
+                 />
+            <ImageView
                 android:id="@+id/input_gesture"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/gesture_input" />
+                android:src="@drawable/bianqian_bi_img_btn"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@+id/save_label"
+                android:layout_centerVertical="true"
+                />
 
-            <Button
+            <ImageView
                 android:id="@+id/input_soft"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/softboard_input" />
-            <Button
+                android:src="@drawable/keyboard_img_btn"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@+id/input_gesture"
+                android:layout_centerVertical="true"
+                />
+            <ImageView
                 android:id="@+id/undo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/undo_text"
+                android:src="@drawable/chexiao_img_btn"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@+id/input_soft"
+                android:layout_centerVertical="true"
+
                 />
-            <Button
+            <ImageView
                 android:id="@+id/redo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/redo_text"
+                android:src="@drawable/fanhui_img_btn"
+                android:layout_marginLeft="30dp"
+                android:layout_toRightOf="@+id/undo"
+                android:layout_centerVertical="true"
                 />
-        </LinearLayout>
-
-        <Button
-            android:id="@+id/cancel_label"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:gravity="center"
-            android:text="@string/delete"
-            android:textSize="25sp" />
+            <ImageView
+                android:id="@+id/cancel_label"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="20dp"
+                android:src="@drawable/cancel_img_btn"
+                 />
+        </RelativeLayout>
 
         <com.rongjie.leke.view.NoteBookView
             android:id="@+id/booknote"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/cancel_label"
+            android:layout_below="@+id/note_opt_layout"
             android:layout_margin="10dp" />
 
         <EditText
             android:id="@+id/edit_text"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_below="@+id/cancel_label"
+            android:layout_below="@+id/note_opt_layout"
             android:layout_margin="10dp"
             android:background="@color/background"
             android:gravity="start|top"

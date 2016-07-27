@@ -117,12 +117,9 @@ public class NoteBookView extends View {
         // 保存一次一次绘制出来的图形
         mCanvas = new Canvas(mBitmap);
         mBitmapPaint = new Paint(Paint.DITHER_FLAG);
-//        mBitmapPaint.setAntiAlias(true);
-//        mBitmapPaint.setFilterBitmap(true);
 
         mPaint = new Paint();
         mPaint.setAntiAlias(true);
-//        mPaint.setFilterBitmap(true);
         mPaint.setStyle(Paint.Style.STROKE);
         mPaint.setStrokeJoin(Paint.Join.ROUND);// 设置外边缘
         mPaint.setStrokeCap(Paint.Cap.SQUARE);// 形状
@@ -143,11 +140,21 @@ public class NoteBookView extends View {
         Log.e(TAG,"onAttachedToWindow..............." + this);
         setPen();
     }
+    private int mCanvasColor = 0x00000000;
 
+    public void setCanvasColor(int mCanvasColor){
+        this.mCanvasColor = mCanvasColor;
+        invalidate();
+    }
+
+    public void resetCanvasColor(){
+        this.mCanvasColor = 0x00000000;
+        invalidate();
+    }
     @Override
     public void onDraw(Canvas canvas) {
 //        canvas.drawColor(0xFFAAAAAA);
-        canvas.drawColor(0x00000000);
+        canvas.drawColor(mCanvasColor);
         // 将前面已经画过得显示出来
         canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
         if (mPath != null) {
@@ -214,11 +221,9 @@ public class NoteBookView extends View {
             if (index == -1) {
                 disenableUndoView();
             }
-            Log.e(TAG, "undo index is : " + index + ", size is : " + savePath.size());
             enableReDoView();
             for (int i = 0; i <= index; i++) {
                 DrawPath drawPath = savePath.get(i);
-                Log.e(TAG, "undo path is : " + drawPath);
                 mCanvas.drawPath(drawPath.path, drawPath.paint);
             }
             invalidate();
