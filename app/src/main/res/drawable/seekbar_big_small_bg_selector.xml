@@ -1,0 +1,11 @@
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+     <item android:id="@android:id/background"> 
+        <nine-patch android:src="@drawable/huihua_huabitiao" />
+    </item>
+    <item android:id="@android:id/progress">
+        <clip>
+            <nine-patch android:src="@drawable/hhuihua_huabidaxiao" />
+        </clip>
+    </item>
+</layer-list>
