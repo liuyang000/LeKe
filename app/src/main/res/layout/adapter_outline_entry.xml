@@ -1,31 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:background="@drawable/select_item_book_directory"
-    >
+    android:layout_height="wrap_content">
 
-    <TextView
-        android:textColor="@android:color/black"
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@+id/page"
-        android:singleLine="true"
-        android:layout_centerVertical="true"
-        android:paddingLeft="8dp"
-    />
+    <RelativeLayout
+        android:id="@+id/rl_manger"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@android:color/white">
 
-    <TextView
-        android:textColor="@android:color/black"
-        android:id="@+id/page"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/title"
-        android:layout_alignBottom="@+id/title"
-        android:layout_alignParentRight="true"
-        android:paddingRight="8dp"
-       />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            android:layout_alignParentBottom="true"
+            android:background="#e0e0e0" />
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="40dp"
+            android:singleLine="true"
+            android:textColor="#4c4c4c"
+            android:textSize="22dp" />
+
+        <TextView
+            android:id="@+id/tv_page"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:textColor="@color/marks"
+            android:textSize="18dp" />
+    </RelativeLayout>
 
 </RelativeLayout>
