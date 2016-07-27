@@ -1,31 +1,34 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
+    android:layout_height="wrap_content">
 
     <RelativeLayout
+        android:id="@+id/rl"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white">
+        android:layout_height="76dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:background="@android:color/white"
+        android:paddingBottom="10dp"
+        android:paddingTop="10dp">
 
         <TextView
             android:id="@+id/tv_creat_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:padding="15dp"
             android:text="2015"
-            android:textColor="@android:color/black" />
-
+            android:textColor="#999999"
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/tv_mark_page"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:padding="15dp"
             android:text="100页"
-            android:textColor="@android:color/black" />
+            android:textColor="#999999"
+            android:textSize="18dp" />
 
 
         <TextView
@@ -33,17 +36,20 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/tv_mark_page"
-            android:padding="15dp"
+            android:layout_marginTop="5dp"
             android:text="书签100"
-            android:textColor="@android:color/black" />
+            android:textColor="#666666"
+            android:textSize="20dp" />
 
-
-        <View
-            android:background="@color/red"
-            android:layout_below="@id/tv_mark_name"
-            android:layout_width="match_parent"
-            android:layout_height="2px"
-            android:padding="15dp"/>
 
     </RelativeLayout>
+
+    <View
+        android:layout_below="@id/rl"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#e3e3e3" />
+
 </RelativeLayout>

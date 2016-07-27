@@ -1,0 +1,11 @@
+<layer-list
+  xmlns:android="http://schemas.android.com/apk/res/android">
+     <item android:id="@android:id/background"> 
+        <nine-patch android:src="@drawable/img_seekbar_second_progress" />
+    </item>
+    <item android:id="@android:id/progress">
+        <clip>
+            <nine-patch android:src="@drawable/img_seekbar_first_progress" />
+        </clip>
+    </item>
+</layer-list>

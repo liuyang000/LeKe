@@ -33,6 +33,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -65,12 +66,12 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
         this.context = context;
     }
 
-    private Button pen;
-    private Button pencil;
-    private Button oliBlackPen;
-    private Button makerPen;
-    private Button eraser;
-    private Button color;
+    private ImageButton pen;
+    private ImageButton pencil;
+    private ImageButton oliBlackPen;
+    private ImageButton makerPen;
+    private ImageButton eraser;
+    private ImageButton color;
     private SeekBar penSizePg;
     private ImageView penSize;
     private SeekBar penAlphaPg;
@@ -128,12 +129,12 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
     }
 
     private void initViews() {
-        pen = (Button) context.findViewById(R.id.pen);
-        pencil = (Button) context.findViewById(R.id.pencil);
-        oliBlackPen = (Button) context.findViewById(R.id.oli_black_pen);
-        makerPen = (Button) context.findViewById(R.id.maker_pen);
-        eraser = (Button) context.findViewById(R.id.eraser);
-        color = (Button) context.findViewById(R.id.color);
+        pen = (ImageButton) context.findViewById(R.id.pen);
+        pencil = (ImageButton) context.findViewById(R.id.pencil);
+        oliBlackPen = (ImageButton) context.findViewById(R.id.oli_black_pen);
+        makerPen = (ImageButton) context.findViewById(R.id.maker_pen);
+        eraser = (ImageButton) context.findViewById(R.id.eraser);
+        color = (ImageButton) context.findViewById(R.id.color);
         penSizePg = (SeekBar) context.findViewById(R.id.pen_size_pg);
         penSize = (ImageView) context.findViewById(R.id.pen_size);
         penAlphaPg = (SeekBar) context.findViewById(R.id.pen_alpha_pg);

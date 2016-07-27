@@ -1,5 +1,8 @@
 package com.rongjie.pdf;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +16,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
@@ -21,6 +25,7 @@ import android.widget.Toast;
 
 import com.artifex.mupdfdemo.MuPDFCore;
 import com.artifex.mupdfdemo.OutlineItem;
+import com.rongjie.leke.MyApplication;
 import com.rongjie.leke.OptionConlection;
 import com.rongjie.leke.R;
 import com.rongjie.pdf.View.MuPDFReaderView;
@@ -32,6 +37,7 @@ import com.rongjie.pdf.bean.BookMarkInfo;
 import com.rongjie.pdf.bean.OutlineActivityData;
 import com.rongjie.pdf.global.PdfParams;
 import com.rongjie.pdf.utils.DateUtils;
+import com.rongjie.pdf.utils.Uiutils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -52,6 +58,12 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
     private Context mContext;
     private MuPDFReaderView mDocView;
     private ViewGroup mRlPdf;
+    private Button mBtnHand;
+    private Button mBtnPen;
+    //    private Button mBtnDirectory;
+    private Button mBtnItemDirectory;
+    private Button mBtnItemBookmarks;
+    //    private Button mBtnItemNotes;
     private ViewGroup mRlDirectory;
     private ListView mLvBookDirectory;
     private OutlineItem mOutlineItems[];
@@ -69,8 +81,10 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
 
     //书签页码
     private int mbookMarksPage;
-    private List<BookMarkInfo> mInfos = new ArrayList<>();
-    private Button btn_back_page;
+    private List<BookMarkInfo> mInfos = new ArrayList<BookMarkInfo>();
+    private Button bookPackage;
+    //    private Button mbtn_more_view;
+    private ImageButton btn_back_page;
 //    private int mStartProgress;
 
     private OptionConlection optionInstance;
@@ -87,6 +101,8 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
      * 是否隐藏seekbar整体
      */
     private boolean mRlPageVisible = true;
+    private View view_item_directory;
+    private View view_item_bookmarks;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -120,7 +136,7 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
                 return;
             }
             //初始化UI
-            initLayout();
+            iniLayout();
         }
     }
 
@@ -147,8 +163,8 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
     /**
      * 初始化UI
      */
-    private void initLayout() {
-        setContentView(R.layout.fragment_base_layout);
+    private void iniLayout() {
+        setContentView(R.layout.activity_mupdf);
         optionInstance = new OptionConlection(this);
         optionInstance.init();
         initDocView();
@@ -169,6 +185,24 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
         mRlPdf.addView(mDocView, 0);
 
         adapter.setOptionConlection(optionInstance);
+//        mBtnHand = (Button) this.findViewById(R.id.gesture);
+//        mBtnHand.setOnClickListener(this);
+
+//        mBtnPen = (Button) this.findViewById(R.id.paint_draw);
+//        mBtnPen.setOnClickListener(this);
+
+//        mBtnDirectory = (Button) this.findViewById(R.id.btn_directory);
+//        mBtnDirectory.setOnClickListener(this);
+
+        mBtnItemDirectory = (Button) this.findViewById(R.id.btn_item_directory);
+        mBtnItemDirectory.setOnClickListener(this);
+
+        mBtnItemBookmarks = (Button) this.findViewById(R.id.btn_item_bookmarks);
+        mBtnItemBookmarks.setOnClickListener(this);
+
+//        mBtnItemNotes = (Button) this.findViewById(R.id.btn_item_notes);
+//        mBtnItemNotes.setOnClickListener(this);
+
         mRlDirectory = (ViewGroup) this.findViewById(R.id.rl_directory);
         mRlDirectory.setOnClickListener(this);
         mLvBookDirectory = (ListView) this.findViewById(R.id.lv_item_book_directory);
@@ -187,8 +221,17 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
                 mProgresInfos.put(END, seekBar.getProgress());
                 //设置按钮可以点击
                 btn_back_page.setEnabled(true);
-                isBackPage = true;
+
                 mDocView.setDisplayedViewIndex((seekBar.getProgress() + mPageSliderRes / 2) / mPageSliderRes);
+
+                if (mProgresInfos.get(START) <seekBar.getProgress()) {
+
+                    isBackPage = true;
+                    btn_back_page.setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_qianjin_select));
+                }else{
+                    isBackPage = false;
+                    btn_back_page.setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_houtui_select));
+                }
             }
 
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -207,14 +250,25 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
         mBtn_bookmarks.setOnClickListener(this);*/
 
         if (mBookMarks.containsKey(mbookMarksPage)) {
-            optionInstance.getViewBookMarker().setBackgroundColor(MuPDFActivity.this.getResources().getColor(R.color.red));
+
+            optionInstance.getViewBookMarker().setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_press_shuqian_red));
         } else {
-            optionInstance.getViewBookMarker().setBackgroundColor(MuPDFActivity.this.getResources().getColor(R.color.transparent));
+            optionInstance.getViewBookMarker().setImageDrawable(Uiutils.getDrawable(R.drawable.shuqian_img_btn));
         }
 
-        btn_back_page = (Button) this.findViewById(R.id.btn_back_page);
+        btn_back_page = (ImageButton) this.findViewById(R.id.btn_back_page);
+//        bookPackage = (Button) this.findViewById(R.id.book_package);
+//        bookPackage.setOnClickListener(this);
+
+//        mbtn_more_view = (Button) this.findViewById(R.id.btn_more_view);
+//        mbtn_more_view.setOnClickListener(this);
+
+        btn_back_page = (ImageButton) this.findViewById(R.id.btn_back_page);
         btn_back_page.setOnClickListener(this);
         btn_back_page.setEnabled(false);
+
+        view_item_directory = this.findViewById(R.id.view_item_directory) ;
+        view_item_bookmarks  =this.findViewById(R.id.view_item_bookmarks);
 
     }
 
@@ -264,9 +318,9 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
                     //更新书签 ,设置按钮颜色
                     mbookMarksPage = i + 1;
                     if (mBookMarks.containsKey(mbookMarksPage)) {
-                        optionInstance.getViewBookMarker().setBackgroundColor(MuPDFActivity.this.getResources().getColor(R.color.red));
+                        optionInstance.getViewBookMarker().setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_press_shuqian_red));
                     } else {
-                        optionInstance.getViewBookMarker().setBackgroundColor(MuPDFActivity.this.getResources().getColor(R.color.transparent));
+                        optionInstance.getViewBookMarker().setImageDrawable(Uiutils.getDrawable(R.drawable.shuqian_img_btn));
                     }
                 }
             }
@@ -312,7 +366,148 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
 
     @Override
     public void onClick(View view) {
+
+        switch (view.getId()) {
+//            case R.id.gesture:
+//                mDocView.setInterceptTouch(false);
+//                mBtnDirectory.setEnabled(true);
+//                break;
+//
+//            case R.id.paint_draw:
+//                mBtnDirectory.setEnabled(false);
+////                mDocView.refresh(false);
+//                mDocView.setInterceptTouch(true);
+////                chooserHeight = paintChoose.getHeight();
+////                if (paintChoose.getVisibility() == View.VISIBLE) {
+////                    outAnimator();
+////                } else {
+////                    inAnimatior();
+////                }
+//                break;
+//
+//            case R.id.btn_directory:
+//                // 第一次进来 先获取 目录 ，以后就不需执行
+//                if (mOutlineItems == null || mOutlineItems.length == 0) {
+//                    // 获取书的目录
+//                    OutlineItem outline[] = mCore.getOutline();
+//                    if (outline != null) {
+//                        // 设置 书的目录数据
+//                        OutlineActivityData.get().items = outline;
+//                        mOutlineItems = OutlineActivityData.get().items;
+//                        if (mBookAdapter == null) {
+//                            mBookAdapter = new OutlineAdapter(getLayoutInflater(), mOutlineItems);
+//                            ;
+//                        }
+//                    }
+//                }
+//
+//                mLvBookDirectory.setAdapter(mBookAdapter);
+//                mBookAdapter.notifyDataSetChanged();
+//                mRlDirectory.setVisibility(View.VISIBLE);
+//                break;
+//
+            case R.id.btn_item_directory:
+                // TODO: 增加判断 当获取目录为空
+                setMarkAndDirectoryClickTextChange(true);
+                if (mOutlineItems != null && mOutlineItems.length > 0 && mBookAdapter != null) {
+                    mLvBookDirectory.setAdapter(mBookAdapter);
+                    mBookAdapter.notifyDataSetChanged();
+                    mLvBookDirectory.setSelection(OutlineActivityData.get().position);
+                } else {
+                    mBookAdapter = new OutlineAdapter(getLayoutInflater(), mOutlineItems);
+                    mLvBookDirectory.setAdapter(mBookAdapter);
+                    mBookAdapter.notifyDataSetChanged();
+                }
+                break;
+//
+            case R.id.btn_item_bookmarks:
+
+                setMarkAndDirectoryClickTextChange(false);
+                System.out.println("btn_item_bookmarks");
+                //刷新数据
+                mInfos.clear();
+                if (mBookMarks.size() > 0) {
+                    mInfos.addAll(new ArrayList<BookMarkInfo>(mBookMarks.values()));
+                }
+                if (mBookMarkAdapter == null) {
+                    mBookMarkAdapter = new BookMarkAdapter(mInfos, MuPDFActivity.this);
+                }
+                mLvBookDirectory.setAdapter(mBookMarkAdapter);
+                mBookMarkAdapter.notifyDataSetChanged();
+                break;
+//
+//            case R.id.btn_item_notes:
+//                break;
+//
+            case R.id.rl_directory:
+                mRlDirectory.setVisibility(View.GONE);
+                break;
+//
+            //  case R.id.btn_bookmarks:
+
+//            case R.id.book_package:
+//                /*Intent intent = new Intent(this, ActivityMainUI.class);
+//                startActivity(intent);*/
+//                this.finish();
+//                break;
+//
+//            case R.id.btn_more_view:
+//               //获取到 所有的文件 包括目录
+//                Uri uri = Uri.parse(mStrUrl);
+//                Intent intent1 = new Intent(this, TestTwoPDF.class);
+//                intent1.setAction(Intent.ACTION_VIEW);
+//                intent1.setData(uri);
+//                startActivity(intent1);
+//                break;
+//
+            case R.id.btn_back_page:
+                //TODO:增加前进后退的 按钮事件
+                int progress;
+                if (!isBackPage) {
+                    isBackPage = true;
+                    progress = mProgresInfos.get(END);
+                    btn_back_page.setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_qianjin_select));
+                } else {
+                    isBackPage = false;
+                    progress = mProgresInfos.get(START);
+                    btn_back_page.setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_houtui_select));
+                }
+
+                mDocView.setDisplayedViewIndex((progress + mPageSliderRes / 2) / mPageSliderRes);
+                break;
+        }
     }
+
+    /**
+     * 画笔选择界面进入动画
+     */
+    private void inAnimatior() {
+//        ObjectAnimator animator = ObjectAnimator.ofFloat(paintChoose, PROPERTY_NAME, 0, chooserHeight);
+//        animator.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationStart(Animator animation) {
+//                paintChoose.setVisibility(View.VISIBLE);
+//            }
+//        });
+//        animator.setDuration(500);
+//        animator.start();
+    }
+
+    /**
+     * 画笔选择界面退出动画
+     */
+    private void outAnimator() {
+//        ObjectAnimator animator = ObjectAnimator.ofFloat(paintChoose, PROPERTY_NAME, chooserHeight, 0);
+//        animator.addListener(new AnimatorListenerAdapter() {
+//            @Override
+//            public void onAnimationEnd(Animator animation) {
+//                paintChoose.setVisibility(View.INVISIBLE);
+//            }
+//        });
+//        animator.setDuration(500);
+//        animator.start();
+    }
+
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 
@@ -397,9 +592,9 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
         }
 
         if (mBookMarks.containsKey(mbookMarksPage)) {
-            optionInstance.getViewBookMarker().setBackgroundColor(MuPDFActivity.this.getResources().getColor(R.color.red));
+            optionInstance.getViewBookMarker().setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_press_shuqian_red));
         } else {
-            optionInstance.getViewBookMarker().setBackgroundColor(MuPDFActivity.this.getResources().getColor(R.color.transparent));
+            optionInstance.getViewBookMarker().setImageDrawable(Uiutils.getDrawable(R.drawable.shuqian_img_btn));
         }
 
         dialog.dismiss();
@@ -441,6 +636,9 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
             mBookAdapter.notifyDataSetChanged();
         }
         mRlDirectory.setVisibility(View.VISIBLE);
+        setMarkAndDirectoryClickTextChange(true);
+
+
         if (mRlPageVisible) {
             mRlPageVisible = false;
             hideSeekbarLayout();
@@ -472,7 +670,7 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
         TranslateAnimation anim = new TranslateAnimation(0, 0, mRl_page.getHeight(), 0);
         anim.setDuration(200);
         anim.setFillAfter(true);
-         anim.setAnimationListener(new Animation.AnimationListener() {
+        anim.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation animation) {
             }
             public void onAnimationRepeat(Animation animation) {
@@ -487,4 +685,17 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
         mRl_page.startAnimation(anim);
     }
 
+
+
+    /**设置目录和书签 文本变化*/
+    private void  setMarkAndDirectoryClickTextChange(boolean isDirectory ){
+        int blackColor = MyApplication.getInstance().getResources().getColor(R.color.black);
+        int blueColor = MyApplication.getInstance().getResources().getColor(R.color.blue);
+
+        view_item_directory.setVisibility(isDirectory == true? View.VISIBLE:View.INVISIBLE);
+        view_item_bookmarks.setVisibility(isDirectory == false? View.VISIBLE:View.INVISIBLE);
+        mBtnItemDirectory.setTextColor(isDirectory == true?blueColor:blackColor);
+        mBtnItemBookmarks.setTextColor(isDirectory == false?blueColor:blackColor);
+
+    }
 }
