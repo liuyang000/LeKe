@@ -4,10 +4,13 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.Log;
+import android.view.Display;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.WindowManager;
 import android.widget.FrameLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.rongjie.leke.MyApplication;
@@ -18,8 +21,6 @@ import com.rongjie.pdf.fragment.HomeworkFragment;
 import com.rongjie.pdf.fragment.NotesFragment;
 import com.rongjie.pdf.fragment.ReferenceBooksFragment;
 import com.rongjie.pdf.fragment.TextBookFragment;
-
-import org.w3c.dom.Text;
 
 /**
  * Created by Administrator on 2016/7/12.
@@ -117,6 +118,18 @@ public class ActivityMainUI extends Activity implements View.OnClickListener {
         initFragment();
         //默认书为首页
         mRlTextBook.callOnClick();
+        testScreenDixel();
+    }
+
+    private void testScreenDixel(){
+        WindowManager manager = getWindowManager();
+        Display display = manager.getDefaultDisplay();
+        DisplayMetrics dm = new DisplayMetrics();
+        display.getMetrics(dm);
+
+        int width = dm.widthPixels;
+        int height = dm.heightPixels;
+        Log.e("MainActivity","width is : " + width + ",height is : " + height + ",density is : " + dm.density);
     }
 
     @Override

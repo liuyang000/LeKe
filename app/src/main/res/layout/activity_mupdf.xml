@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rl_parment"
     android:layout_width="match_parent"
@@ -9,16 +9,14 @@
         android:id="@+id/rl_pdf"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@android:color/white">
-        />
-
-    </FrameLayout>
+        android:background="@android:color/white">/></FrameLayout>
 
     <include
         android:id="@+id/opt_container"
         layout="@layout/opt_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+    -
 
     <RelativeLayout
         android:id="@+id/rl_directory"
@@ -26,21 +24,21 @@
         android:layout_height="match_parent"
         android:background="#7f000000"
         android:clickable="true"
-        android:visibility="gone">
+        android:visibility="gone">-
 
         <RelativeLayout
             android:id="@+id/rl_show_directory"
             android:layout_width="400dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
-            android:background="@android:color/white">
+            android:background="@android:color/white">-
 
             <LinearLayout
                 android:id="@+id/ll_check_button"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@android:color/white"
-                android:orientation="horizontal">
+                android:orientation="horizontal">-
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -65,7 +63,7 @@
                         android:layout_centerHorizontal="true"
                         android:background="@color/blue" />
                 </RelativeLayout>
-
+                -
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -90,7 +88,6 @@
                         android:layout_centerHorizontal="true"
                         android:background="@color/blue" />
                 </RelativeLayout>
-
             </LinearLayout>
 
             <View
@@ -116,6 +113,7 @@
                 android:listSelector="@android:color/transparent" />
         </RelativeLayout>
     </RelativeLayout>
+    -
 
     <RelativeLayout
         android:id="@+id/rl_page"
@@ -134,20 +132,20 @@
             android:textColor="#fafafa"
             android:textSize="24dp" />
 
-
         <View
             android:id="@+id/line_page"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@+id/tv_page_number"
             android:background="#e0e0e0" />
+        -
 
         <RelativeLayout
-            android:clickable="true"
             android:layout_width="match_parent"
             android:layout_height="56dp"
             android:layout_below="@id/line_page"
-            android:background="#ccf2f2f2">
+            android:background="#ccf2f2f2"
+            android:clickable="true">
 
             <ImageButton
                 android:id="@+id/btn_back_page"
@@ -175,5 +173,4 @@
                 android:thumb="@drawable/seekbar_thumb_selector" />
         </RelativeLayout>
     </RelativeLayout>
-
 </RelativeLayout>

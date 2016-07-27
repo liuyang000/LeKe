@@ -61,10 +61,10 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
     private ViewGroup mRlPdf;
     private Button mBtnHand;
     private Button mBtnPen;
-//    private Button mBtnDirectory;
+    //    private Button mBtnDirectory;
     private Button mBtnItemDirectory;
     private Button mBtnItemBookmarks;
-//    private Button mBtnItemNotes;
+    //    private Button mBtnItemNotes;
     private ViewGroup mRlDirectory;
     private ListView mLvBookDirectory;
     private OutlineItem mOutlineItems[];
@@ -85,7 +85,7 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
     private int mbookMarksPage;
     private List<BookMarkInfo> mInfos = new ArrayList<BookMarkInfo>();
     private Button bookPackage;
-//    private Button mbtn_more_view;
+    //    private Button mbtn_more_view;
     private ImageButton btn_back_page;
 //    private int mStartProgress;
 
@@ -238,14 +238,14 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
 
                 mDocView.setDisplayedViewIndex((seekBar.getProgress() + mPageSliderRes / 2) / mPageSliderRes);
 
-              if (mProgresInfos.get(START) <seekBar.getProgress()) {
+                if (mProgresInfos.get(START) <seekBar.getProgress()) {
 
-                  isBackPage = true;
-                  btn_back_page.setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_qianjin_select));
-              }else{
-                  isBackPage = false;
-                  btn_back_page.setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_houtui_select));
-              }
+                    isBackPage = true;
+                    btn_back_page.setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_qianjin_select));
+                }else{
+                    isBackPage = false;
+                    btn_back_page.setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_houtui_select));
+                }
             }
 
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -695,7 +695,7 @@ public class MuPDFActivity extends Activity implements View.OnClickListener, Ada
         TranslateAnimation anim = new TranslateAnimation(0, 0, mRl_page.getHeight(), 0);
         anim.setDuration(200);
         anim.setFillAfter(true);
-         anim.setAnimationListener(new Animation.AnimationListener() {
+        anim.setAnimationListener(new Animation.AnimationListener() {
             public void onAnimationStart(Animation animation) {
 
             }
