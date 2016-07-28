@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_page"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    >
+
+    <TextView
+        android:id="@+id/tv_page_number"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="15dp"
+        android:background="@drawable/page_num"
+        android:text="aaaaaaaaa"
+        android:textColor="@android:color/black" />
+
+    <Button
+        android:id="@+id/btn_back_page"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tv_page_number"
+        android:text="返回"
+        android:textColor="@android:color/black" />
+
+    <SeekBar
+        android:id="@+id/seekbar_page"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_page_number"
+        android:layout_toLeftOf="@id/btn_back_page"
+        android:background="@color/toolbar"
+        android:indeterminate="false"
+        android:padding="10dp"
+        android:progressDrawable="@drawable/seek_progress"
+        android:thumb="@drawable/seek_thumb" />
+</RelativeLayout>

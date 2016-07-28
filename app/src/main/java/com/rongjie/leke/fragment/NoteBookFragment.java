@@ -1,11 +1,6 @@
 package com.rongjie.leke.fragment;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
 import com.rongjie.leke.R;
 
@@ -14,25 +9,28 @@ import com.rongjie.leke.R;
  */
 public class NoteBookFragment extends BaseFragment {
 
-
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        Log.e("NoteBookFragment","onCreateView。。。。。。。。。。。。。。。");
-        root = inflater.inflate(R.layout.notebook_layout,container,false);
-        return root;
-    }
+    private static final String TAG = "NoteBookFragment";
 
     @Override
     protected void initOtherView() {
         super.initOtherView();
-        notebook.setEnabled(false);
-        screenShotImg.setVisibility(View.GONE);
+        Log.e(TAG,"initOtherView.................");
+        mStub.setLayoutResource(R.layout.notebook_item);
+        parent = mStub.inflate();
+        mNotebookIv.setEnabled(false);
+        initNoteView();
+        mNoteBookView.setCanvasColor(0xFFAAAAAA);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.e(TAG,"onStart...................");
     }
 
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        Log.e("NoteBookFragment","onHiddenChanged。。。。。。。。。。。。。。。" + hidden);
+        Log.e(TAG,"hidden changed : " + hidden);
     }
 }

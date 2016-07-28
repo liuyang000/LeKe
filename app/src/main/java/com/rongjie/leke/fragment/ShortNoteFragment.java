@@ -15,8 +15,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 
 import com.rongjie.leke.R;
 import com.rongjie.leke.view.NoteBookView;
@@ -28,60 +28,60 @@ import java.util.concurrent.Executors;
  * 便签编辑页面
  */
 public class ShortNoteFragment extends Fragment implements View.OnClickListener, NoteBookView.OnDoOptListener, NoteBookView.OnUndoOptListener {
-    private Button cancelBtn;
-    private Button saveBtn;
-    private Button inputByGesture;
-    private Button inputBySoft;
-    private Button undo;
-    private Button redo;
-    private EditText editText;
-    private View root;
-    private NoteBookView noteBookView;
-    private Context context;
+    private ImageView mCancelIv;
+    private ImageView mSaveIv;
+    private ImageView mInputByGestureIv;
+    private ImageView mInputBySoftIv;
+    private ImageView mUndoIv;
+    private ImageView mRedoIv;
+    private EditText mEditText;
+    private View mRoot;
+    private NoteBookView mNoteBookView;
+    private Context mContext;
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        this.context = context;
+        this.mContext = context;
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.context = activity;
+        this.mContext = activity;
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        root = inflater.inflate(R.layout.note_layout,container,false);
-        return root;
+        mRoot = inflater.inflate(R.layout.note_layout,container,false);
+        return mRoot;
     }
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        cancelBtn = (Button) root.findViewById(R.id.cancel_label);
-        saveBtn = (Button) root.findViewById(R.id.save_label);
-        inputByGesture = (Button) root.findViewById(R.id.input_gesture);
-        inputBySoft = (Button) root.findViewById(R.id.input_soft);
-        undo = (Button) root.findViewById(R.id.undo);
-        redo = (Button) root.findViewById(R.id.redo);
-        editText = (EditText) root.findViewById(R.id.edit_text);
-        noteBookView = (NoteBookView) root.findViewById(R.id.booknote);
-        noteBookView.setReDoOptListener(this);
-        noteBookView.setUndoOptListener(this);
-        undo.setEnabled(false);
-        redo.setEnabled(false);
+        mCancelIv = (ImageView) mRoot.findViewById(R.id.cancel_label);
+        mSaveIv = (ImageView) mRoot.findViewById(R.id.save_label);
+        mInputByGestureIv = (ImageView) mRoot.findViewById(R.id.input_gesture);
+        mInputBySoftIv = (ImageView) mRoot.findViewById(R.id.input_soft);
+        mUndoIv = (ImageView) mRoot.findViewById(R.id.undo);
+        mRedoIv = (ImageView) mRoot.findViewById(R.id.redo);
+        mEditText = (EditText) mRoot.findViewById(R.id.edit_text);
+        mNoteBookView = (NoteBookView) mRoot.findViewById(R.id.booknote);
+        mNoteBookView.setReDoOptListener(this);
+        mNoteBookView.setUndoOptListener(this);
+        mUndoIv.setEnabled(false);
+        mRedoIv.setEnabled(false);
 
-        inputByGesture.setEnabled(false);
-        inputBySoft.setEnabled(true);
-        cancelBtn.setOnClickListener(this);
-        saveBtn.setOnClickListener(this);
-        inputByGesture.setOnClickListener(this);
-        inputBySoft.setOnClickListener(this);
-        undo.setOnClickListener(this);
-        redo.setOnClickListener(this);
-
+        mInputByGestureIv.setEnabled(false);
+        mInputBySoftIv.setEnabled(true);
+        mCancelIv.setOnClickListener(this);
+        mSaveIv.setOnClickListener(this);
+        mInputByGestureIv.setOnClickListener(this);
+        mInputBySoftIv.setOnClickListener(this);
+        mUndoIv.setOnClickListener(this);
+        mRedoIv.setOnClickListener(this);
+        mInputByGestureIv.setSelected(true);
     }
 
     @Override
@@ -95,33 +95,42 @@ public class ShortNoteFragment extends Fragment implements View.OnClickListener,
                 break;
             case R.id.input_gesture:
                 showGestureInput();
+                updateIvStatus(true);
                 break;
             case R.id.input_soft:
                 showSoftInput();
+                updateIvStatus(false);
                 break;
             case R.id.undo:
-                noteBookView.undo();
+                mNoteBookView.undo();
                 break;
             case R.id.redo:
-                noteBookView.redo();
+                mNoteBookView.redo();
                 break;
         }
     }
 
+    private void updateIvStatus(boolean flag) {
+        mInputByGestureIv.setSelected(flag);
+        mInputByGestureIv.setEnabled(!flag);
+        mInputBySoftIv.setSelected(!flag);
+        mInputBySoftIv.setEnabled(flag);
+    }
+
     private void showGestureInput() {
-        inputByGesture.setEnabled(false);
-        inputBySoft.setEnabled(true);
-        noteBookView.setVisibility(View.VISIBLE);
-        editText.setVisibility(View.GONE);
+        mInputByGestureIv.setEnabled(false);
+        mInputBySoftIv.setEnabled(true);
+        mNoteBookView.setVisibility(View.VISIBLE);
+        mEditText.setVisibility(View.GONE);
         popupInputMethodWindow();
     }
 
     private void showSoftInput() {
-        inputByGesture.setEnabled(true);
-        inputBySoft.setEnabled(false);
-        noteBookView.setVisibility(View.GONE);
-        editText.setVisibility(View.VISIBLE);
-        editText.requestFocus();
+        mInputByGestureIv.setEnabled(true);
+        mInputBySoftIv.setEnabled(false);
+        mNoteBookView.setVisibility(View.GONE);
+        mEditText.setVisibility(View.VISIBLE);
+        mEditText.requestFocus();
         popupInputMethodWindow();
     }
 
@@ -135,7 +144,7 @@ public class ShortNoteFragment extends Fragment implements View.OnClickListener,
         handler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                imm = (InputMethodManager) context.getSystemService(Service.INPUT_METHOD_SERVICE);
+                imm = (InputMethodManager) mContext.getSystemService(Service.INPUT_METHOD_SERVICE);
                 imm.toggleSoftInput(InputMethodManager.SHOW_IMPLICIT, InputMethodManager.HIDE_NOT_ALWAYS);
             }
         }, 0);
@@ -150,7 +159,7 @@ public class ShortNoteFragment extends Fragment implements View.OnClickListener,
         Executors.newSingleThreadExecutor().execute(new Runnable() {
             @Override
             public void run() {
-                noteBookView.save();
+                mNoteBookView.save();
             }
         });
     }
@@ -159,11 +168,11 @@ public class ShortNoteFragment extends Fragment implements View.OnClickListener,
      * 隐藏虚拟键盘
      */
     private void hideInputMethodWindow() {
-        if (editText.getVisibility() == View.VISIBLE && null != imm && imm.isActive(editText)) {
+        if (mEditText.getVisibility() == View.VISIBLE && null != imm && imm.isActive(mEditText)) {
             //因为是在fragment下，所以用了getView()获取view，也可以用findViewById（）来获取父控件
             getView().requestFocus();//强制获取焦点，不然getActivity().getCurrentFocus().getWindowToken()会报错
             imm.hideSoftInputFromWindow(getActivity().getCurrentFocus().getWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
-            imm.restartInput(editText);
+            imm.restartInput(mEditText);
         }
     }
 
@@ -173,7 +182,7 @@ public class ShortNoteFragment extends Fragment implements View.OnClickListener,
         builder.setPositiveButton(R.string.confirm, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                noteBookView.clear();
+                mNoteBookView.clear();
                 if (null != deleteLabelListener) {
                     deleteLabelListener.deleteLabel();
                 }
@@ -201,30 +210,30 @@ public class ShortNoteFragment extends Fragment implements View.OnClickListener,
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden && editText.getVisibility() == View.VISIBLE) {
-            editText.requestFocus();
+        if (!hidden && mEditText.getVisibility() == View.VISIBLE) {
+            mEditText.requestFocus();
             popupInputMethodWindow();
         }
     }
 
     @Override
     public void disenableReDoView() {
-        redo.setEnabled(false);
+        mRedoIv.setEnabled(false);
     }
 
     @Override
     public void enableReDoView() {
-        redo.setEnabled(true);
+        mRedoIv.setEnabled(true);
     }
 
     @Override
     public void disenableUndoView() {
-        undo.setEnabled(false);
+        mUndoIv.setEnabled(false);
     }
 
     @Override
     public void enableUndoView() {
-        undo.setEnabled(true);
+        mUndoIv.setEnabled(true);
     }
 
     public interface DeleteLabelListener {

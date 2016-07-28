@@ -11,11 +11,4 @@
         android:layout_height="match_parent"
         android:background="#00000000"
         />
-
-    <ImageView
-        android:id="@+id/screenshot_img"
-        android:layout_width="300dp"
-        android:layout_height="400dp"
-        android:visibility="gone"
-        android:background="@android:color/holo_blue_light" />
 </com.rongjie.leke.view.MyFrameLayout>

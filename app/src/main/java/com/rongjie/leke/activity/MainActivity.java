@@ -9,7 +9,7 @@ import com.rongjie.leke.R;
 import com.rongjie.leke.fragment.BaseFragment;
 import com.rongjie.leke.fragment.ExerciseBookFragment;
 import com.rongjie.leke.fragment.NoteBookFragment;
-import com.rongjie.leke.fragment.TextBookFragment;
+import com.rongjie.leke.fragment.TextBookFragment1;
 
 /**
  * Created by jiangliang on 2016/6/30.
@@ -22,7 +22,7 @@ public class MainActivity extends Activity implements BaseFragment.OnSwitcherLis
         setContentView(R.layout.activity_main);
 //        FragmentManager fm = getFragmentManager();
 //        FragmentTransaction ft = fm.beginTransaction();
-//        TextBookFragment fragment = new TextBookFragment();
+//        TextBookFragment1 fragment = new TextBookFragment1();
 //        fragment.setOnSwitcherListener(this);
 //        ft.add(R.id.container, fragment);
 //        ft.commit();
@@ -33,13 +33,13 @@ public class MainActivity extends Activity implements BaseFragment.OnSwitcherLis
      * 跳转至课本界面
      */
     private BaseFragment fragment;
-    private TextBookFragment textBookFragment;
+    private TextBookFragment1 textBookFragment;
 
     private void toTextBookFragment() {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
         if (null == textBookFragment) {
-            textBookFragment = new TextBookFragment();
+            textBookFragment = new TextBookFragment1();
             textBookFragment.setOnSwitcherListener(this);
             ft.add(R.id.container, textBookFragment);
         } else {

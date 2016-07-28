@@ -21,8 +21,8 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHol
     @Override
     public ColorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Button btn = new Button(context);
-        btn.setWidth(80);
-        btn.setHeight(40);
+        btn.setWidth(50);
+        btn.setHeight(30);
         return new ColorViewHolder(btn);
     }
 

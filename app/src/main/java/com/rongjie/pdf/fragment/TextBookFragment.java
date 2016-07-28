@@ -14,7 +14,7 @@ import android.widget.Toast;
 
 import com.rongjie.leke.MyApplication;
 import com.rongjie.leke.R;
-import com.rongjie.pdf.MuPDFActivity;
+import com.rongjie.leke.activity.MainActivity;
 import com.rongjie.pdf.adapter.AdaptetFragmentTextBook;
 import com.rongjie.pdf.bean.TextBookInfo;
 import com.rongjie.pdf.utils.FileUtils;
@@ -104,7 +104,7 @@ public class TextBookFragment extends Fragment implements AdaptetFragmentTextBoo
         Toast.makeText(getActivity(), fileAbs, Toast.LENGTH_SHORT).show();
         System.out.println("file path ===" + fileAbs);
         Uri uri = Uri.parse(fileAbs);
-        Intent intent = new Intent(getActivity(), MuPDFActivity.class);
+        Intent intent = new Intent(getActivity(), MainActivity.class);
         intent.setAction(Intent.ACTION_VIEW);
         intent.setData(uri);
         startActivity(intent);

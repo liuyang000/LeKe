@@ -14,6 +14,7 @@ import android.widget.FrameLayout;
 import com.artifex.mupdfdemo.MuPDFCore;
 import com.rongjie.leke.OptionConlection;
 import com.rongjie.leke.R;
+import com.rongjie.leke.fragment.TextBookFragment1;
 import com.rongjie.leke.view.MyFrameLayout;
 import com.rongjie.pdf.View.MuPDFPageView;
 
@@ -23,6 +24,11 @@ public class MuPDFPageAdapter extends BaseAdapter {
     private final MuPDFCore mCore;
     private final SparseArray<PointF> mPageSizes = new SparseArray<PointF>();
     private String tag = "MuPDFPageAdapter.class";
+    private TextBookFragment1 fragment;
+
+    public void setTextBookFragment(TextBookFragment1 fragment) {
+        this.fragment = fragment;
+    }
 
     public MuPDFPageAdapter(Context c, MuPDFCore core) {
         mContext = c;
@@ -63,7 +69,7 @@ public class MuPDFPageAdapter extends BaseAdapter {
             pageView.setLayoutParams(params);
             viewGroup.addView(pageView, 0);
 
-            frameLayout = (MyFrameLayout) View.inflate(mContext, R.layout.content_layout, null);
+            frameLayout = (MyFrameLayout) View.inflate(mContext, R.layout.notebook_item, null);
             frameLayout.setLayoutParams(params);
             viewGroup.addView(frameLayout, 1);
         } else {
@@ -71,9 +77,9 @@ public class MuPDFPageAdapter extends BaseAdapter {
             pageView = (MuPDFPageView) viewGroup.getChildAt(0);
             frameLayout = (MyFrameLayout) viewGroup.getChildAt(1);
         }
-        if (null != option) {
-            option.setRootView(frameLayout);
-            option.initNoteView();
+        if (null != fragment) {
+            fragment.setParentOfNoteView(frameLayout);
+            fragment.initNoteView();
         }
 
         PointF pageSize = mPageSizes.get(position);

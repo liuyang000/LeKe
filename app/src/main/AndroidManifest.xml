@@ -47,7 +47,7 @@
         </activity>
 
         <activity
-            android:name="com.rongjie.pdf.MuPDFActivity"
+            android:name=".activity.MainActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustUnspecified|stateHidden">

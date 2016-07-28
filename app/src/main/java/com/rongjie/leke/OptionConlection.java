@@ -4,7 +4,6 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.ClipData;
@@ -92,7 +91,6 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
     private ImageView exerciseBook;
     private ImageView bookMarker;
     private ImageView directory;
-    private ImageView screenShotImg;
     private NoteBookView booknote;
     private LinearLayout paintChoose;
     private LinearLayout bookNeedLayout;
@@ -171,7 +169,6 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
     }
 
     public void initNoteView() {
-        screenShotImg = (ImageView) root.findViewById(R.id.screenshot_img);
         booknote = (NoteBookView) root.findViewById(R.id.booknote);
         Log.e("NoteBookView", "view is : " + booknote);
         frameLayout = (MyFrameLayout) root.findViewById(R.id.note_parent);
@@ -291,7 +288,6 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
                 useLocalPhoto();
                 break;
             case R.id.screenshot:
-                Log.e(TAG, "screenshot.....................");
                 view = screenshot;
                 screenShotView.setSign(true);
                 frameLayout.setInterceptable(true);
@@ -460,8 +456,7 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
     private void useLocalPhoto() {
         Intent intent = new Intent();
         intent.setAction(Intent.ACTION_PICK);
-        intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-        ((Activity) context).startActivityForResult(intent, 1);
+        ( context).startActivityForResult(intent, 1);
     }
 
     @Override
@@ -718,12 +713,9 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
     }
 
     private void showCopyCut() {
-        screenShotImg.setImageBitmap(null);
         clipData = clipboardManager.getPrimaryClip();
         Uri uri = clipData.getItemAt(0).getUri();
         Bitmap bitmap = BitmapFactory.decodeFile(uri.getPath());
-        screenShotImg.setImageBitmap(bitmap);
-        ToastUtil.showToast(context, "aaaaaaaaaaaaaaaaaaaaaa");
     }
 
     /**
@@ -742,7 +734,7 @@ public class OptionConlection implements View.OnClickListener, NoteBookView.OnDo
     private void addLabel2UI() {
         FrameLayout.LayoutParams params = createLayoutParams();
         final MoveImageView imageView = new MoveImageView(context);
-        imageView.setImageResource(R.drawable.ic_launcher);
+        imageView.setImageResource(R.drawable.bianqian_img);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
