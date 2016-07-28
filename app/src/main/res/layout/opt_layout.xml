@@ -137,7 +137,7 @@
         android:id="@+id/opt_layout"
         android:layout_width="match_parent"
         android:layout_height="60dp"
-        android:background="#f8f8f8"
+        android:background="@drawable/huihua_bg"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:paddingLeft="20dp"
