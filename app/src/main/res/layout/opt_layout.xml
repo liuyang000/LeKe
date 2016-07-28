@@ -115,8 +115,9 @@
             android:indeterminate="false"
             android:maxHeight="4dp"
             android:padding="10dp"
-            android:progressDrawable="@drawable/seekbar_bg_selector"
-            android:thumb="@drawable/seekbar_alpha_bg_selector" />
+
+            android:progressDrawable="@drawable/seekbar_alpha_bg_selector"
+            android:thumb="@drawable/seekbar_huihua_thumb_selector" />
 
         <RelativeLayout
             android:layout_width="30dp"
