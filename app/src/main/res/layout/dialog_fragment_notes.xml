@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="600dp"
+    android:layout_height="700dp"
+    android:layout_gravity="center"
+    android:background="@android:color/transparent">
+
+    <LinearLayout
+        android:layout_width="600dp"
+        android:layout_height="700dp"
+        android:background="@drawable/img_fragment_notes_dialog_backgroud"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="61dp"
+            android:background="@drawable/img_shuqian_title"
+            android:gravity="center_vertical"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_alignParentLeft="true"
+                android:background="@drawable/img_btn_notes_dialog_select"
+                android:gravity="center"
+                android:text="取消"
+                android:textColor="@android:color/white"
+                android:textSize="18dp" />
+
+            <Button
+                android:layout_width="60dp"
+                android:layout_height="40dp"
+                android:layout_alignParentRight="true"
+                android:background="@drawable/img_btn_notes_dialog_select"
+                android:gravity="center"
+                android:text="创建"
+                android:textColor="@android:color/white"
+                android:textSize="18dp" />
+        </RelativeLayout>
+
+
+        <EditText
+            android:id="@+id/et_marks"
+            android:layout_width="match_parent"
+            android:layout_height="36dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/shuqian_input"
+            android:gravity="center|left"
+            android:hint="请输入笔记本名称"
+            android:maxLength="20"
+            android:paddingLeft="5dp"
+            android:textColor="#999999"
+            android:textColorHint="#999999"
+            android:textSize="18dp" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:text="笔记本样式"
+            android:textColor="#333333"
+            android:textSize="22dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_src_note_white" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_src_note_biji" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp"
+                android:layout_weight="1"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_src_note_tianzi" />
+
+            <ImageButton
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@null"
+                android:scaleType="fitXY"
+                android:src="@drawable/img_src_note_english" />
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

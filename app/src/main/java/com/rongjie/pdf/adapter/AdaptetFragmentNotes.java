@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.rongjie.leke.R;
 import com.rongjie.pdf.bean.NoteInfo;
+import com.rongjie.pdf.utils.Uiutils;
 
 import java.util.List;
 
@@ -59,11 +60,14 @@ public class AdaptetFragmentNotes extends RecyclerView.Adapter<AdaptetFragmentNo
 
         private final TextView mTvBookName;
         private final RelativeLayout mRlItemNotes;
+        private final ImageView mImgIcon;
 
         public HolerFragmentNotes(View itemView) {
             super(itemView);
             mTvBookName = (TextView) itemView.findViewById(R.id.tv_book_name);
             mRlItemNotes = (RelativeLayout) itemView.findViewById(R.id.rl_item_book);
+            mImgIcon = (ImageView) itemView.findViewById(R.id.img_book_icon);
+
         }
 
         public void setViewData(int position) {
@@ -71,8 +75,11 @@ public class AdaptetFragmentNotes extends RecyclerView.Adapter<AdaptetFragmentNo
                 //设置书的名字
                 if (mInfos.get(position).isAddView()){
                     mTvBookName.setText("ADD");
+                    mImgIcon.setImageDrawable(Uiutils.getDrawable(R.drawable.img_add));
+
                 }else{
                     mTvBookName.setText(mInfos.get(position).getFileName());
+                    mImgIcon.setImageDrawable(Uiutils.getDrawable(R.mipmap.yuanye));
                 }
             }
         }

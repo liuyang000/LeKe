@@ -14,6 +14,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -68,6 +69,7 @@ public class TextBookFragment extends com.rongjie.leke.fragment.BaseFragment imp
     private String START = "START";
     private String END = "END";
     private boolean isBackPage = false;
+    private ImageButton mBackBtn;
 
     @Nullable
     @Override
@@ -92,6 +94,8 @@ public class TextBookFragment extends com.rongjie.leke.fragment.BaseFragment imp
         bookMarkBtn = (Button) mRoot.findViewById(R.id.btn_item_bookmarks);
         initPageNumber();
         initDocView();
+        mBackBtn = (ImageButton) mRoot.findViewById(R.id.btn_back_page);
+        mBackBtn.setEnabled(false);
     }
 
     @Override

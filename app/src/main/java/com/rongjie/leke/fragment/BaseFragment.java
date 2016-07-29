@@ -102,7 +102,6 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
     protected RelativeLayout mRl_page;
     protected SeekBar mSeekbarPage;
     protected TextView mTvPageNumber;
-    protected Button mBackBtn;
 
     protected FrameLayout mParentLayout;
     protected int x;//绘画开始的横坐标
@@ -185,12 +184,10 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         mRl_page = (RelativeLayout) mRoot.findViewById(R.id.rl_page);
         mSeekbarPage = (SeekBar) mRoot.findViewById(R.id.seekbar_page);
         mTvPageNumber = (TextView) mRoot.findViewById(R.id.tv_page_number);
-        mBackBtn = (Button) mRoot.findViewById(R.id.btn_back_page);
 
         mStub = (ViewStub) mRoot.findViewById(R.id.view_stub);
         mParentLayout = (FrameLayout) mRoot.findViewById(R.id.parent_layout);
 
-        mBackBtn.setEnabled(false);
         mBookNeedLayout.setVisibility(View.INVISIBLE);
         mUndoIv.setEnabled(false);
         mRedoIv.setEnabled(false);
@@ -241,7 +238,6 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         mTextbookIv.setOnClickListener(this);
         mNotebookIv.setOnClickListener(this);
         mExerciseBookIv.setOnClickListener(this);
-        mBackBtn.setOnClickListener(this);
         mRoot.setOnTouchListener(this);
         mPenSizePg.setOnSeekBarChangeListener(this);
         mPenAlphaPg.setOnSeekBarChangeListener(this);

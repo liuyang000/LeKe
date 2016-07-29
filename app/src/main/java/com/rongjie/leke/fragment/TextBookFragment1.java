@@ -13,6 +13,7 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -34,6 +35,7 @@ import com.rongjie.pdf.bean.BookMarkInfo;
 import com.rongjie.pdf.bean.OutlineActivityData;
 import com.rongjie.pdf.global.PdfParams;
 import com.rongjie.pdf.utils.DateUtils;
+import com.rongjie.pdf.utils.Uiutils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -60,7 +62,7 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
     private RelativeLayout mRl_page;
     private SeekBar mSeekbarPage;
     private TextView mTvPageNumber;
-    private Button mBackPageBtn;
+    private ImageButton mBackPageBtn;
     private Button mBookMarkBtn;
     private Button mItemDirectory;
     private ImageView mBookMarkImg;
@@ -187,13 +189,14 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
         mBookMarkImg = (ImageView) mRoot.findViewById(R.id.bookmark);
         mDirectoryImg = (ImageView) mRoot.findViewById(R.id.directory);
 
-        initPageNumber();
+
         if (mBookMarks.containsKey(mbookMarksPage)) {
-            mBookMarkBtn.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+
+            mBookMarkerIv.setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_press_shuqian_red));
         } else {
-            mBookMarkBtn.setBackgroundColor(mContext.getResources().getColor(R.color.seek_thumb));
+            mBookMarkerIv.setImageDrawable(Uiutils.getDrawable(R.drawable.shuqian_img_btn));
         }
-        mBackPageBtn = (Button) mRoot.findViewById(R.id.btn_back_page);
+        mBackPageBtn = (ImageButton) mRoot.findViewById(R.id.btn_back_page);
         mBackPageBtn.setEnabled(false);
 
     }
@@ -216,8 +219,17 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
                 mProgresInfos.put(END, seekBar.getProgress());
                 //设置按钮可以点击
                 mBackPageBtn.setEnabled(true);
-                isBackPage = true;
+
                 mDocView.setDisplayedViewIndex((seekBar.getProgress() + mPageSliderRes / 2) / mPageSliderRes);
+
+                if (mProgresInfos.get(START) <seekBar.getProgress()) {
+
+                    isBackPage = true;
+                    mBackPageBtn.setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_qianjin_select));
+                }else{
+                    isBackPage = false;
+                    mBackPageBtn.setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_houtui_select));
+                }
             }
 
             public void onStartTrackingTouch(SeekBar seekBar) {
@@ -228,6 +240,8 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
                 updatePageNumView((progress + mPageSliderRes / 2) / mPageSliderRes);
             }
         });
+
+        initPageNumber();
     }
 
     private void initPageNumber() {
@@ -267,9 +281,9 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
                     //更新书签 ,设置按钮颜色
                     mbookMarksPage = i + 1;
                     if (mBookMarks.containsKey(mbookMarksPage)) {
-                        mBookMarkBtn.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+                        mBookMarkerIv.setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_press_shuqian_red));
                     } else {
-                        mBookMarkBtn.setBackgroundColor(mContext.getResources().getColor(R.color.seek_thumb));
+                        mBookMarkerIv.setImageDrawable(Uiutils.getDrawable(R.drawable.shuqian_img_btn));
                     }
                 }
             }
@@ -310,6 +324,7 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
         parent = mDocView.getCurrentItem();
         initNoteView();
         mDocView.setInterceptTouch(false);
+
         switch (view.getId()) {
             case R.id.gesture:
                 mDocView.setInterceptTouch(true);
@@ -343,9 +358,11 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
         if (!isBackPage) {
             isBackPage = true;
             progress = mProgresInfos.get(END);
+            mBackPageBtn.setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_qianjin_select));
         } else {
             isBackPage = false;
             progress = mProgresInfos.get(START);
+            mBackPageBtn.setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_houtui_select));
         }
         mDocView.setDisplayedViewIndex((progress + mPageSliderRes / 2) / mPageSliderRes);
     }
@@ -477,9 +494,9 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
         }
 
         if (mBookMarks.containsKey(mbookMarksPage)) {
-            mBookMarkBtn.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+            mBookMarkerIv.setImageDrawable(Uiutils.getDrawable(R.drawable.img_btn_press_shuqian_red));
         } else {
-            mBookMarkBtn.setBackgroundColor(mContext.getResources().getColor(R.color.seek_thumb));
+            mBookMarkerIv.setImageDrawable(Uiutils.getDrawable(R.drawable.shuqian_img_btn));
         }
         dialog.dismiss();
     }
@@ -501,28 +518,33 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
      * 点击目录
      */
     public void showDirectory() {
-        // 第一次进来 先获取 目录 ，以后就不需执行
-        if (mOutlineItems == null || mOutlineItems.length == 0) {
-            // 获取书的目录
-            OutlineItem outline[] = mCore.getOutline();
-            if (outline != null) {
-                // 设置 书的目录数据
-                OutlineActivityData.get().items = outline;
-                mOutlineItems = OutlineActivityData.get().items;
-                if (mBookAdapter == null) {
-                    mBookAdapter = new OutlineAdapter(((Activity) mContext).getLayoutInflater(), mOutlineItems);
+        {
+            // 第一次进来 先获取 目录 ，以后就不需执行
+            if (mOutlineItems == null || mOutlineItems.length == 0) {
+                // 获取书的目录
+                OutlineItem outline[] = mCore.getOutline();
+                if (outline != null) {
+                    // 设置 书的目录数据
+                    OutlineActivityData.get().items = outline;
+                    mOutlineItems = OutlineActivityData.get().items;
+                    if (mBookAdapter == null) {
+                        mBookAdapter = new OutlineAdapter(((Activity) mContext).getLayoutInflater(), mOutlineItems);
+                    }
                 }
             }
-        }
-        // TODO: 增加判断 当获取目录为空
-        if (mOutlineItems != null && mOutlineItems.length > 0 && mBookAdapter != null) {
-            mLvBookDirectory.setAdapter(mBookAdapter);
-            mBookAdapter.notifyDataSetChanged();
-        }
-        mRlDirectory.setVisibility(View.VISIBLE);
-        if (mRlPageVisible) {
-            mRlPageVisible = false;
-            hideSeekbarLayout();
+            // TODO: 增加判断 当获取目录为空
+            if (mOutlineItems != null && mOutlineItems.length > 0 && mBookAdapter != null) {
+                mLvBookDirectory.setAdapter(mBookAdapter);
+                mBookAdapter.notifyDataSetChanged();
+            }
+            mRlDirectory.setVisibility(View.VISIBLE);
+            setMarkAndDirectoryClickTextChange(true);
+
+
+            if (mRlPageVisible) {
+                mRlPageVisible = false;
+                hideSeekbarLayout();
+            }
         }
     }
 
@@ -570,5 +592,26 @@ public class TextBookFragment1 extends BaseFragment implements AdapterView.OnIte
         mRl_page.startAnimation(anim);
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        System.out.println(" onPause");
+        if (mFileName != null && mDocView != null) {
+            SharedPreferences prefs = ((Activity) mContext).getPreferences(Context.MODE_PRIVATE);
+            SharedPreferences.Editor edit = prefs.edit();
+            edit.putInt("page" + mFileName, mDocView.getDisplayedViewIndex());
+            edit.commit();
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        System.out.println(" onDestroyView");
+        super.onDestroyView();
+        if (mCore != null) {
+            mCore.onDestroy();
+        }
+        mCore = null;
+    }
 
 }
