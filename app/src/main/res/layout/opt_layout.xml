@@ -3,11 +3,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="#00000000"
+    android:clickable="true"
     >
     <LinearLayout
         android:id="@+id/paint_choose"
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="60dp"
         android:background="@drawable/huihua_bg"
         android:clickable="true"
         android:gravity="center_vertical"
@@ -69,8 +70,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:background="@null"
-            android:scaleType="fitXY"
-            android:src="@drawable/img_btn_normal_xiangpi" />
+            android:src="@drawable/img_btn_xiangpi_select" />
 
         <View
 
@@ -86,7 +86,7 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginLeft="30dp"
-            android:background="@drawable/btn_bg_selector"
+            android:background="@drawable/color_btn_bg"
             android:text="颜色" />
 
         <SeekBar
@@ -271,6 +271,5 @@
             android:layout_weight="1"
             android:src="@drawable/zuoye_img_btn"
             android:text="作业" />
-
     </LinearLayout>
 </FrameLayout>

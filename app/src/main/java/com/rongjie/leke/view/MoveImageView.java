@@ -2,11 +2,13 @@ package com.rongjie.leke.view;
 
 import android.content.Context;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.MotionEvent;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 
 import com.rongjie.leke.Position;
+import com.rongjie.pdf.utils.Uiutils;
 
 public class MoveImageView extends ImageView {
 
@@ -73,9 +75,10 @@ public class MoveImageView extends ImageView {
         viewGroup = (FrameLayout) getParent();
         params = (FrameLayout.LayoutParams) getLayoutParams();
         params.leftMargin = (int) (mRawX - mStartX);
-        params.topMargin = (int) (mRawY - mStartY - 2 * getStatusBarHeight());
+        params.topMargin = (int) (mRawY - mStartY - Uiutils.getStatusBarHeight()-60);
 //        params.topMargin = (int) (mRawY - mStartY);
         viewGroup.updateViewLayout(this, params);
+        Log.e(TAG,"viewgroup's width is : " + viewGroup.getWidth() + ",height is : " + viewGroup.getHeight());
     }
 
     public void saveLocation() {
@@ -92,12 +95,5 @@ public class MoveImageView extends ImageView {
         void updateImageViewMap(Position position, MoveImageView imageView);
     }
 
-    public int getStatusBarHeight() {
-        int result = 0;
-        int resourceId = getResources().getIdentifier("status_bar_height", "dimen", "android");
-        if (resourceId > 0) {
-            result = getResources().getDimensionPixelSize(resourceId);
-        }
-        return result;
-    }
+
 }

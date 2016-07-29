@@ -53,6 +53,7 @@ import com.rongjie.leke.view.MoveImageView;
 import com.rongjie.leke.view.MyFrameLayout;
 import com.rongjie.leke.view.NoteBookView;
 import com.rongjie.leke.view.ScreenShotView;
+import com.rongjie.pdf.utils.Uiutils;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -69,7 +70,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
     protected ImageButton mOliBlackPen;
     protected ImageButton mMakerPen;
     protected ImageButton mEraser;
-    protected ImageButton color;
+    protected ImageButton mColor;
     protected SeekBar mPenSizePg;
     protected ImageView mPenSizeIv;
     protected SeekBar mPenAlphaPg;
@@ -154,7 +155,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         mOliBlackPen = (ImageButton) mRoot.findViewById(R.id.oli_black_pen);
         mMakerPen = (ImageButton) mRoot.findViewById(R.id.maker_pen);
         mEraser = (ImageButton) mRoot.findViewById(R.id.eraser);
-        color = (ImageButton) mRoot.findViewById(R.id.color);
+        mColor = (ImageButton) mRoot.findViewById(R.id.color);
         mPenSizePg = (SeekBar) mRoot.findViewById(R.id.pen_size_pg);
         mPenSizeIv = (ImageView) mRoot.findViewById(R.id.pen_size);
         mPenAlphaPg = (SeekBar) mRoot.findViewById(R.id.pen_alpha_pg);
@@ -225,7 +226,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         mOliBlackPen.setOnClickListener(this);
         mMakerPen.setOnClickListener(this);
         mEraser.setOnClickListener(this);
-        color.setOnClickListener(this);
+        mColor.setOnClickListener(this);
         mBookPackageIv.setOnClickListener(this);
         mGestureIv.setOnClickListener(this);
         mPaintDrawIv.setOnClickListener(this);
@@ -250,6 +251,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
     private int chooserHeight;
     private boolean flag = false;//用来标识便签显示是以便签按钮为入口的
     protected View view;
+    private boolean isNeedHide;
 
     @Override
     public void onClick(View v) {
@@ -265,33 +267,40 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
             mGestureIv.setSelected(false);
         }
         isNeedCutScreen = false;
+        isNeedHide = true;
         switch (v.getId()) {
             case R.id.pen:
                 view = mPen;
+                isNeedHide = false;
                 updateStatus(Color.BLACK, 2, 255);
                 mNoteBookView.setPen();
                 break;
             case R.id.pencil:
                 //TODO:设置画笔为铅笔
                 view = mPencil;
+                isNeedHide = false;
                 break;
             case R.id.oli_black_pen:
                 view = mOliBlackPen;
                 updateStatus(Color.BLACK, 5, 255);
                 mNoteBookView.setOilBlackPen();
+                isNeedHide = false;
                 break;
             case R.id.maker_pen:
                 view = mMakerPen;
                 updateStatus(Color.GREEN, 15, 100);
                 mNoteBookView.setMakerPen();
+                isNeedHide = false;
                 break;
             case R.id.eraser:
                 view = mEraser;
                 mNoteBookView.useEraser();
+                isNeedHide = false;
                 break;
             case R.id.color:
-                view = color;
+                view = mColor;
                 showColorSelector();
+                isNeedHide = false;
                 break;
             case R.id.book_package:
                 //TODO：返回书包界面
@@ -366,7 +375,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
                 break;
 
         }
-        if (null != view && view != mPaintDrawIv && mPaintChoose.getVisibility() == View.VISIBLE) {
+        if (null != view && isNeedHide && view != mPaintDrawIv && mPaintChoose.getVisibility() == View.VISIBLE) {
             outAnimator();
         }
         if (null != view && view != mUndoIv && view != mRedoIv) {
@@ -434,7 +443,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         //软键盘不会挡着popupwindow
         popWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         //设置菜单显示的位置
-        popWindow.showAtLocation(mPaintChoose, Gravity.TOP, 0, 2 * mPaintChoose.getHeight());
+        popWindow.showAtLocation(mPaintChoose, Gravity.TOP, 0, 2 * mPaintChoose.getHeight() + Uiutils.getStatusBarHeight());
         //监听触屏事件
         popWindow.setTouchInterceptor(new View.OnTouchListener() {
             public boolean onTouch(View view, MotionEvent event) {
@@ -451,6 +460,8 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         drawable.setColor(color);
         GradientDrawable alphaDrawable = (GradientDrawable) mPenAlphaIv.getBackground();
         alphaDrawable.setColor(color);
+        GradientDrawable colorDrawable = (GradientDrawable) mColor.getBackground();
+        colorDrawable.setColor(color);
         mNoteBookView.setPaintColor(color);
     }
 
@@ -639,7 +650,12 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
                     y = (int) event.getY();
                 }
                 bitmap = getBitmap();
-                showScreenCutOptWindow();
+                if (null != bitmap) {
+                    showScreenCutOptWindow();
+                }else{
+                    ToastUtil.showToast(mContext,"请正确截图。。。");
+                    resetScreenView();
+                }
                 break;
         }
         return true;
@@ -682,8 +698,8 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         mScreenShotView.getLocationInWindow(locations);
         Log.e(TAG, "locations is : " + locations[0] + "," + locations[1]);
         int distance = width - 320;
-        Log.e(TAG,"width is : " + width + ",view's width is : " + view.getWidth()+",distance is : " + distance);
-        cutPopWindow.showAtLocation(mParentLayout, Gravity.NO_GRAVITY, popX , popY + 20);
+        Log.e(TAG, "width is : " + width + ",view's width is : " + view.getWidth() + ",distance is : " + distance);
+        cutPopWindow.showAtLocation(mParentLayout, Gravity.NO_GRAVITY, popX, popY + 20);
         //监听触屏事件
         cutPopWindow.setTouchInterceptor(new View.OnTouchListener() {
             public boolean onTouch(View view, MotionEvent event) {
@@ -698,7 +714,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
     private void saveCutOpt() {
         cutCommenOpt();
         saveCutPic();
-        ToastUtil.showToast(mContext, R.string.save_cut_success);
+        ToastUtil.showCustomToast(mContext, R.string.save_cut_success);
     }
 
     private void saveCutPic() {
@@ -726,7 +742,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
      * 发送截图
      */
     private void sendCutOpt() {
-        ToastUtil.showToast(mContext, R.string.cut_pic_sent);
+        ToastUtil.showCustomToast(mContext, R.string.cut_pic_sent);
         cutCommenOpt();
     }
 
@@ -799,7 +815,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         view.getWindowVisibleDisplayFrame(frame);
         Bitmap bmp = null;
         Log.e(TAG, "width is : " + width + ",height is : " + height + ",x is : " + x + ",y is : " + y + ",bitmap's width is : " + bitmap.getWidth() + ",bitmap's height is : " + bitmap.getHeight());
-        if (width > 0 && height > 0 && x + width <= bitmap.getWidth() && y > 0 && (y <= bitmap.getHeight())) {
+        if (width > 1 && height > 1 && x + width <= bitmap.getWidth() && y > 0 && (y <= bitmap.getHeight())) {
             bmp = Bitmap.createBitmap(bitmap, x + 1, y + 1, width - 1, height - 1);
         }
         view.setDrawingCacheEnabled(false);
