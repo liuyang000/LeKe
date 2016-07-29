@@ -74,7 +74,6 @@ public class AdaptetFragmentNotes extends RecyclerView.Adapter<AdaptetFragmentNo
             if (mInfos != null && mInfos.size() > 0) {
                 //设置书的名字
                 if (mInfos.get(position).isAddView()){
-                    mTvBookName.setText("ADD");
                     mImgIcon.setImageDrawable(Uiutils.getDrawable(R.drawable.img_add));
 
                 }else{

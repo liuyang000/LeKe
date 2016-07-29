@@ -1,6 +1,5 @@
 package com.rongjie.pdf.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -8,7 +7,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
-import android.os.Looper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.WindowManager;
@@ -37,6 +35,17 @@ public class Uiutils {
         return MyApplication.getApplication();
     }
 
+    /**
+     * 获取状态栏高度
+     */
+    public static int getStatusBarHeight() {
+        int result = 0;
+        int resourceId = getContext().getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            result = getContext().getResources().getDimensionPixelSize(resourceId);
+        }
+        return result;
+    }
 
 
 

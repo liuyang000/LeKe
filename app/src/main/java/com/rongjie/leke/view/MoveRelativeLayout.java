@@ -54,8 +54,8 @@ public class MoveRelativeLayout extends RelativeLayout {
         viewGroup = (FrameLayout) getParent();
         params = (FrameLayout.LayoutParams) getLayoutParams();
         params.leftMargin = (int) (mRawX - mStartX);
-//        params.topMargin = (int) (mRawY - mStartY - 2 * getStatusBarHeight());
-        params.topMargin = (int) (mRawY - mStartY);
+        params.topMargin = (int) (mRawY - mStartY - getStatusBarHeight() - 60);
+//        params.topMargin = (int) (mRawY - mStartY);
         viewGroup.updateViewLayout(this, params);
     }
 
