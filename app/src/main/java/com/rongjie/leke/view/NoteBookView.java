@@ -56,13 +56,13 @@ public class NoteBookView extends View {
 
     public NoteBookView(Context context) {
         super(context);
-        mContext = context ;
+        mContext = context;
         init();
     }
 
     public NoteBookView(Context context, AttributeSet attrs) {
         super(context, attrs);
-        mContext = context ;
+        mContext = context;
         init();
     }
 
@@ -111,8 +111,9 @@ public class NoteBookView extends View {
     }
 
     private void init() {
-        screenWidth= Uiutils.getScreenWidth(mContext) ;
-        screenHeight=Uiutils.getScreenHeight(mContext);
+        screenWidth = Uiutils.getScreenWidth(mContext);
+        screenHeight = Uiutils.getScreenHeight(mContext);
+        Log.e(TAG,"width is : " + screenWidth + ",height is : " + screenHeight);
         mBitmap = Bitmap.createBitmap(screenWidth, screenHeight, Bitmap.Config.ARGB_8888);
         // 保存一次一次绘制出来的图形
         mCanvas = new Canvas(mBitmap);
@@ -131,26 +132,34 @@ public class NoteBookView extends View {
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        Log.e(TAG,"onDetachedFromWindow............" + this);
+        Log.e(TAG, "onDetachedFromWindow............" + this);
     }
 
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        Log.e(TAG,"onAttachedToWindow..............." + this);
+        Log.e(TAG, "onAttachedToWindow..............." + this);
         setPen();
     }
+
     private int mCanvasColor = 0x00000000;
 
-    public void setCanvasColor(int mCanvasColor){
+    public void setCanvasColor(int mCanvasColor) {
         this.mCanvasColor = mCanvasColor;
-        invalidate();
+//        invalidate();
     }
 
-    public void resetCanvasColor(){
+    public void resetCanvasColor() {
         this.mCanvasColor = 0x00000000;
         invalidate();
     }
+
+    public void setCanvasBitmap(Bitmap mBitmap) {
+        this.mBitmap = Bitmap.createBitmap(mBitmap);
+//        mCanvas = null;
+//        mCanvas = new Canvas(this.mBitmap);
+    }
+
     @Override
     public void onDraw(Canvas canvas) {
 //        canvas.drawColor(0xFFAAAAAA);
@@ -159,9 +168,9 @@ public class NoteBookView extends View {
         canvas.drawBitmap(mBitmap, 0, 0, mBitmapPaint);
         if (mPath != null) {
             // 实时的显示
-            if (flagOfErase){
-                mCanvas.drawPath(mPath,mPaint);
-            }else {
+            if (flagOfErase) {
+                mCanvas.drawPath(mPath, mPaint);
+            } else {
                 canvas.drawPath(mPath, mPaint);
             }
         }
@@ -269,10 +278,12 @@ public class NoteBookView extends View {
             e.printStackTrace();
         }
     }
+
     private float preX;
     private float preY;
     private float currentX;
     private float currentY;
+
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         if (!isEnabled()) {
@@ -301,7 +312,7 @@ public class NoteBookView extends View {
                 preY = y;
                 touch_start(x, y);
                 invalidate();
-                Log.e(TAG,"action_down..............(x,y) is " + x +"," + y);
+                Log.e(TAG, "action_down..............(x,y) is " + x + "," + y);
                 break;
             case MotionEvent.ACTION_MOVE:
                 touch_move(x, y);
@@ -310,27 +321,30 @@ public class NoteBookView extends View {
                 preX = currentX;
                 preY = currentY;
                 invalidate();
-                Log.e(TAG,"action_move..............(x,y) is " + x +"," + y);
+                Log.e(TAG, "action_move..............(x,y) is " + x + "," + y);
                 break;
             case MotionEvent.ACTION_UP:
                 touch_up();
                 invalidate();
-                Log.e(TAG,"action_up..............(x,y) is " + x +"," + y);
+                Log.e(TAG, "action_up..............(x,y) is " + x + "," + y);
                 break;
         }
         return true;
     }
 
-    public void setPaintSize(float width){
+    public void setPaintSize(float width) {
         mPaint.setStrokeWidth(width);
     }
-    public void setPaintAlpha(int value){
+
+    public void setPaintAlpha(int value) {
         mPaint.setAlpha(value);
     }
-    public void setPaintColor(int color){
+
+    public void setPaintColor(int color) {
         mPaint.setColor(color);
         setColorPenAlpha();
     }
+
     public void setPen() {
         mPaint.setXfermode(null);
         isColorPen = false;
@@ -362,7 +376,9 @@ public class NoteBookView extends View {
         mPaint.setColor(Color.GREEN);
         mPaint.setAlpha(100);
     }
+
     private boolean flagOfErase;
+
     public void useEraser() {
         flagOfErase = true;
         mPaint.setAntiAlias(true);

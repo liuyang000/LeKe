@@ -35,6 +35,7 @@ import android.view.ViewStub;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -63,12 +64,12 @@ import java.util.Map;
  * Created by jiangliang on 2016/7/8.
  */
 public class BaseFragment extends Fragment implements View.OnClickListener, NoteBookView.OnUndoOptListener, NoteBookView.OnDoOptListener, ShortNoteFragment.DeleteLabelListener, ShortNoteFragment.AddLabelListener, View.OnTouchListener, MoveImageView.UpdateImageViewMapListener, SeekBar.OnSeekBarChangeListener {
-    protected Button mPen;
-    protected Button mPencil;
-    protected Button mOliBlackPen;
-    protected Button mMakerPen;
-    protected Button mEraser;
-    protected Button color;
+    protected ImageButton mPen;
+    protected ImageButton mPencil;
+    protected ImageButton mOliBlackPen;
+    protected ImageButton mMakerPen;
+    protected ImageButton mEraser;
+    protected ImageButton color;
     protected SeekBar mPenSizePg;
     protected ImageView mPenSizeIv;
     protected SeekBar mPenAlphaPg;
@@ -103,6 +104,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
     protected TextView mTvPageNumber;
     protected Button mBackBtn;
 
+    protected FrameLayout mParentLayout;
     protected int x;//绘画开始的横坐标
     protected int y;//绘画开始的纵坐标
     protected int right;//绘画结束的横坐标
@@ -147,12 +149,12 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
     }
 
     private void initBaseView() {
-        mPen = (Button) mRoot.findViewById(R.id.pen);
-        mPencil = (Button) mRoot.findViewById(R.id.pencil);
-        mOliBlackPen = (Button) mRoot.findViewById(R.id.oli_black_pen);
-        mMakerPen = (Button) mRoot.findViewById(R.id.maker_pen);
-        mEraser = (Button) mRoot.findViewById(R.id.eraser);
-        color = (Button) mRoot.findViewById(R.id.color);
+        mPen = (ImageButton) mRoot.findViewById(R.id.pen);
+        mPencil = (ImageButton) mRoot.findViewById(R.id.pencil);
+        mOliBlackPen = (ImageButton) mRoot.findViewById(R.id.oli_black_pen);
+        mMakerPen = (ImageButton) mRoot.findViewById(R.id.maker_pen);
+        mEraser = (ImageButton) mRoot.findViewById(R.id.eraser);
+        color = (ImageButton) mRoot.findViewById(R.id.color);
         mPenSizePg = (SeekBar) mRoot.findViewById(R.id.pen_size_pg);
         mPenSizeIv = (ImageView) mRoot.findViewById(R.id.pen_size);
         mPenAlphaPg = (SeekBar) mRoot.findViewById(R.id.pen_alpha_pg);
@@ -186,11 +188,9 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         mBackBtn = (Button) mRoot.findViewById(R.id.btn_back_page);
 
         mStub = (ViewStub) mRoot.findViewById(R.id.view_stub);
+        mParentLayout = (FrameLayout) mRoot.findViewById(R.id.parent_layout);
 
-
-        mBackBtn.setOnClickListener(this);
         mBackBtn.setEnabled(false);
-
         mBookNeedLayout.setVisibility(View.INVISIBLE);
         mUndoIv.setEnabled(false);
         mRedoIv.setEnabled(false);
@@ -241,6 +241,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         mTextbookIv.setOnClickListener(this);
         mNotebookIv.setOnClickListener(this);
         mExerciseBookIv.setOnClickListener(this);
+        mBackBtn.setOnClickListener(this);
         mRoot.setOnTouchListener(this);
         mPenSizePg.setOnSeekBarChangeListener(this);
         mPenAlphaPg.setOnSeekBarChangeListener(this);
@@ -259,6 +260,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         mFrameLayout.setInterceptable(false);
         if (null != view) {
             view.setSelected(false);
+            Log.e(TAG, "....................................");
         } else {
             mGestureIv.setSelected(false);
         }
@@ -611,6 +613,8 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
                 x = (int) event.getX();
                 //纵坐标应减去顶部操作栏的高度
                 y = (int) event.getY();
+                popX = x;
+                popY = y;
                 if (mScreenShotView.getParent() != null) {
                     ((ViewGroup) mScreenShotView.getParent()).removeView(mScreenShotView);
                 }
@@ -646,6 +650,8 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
      * 显示截图操作窗口
      */
     private PopupWindow cutPopWindow;
+    private int popX;
+    private int popY;
 
     private void showScreenCutOptWindow() {
         View view = View.inflate(mContext, R.layout.screencut_opt_layout, null);
@@ -659,7 +665,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         saveCut.setOnClickListener(this);
 
         Log.e(TAG, "screenview's width is : " + mScreenShotView.getWidth() + " : " + mScreenShotView.getCutWidth());
-        cutPopWindow = new PopupWindow(view, mScreenShotView.getCutWidth(), ViewGroup.LayoutParams.WRAP_CONTENT);
+        cutPopWindow = new PopupWindow(view, ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
         // 使其能获得焦点 ，要想监听菜单里控件的事件就必须要调用此方法
         cutPopWindow.setFocusable(true);
         // 设置允许在外点击消失
@@ -669,10 +675,15 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         //软键盘不会挡着popupwindow
         cutPopWindow.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE);
         Log.e(TAG, "left value is : " + mScreenShotView.getLeftValue() + ",top value is : " + mScreenShotView.getTopValue());
+        Log.e(TAG, "screenview's x is : " + x + ",y is : " + y);
+        Log.e(TAG, "popX is : " + popX + ", popY is : " + popY + ",width is : " + width);
         //设置菜单显示的位置
         int[] locations = new int[2];
         mScreenShotView.getLocationInWindow(locations);
-        cutPopWindow.showAtLocation(mScreenShotView, Gravity.NO_GRAVITY, mScreenShotView.getLeftValue(), mScreenShotView.getTopValue() + 10);
+        Log.e(TAG, "locations is : " + locations[0] + "," + locations[1]);
+        int distance = width - 320;
+        Log.e(TAG,"width is : " + width + ",view's width is : " + view.getWidth()+",distance is : " + distance);
+        cutPopWindow.showAtLocation(mParentLayout, Gravity.NO_GRAVITY, popX , popY + 20);
         //监听触屏事件
         cutPopWindow.setTouchInterceptor(new View.OnTouchListener() {
             public boolean onTouch(View view, MotionEvent event) {

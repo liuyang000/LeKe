@@ -4,7 +4,8 @@ import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+
+import com.rongjie.leke.view.ColorView;
 
 /**
  * Created by jiangliang on 2016/7/12.
@@ -20,15 +21,22 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHol
 
     @Override
     public ColorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        Button btn = new Button(context);
-        btn.setWidth(50);
-        btn.setHeight(30);
+        ColorView btn = new ColorView(context);
+//        btn.setWidth(50);
+//        btn.setHeight(30);
         return new ColorViewHolder(btn);
     }
 
     @Override
     public void onBindViewHolder(ColorViewHolder holder, final int position) {
-        holder.btn.setBackgroundColor(colors[position]);
+//        holder.btn.setBackgroundColor(colors[position]);
+//        GradientDrawable drawable = new GradientDrawable();
+//        drawable.setColor(colors[position]);
+//        drawable.setStroke(5,0xe0e0e0);
+//        drawable.setCornerRadii(new float[]{2,2,2,2,2,2,2,2});
+//        holder.btn.setBackgroundDrawable(drawable);
+//        holder.btn.setBackgroundResource(R.drawable.color_item_shape);
+        holder.btn.setFillColor(colors[position]);
         if (null != listener) {
             holder.btn.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -55,11 +63,12 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHol
     }
 
     public class ColorViewHolder extends RecyclerView.ViewHolder {
-        Button btn;
+//        Button btn;
 
+        ColorView btn;
         public ColorViewHolder(View itemView) {
             super(itemView);
-            btn = (Button) itemView;
+            btn = (ColorView) itemView;
         }
     }
 }

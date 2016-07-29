@@ -19,7 +19,7 @@ public class NoteBookFragment extends BaseFragment {
         parent = mStub.inflate();
         mNotebookIv.setEnabled(false);
         initNoteView();
-        mNoteBookView.setCanvasColor(0xFFAAAAAA);
+        mNoteBookView.setBackgroundResource(R.drawable.biji_canvas_bg);
     }
 
     @Override

@@ -1,14 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="horizontal" android:layout_width="match_parent"
-    android:background="@android:color/holo_blue_light"
+    android:orientation="horizontal" android:layout_width="@dimen/cut_screen_layout_width"
     android:gravity="center_vertical"
-    android:layout_height="match_parent">
+    android:layout_height="@dimen/cut_screen_layout_height">
     <Button
         android:id="@+id/cancel_cut"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:background="@drawable/cancel_btn"
+        android:textSize="@dimen/cut_screen_text_size"
+        android:textColor="@drawable/cut_screen_text_color_selector"
         android:text="取消"
         />
     <Button
@@ -16,6 +18,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:background="@drawable/copy_btn"
+        android:layout_marginLeft="1dp"
+        android:textSize="@dimen/cut_screen_text_size"
+        android:textColor="@drawable/cut_screen_text_color_selector"
         android:text="拷贝"
         />
     <Button
@@ -23,6 +29,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:background="@drawable/send_btn"
+        android:layout_marginLeft="1dp"
+        android:textSize="@dimen/cut_screen_text_size"
+        android:textColor="@drawable/cut_screen_text_color_selector"
         android:text="发送"
         />
     <Button
@@ -30,6 +40,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:layout_marginLeft="1dp"
+        android:background="@drawable/save_btn"
+        android:textSize="@dimen/cut_screen_text_size"
+        android:textColor="@drawable/cut_screen_text_color_selector"
         android:text="保存"
         />
 </LinearLayout>

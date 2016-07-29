@@ -180,7 +180,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:src="@drawable/shuqian_img_btn"
+            android:src="@drawable/bianqian_img_btn"
             android:text="便签" />
 
         <ImageView
