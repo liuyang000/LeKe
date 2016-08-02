@@ -22,15 +22,16 @@
             android:src="@mipmap/yuanye" />
 
         <TextView
+            android:gravity="center"
+            android:maxLines="2"
+            android:maxLength="8"
+            android:layout_centerInParent="true"
             android:id="@+id/tv_book_name"
-            android:layout_width="wrap_content"
+            android:layout_width="56dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
             android:layout_marginBottom="3dp"
-            android:text="数据NAME"
-            android:textColor="@android:color/white"
-            android:textSize="16dp" />
+            android:textColor="@android:color/black"
+            android:textSize="18dp" />
     </RelativeLayout>
 
 </FrameLayout>
