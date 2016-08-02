@@ -22,23 +22,14 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHol
     @Override
     public ColorViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         ColorView btn = new ColorView(context);
-//        btn.setWidth(50);
-//        btn.setHeight(30);
         return new ColorViewHolder(btn);
     }
 
     @Override
     public void onBindViewHolder(ColorViewHolder holder, final int position) {
-//        holder.btn.setBackgroundColor(colors[position]);
-//        GradientDrawable drawable = new GradientDrawable();
-//        drawable.setColor(colors[position]);
-//        drawable.setStroke(5,0xe0e0e0);
-//        drawable.setCornerRadii(new float[]{2,2,2,2,2,2,2,2});
-//        holder.btn.setBackgroundDrawable(drawable);
-//        holder.btn.setBackgroundResource(R.drawable.color_item_shape);
-        holder.btn.setFillColor(colors[position]);
+        holder.mColorView.setFillColor(colors[position]);
         if (null != listener) {
-            holder.btn.setOnClickListener(new View.OnClickListener() {
+            holder.mColorView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener.onItemClick(position);
@@ -63,12 +54,10 @@ public class ColorAdapter extends RecyclerView.Adapter<ColorAdapter.ColorViewHol
     }
 
     public class ColorViewHolder extends RecyclerView.ViewHolder {
-//        Button btn;
-
-        ColorView btn;
+        ColorView mColorView;
         public ColorViewHolder(View itemView) {
             super(itemView);
-            btn = (ColorView) itemView;
+            mColorView = (ColorView) itemView;
         }
     }
 }

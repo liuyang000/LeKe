@@ -64,7 +64,7 @@ import java.util.Map;
 /**
  * Created by jiangliang on 2016/7/8.
  */
-public class BaseFragment extends Fragment implements View.OnClickListener, NoteBookView.OnUndoOptListener, NoteBookView.OnDoOptListener, ShortNoteFragment.DeleteLabelListener, ShortNoteFragment.AddLabelListener, View.OnTouchListener, MoveImageView.UpdateImageViewMapListener, SeekBar.OnSeekBarChangeListener {
+public class BaseFragment extends Fragment implements View.OnClickListener, NoteBookView.OnUndoOptListener, NoteBookView.OnDoOptListener, ShortNoteFragment.DeleteLabelListener, ShortNoteFragment.AddLabelListener, View.OnTouchListener, MoveImageView.UpdateImageViewMapListener, SeekBar.OnSeekBarChangeListener, DrawFragment.OnDrawListener {
     protected ImageButton mPen;
     protected ImageButton mPencil;
     protected ImageButton mOliBlackPen;
@@ -324,6 +324,7 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
             case R.id.draw_pic:
                 //TODO:使用绘图工具
                 view = mDrawPicIv;
+                toDrawFragment();
                 break;
             case R.id.label:
                 view = mLabelIv;
@@ -381,6 +382,24 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
         if (null != view && view != mUndoIv && view != mRedoIv) {
             view.setSelected(true);
         }
+    }
+
+    /**
+     * 跳转至绘图界面
+     */
+    private DrawFragment mDrawFragment;
+
+    private void toDrawFragment() {
+        FragmentManager fm = getFragmentManager();
+        FragmentTransaction ft = fm.beginTransaction();
+        if (null == mDrawFragment) {
+            mDrawFragment = new DrawFragment();
+            mDrawFragment.setOnDrawListener(this);
+            ft.add(R.id.parent_layout, mDrawFragment);
+        } else {
+            ft.show(mDrawFragment);
+        }
+        ft.commit();
     }
 
     private void toTextBookFragment() {
@@ -652,8 +671,8 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
                 bitmap = getBitmap();
                 if (null != bitmap) {
                     showScreenCutOptWindow();
-                }else{
-                    ToastUtil.showToast(mContext,"请正确截图。。。");
+                } else {
+                    ToastUtil.showToast(mContext, "请正确截图。。。");
                     resetScreenView();
                 }
                 break;
@@ -859,6 +878,12 @@ public class BaseFragment extends Fragment implements View.OnClickListener, Note
 
     public void setOnSwitcherListener(OnSwitcherListener switcherListener) {
         this.switcherListener = switcherListener;
+    }
+
+    @Override
+    public void onDraw2UI(String points) {
+        Log.e(TAG, "points is : " + points);
+        addLabel();
     }
 
     public interface OnSwitcherListener {

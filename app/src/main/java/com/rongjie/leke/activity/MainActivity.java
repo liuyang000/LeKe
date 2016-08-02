@@ -20,79 +20,74 @@ public class MainActivity extends Activity implements BaseFragment.OnSwitcherLis
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-//        FragmentManager fm = getFragmentManager();
-//        FragmentTransaction ft = fm.beginTransaction();
-//        TextBookFragment1 fragment = new TextBookFragment1();
-//        fragment.setOnSwitcherListener(this);
-//        ft.add(R.id.container, fragment);
-//        ft.commit();
         toTextBookFragment();
     }
 
     /**
      * 跳转至课本界面
      */
-    private BaseFragment fragment;
-    private TextBookFragment1 textBookFragment;
+    private BaseFragment mFragment;
+    private TextBookFragment1 mTextBookFragment;
 
     private void toTextBookFragment() {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        if (null == textBookFragment) {
-            textBookFragment = new TextBookFragment1();
-            textBookFragment.setOnSwitcherListener(this);
-            ft.add(R.id.container, textBookFragment);
+        if (null == mTextBookFragment) {
+            mTextBookFragment = new TextBookFragment1();
+            mTextBookFragment.setOnSwitcherListener(this);
+            ft.add(R.id.container, mTextBookFragment);
         } else {
-            ft.show(textBookFragment);
+            ft.show(mTextBookFragment);
         }
-        if (fragment != null) {
-            ft.hide(fragment);
+        if (mFragment != null) {
+            ft.hide(mFragment);
         }
-        fragment = textBookFragment;
+        mFragment = mTextBookFragment;
         ft.commit();
     }
 
     /**
      * 跳转至笔记本界面
      */
-    private NoteBookFragment noteBookFragment;
+    private NoteBookFragment mNoteBookFragment;
     private void toNoteBookFragment() {
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        if (null == noteBookFragment) {
-            noteBookFragment = new NoteBookFragment();
-            noteBookFragment.setOnSwitcherListener(this);
-            ft.add(R.id.container, noteBookFragment);
+        if (null == mNoteBookFragment) {
+            mNoteBookFragment = new NoteBookFragment();
+            mNoteBookFragment.setOnSwitcherListener(this);
+            ft.add(R.id.container, mNoteBookFragment);
         } else {
-            ft.show(noteBookFragment);
+            ft.show(mNoteBookFragment);
         }
-        if (fragment != null) {
-            ft.hide(fragment);
+        if (mFragment != null) {
+            ft.hide(mFragment);
         }
-        fragment = noteBookFragment;
+        mFragment = mNoteBookFragment;
         ft.commit();
     }
 
     /**
      * 跳转至作业界面
      */
-    private ExerciseBookFragment exerciseBookFragment;
+    private ExerciseBookFragment mExerciseBookFragment;
     private void toExerciseBookFragment(){
         FragmentManager fm = getFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();
-        if (null == exerciseBookFragment){
-            exerciseBookFragment = new ExerciseBookFragment();
-            exerciseBookFragment.setOnSwitcherListener(this);
-            ft.add(R.id.container,exerciseBookFragment);
+        if (null == mExerciseBookFragment){
+            mExerciseBookFragment = new ExerciseBookFragment();
+            mExerciseBookFragment.setOnSwitcherListener(this);
+            ft.add(R.id.container, mExerciseBookFragment);
         }else{
-            ft.show(exerciseBookFragment);
+            ft.show(mExerciseBookFragment);
         }
-        if (fragment != null) {
-            ft.hide(fragment);
+        if (mFragment != null) {
+            ft.hide(mFragment);
         }
-        fragment = exerciseBookFragment;
+        mFragment = mExerciseBookFragment;
         ft.commit();
     }
+
     @Override
     public void switch2TextBookFragment() {
         toTextBookFragment();

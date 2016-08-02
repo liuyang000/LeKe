@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:orientation="horizontal"
+        >
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:text="三角形"
+            android:onClick="drawTriangle"
+            />
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:text="圆"
+            android:onClick="drawCircle"
+            />
+        <Button
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:text="矩形"
+            android:onClick="drawRectangle"
+            />
+    </LinearLayout>
+    <WebView
+        android:id="@+id/webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+</LinearLayout>
